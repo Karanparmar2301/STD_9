@@ -17,7 +17,7 @@ load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"), override=True
 load_dotenv()
 
 from .chunker import chunk_documents
-from .embeddings import embedding_model, COLLECTION_NAME
+from .embeddings import get_embedding_model, COLLECTION_NAME
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "..", "embeddings_cache.json")
 
@@ -57,7 +57,7 @@ def reingest():
         texts = [c.page_content for c in chunks]
         for i in tqdm(range(0, len(texts), batch_size), desc="Embedding batches", unit="batch"):
             batch_texts = texts[i:i + batch_size]
-            vectors = embedding_model.embed_documents(batch_texts)
+            vectors = get_embedding_model().embed_documents(batch_texts)
             for j, vec in enumerate(vectors):
                 idx = i + j
                 chunk = chunks[idx]
