@@ -1,0 +1,457 @@
+/* ── Wrapper with horizontal scroll on tablet ── */
+.tt-grid-wrapper {
+    overflow-x: auto;
+    border-radius: 16px;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Main Grid Layout ── */
+.tt-grid {
+    display: grid;
+    /* 7 columns: Time + Mon Tue Wed Thu Fri Sat */
+    grid-template-columns: 136px repeat(6, 1fr);
+    /* header + 9 slots at fixed 84px each */
+    grid-template-rows: 56px repeat(9, 84px);
+    min-width: 860px;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* ── Header Row ── */
+.tt-header-cell {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 10px 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    -webkit-font-smoothing: antialiased;
+}
+
+.tt-time-header {
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tt-clock-icon { font-size: 18px; }
+
+.tt-header-today {
+    background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+    position: relative;
+}
+
+.tt-header-today::after {
+    content: '● TODAY';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    letter-spacing: 1px;
+    opacity: 0.85;
+    white-space: nowrap;
+}
+
+/* ── Time Column — fixed height rows, no growth ── */
+.tt-time-cell {
+    height: 84px;
+    box-sizing: border-box;
+    background: #f8f9ff;
+    border-right: 2px solid #e8ecff;
+    border-bottom: 1px solid #eef0fb;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.tt-time-cell--break {
+    background: #f7f7f7;
+    border-right-color: #e0e0e0;
+}
+
+.tt-lecture-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3a0ca3;
+    letter-spacing: 0.2px;
+}
+
+.tt-lecture-time {
+    font-size: 13px;
+    color: #5a6080;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+}
+
+.tt-break-coffee {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.tt-break-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #616161;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.tt-break-time {
+    font-size: 12px;
+    color: #9e9e9e;
+    font-weight: 500;
+}
+
+/* ── Data Cells — same fixed height as time column, content centered ── */
+.tt-cell {
+    height: 84px;
+    box-sizing: border-box;
+    padding: 7px 6px;
+    border-right: 1px solid #eef0fb;
+    border-bottom: 1px solid #eef0fb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: background 0.2s ease;
+}
+
+/* Subject card should fill the horizontal space of the cell */
+.tt-cell > .subject-card {
+    width: 100%;
+}
+
+.tt-cell--today {
+    background: rgba(67, 97, 238, 0.04);
+}
+
+.tt-cell--empty {
+    background: #fafafa;
+}
+
+.tt-cell--break {
+    background: #f5f5f5;
+}
+
+.tt-dash {
+    color: #bdbdbd;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.tt-break-badge {
+    color: #5a5a5a;
+    font-size: 13px;
+    font-weight: 600;
+    background: #e8e8e8;
+    padding: 7px 14px;
+    border-radius: 20px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    letter-spacing: 0.2px;
+}
+
+/* ── Mobile Accordion ── */
+.tt-mobile-accordion {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tt-accordion-item {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #e8ecff;
+    background: #fff;
+}
+
+.tt-accordion-today {
+    border-color: #f72585;
+}
+
+.tt-accordion-header {
+    width: 100%;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: #fff;
+    border: none;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.tt-accordion-today .tt-accordion-header {
+    background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+}
+
+.tt-accordion-chevron { font-size: 12px; }
+
+.tt-today-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ffbe0b;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.tt-accordion-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.tt-mob-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.tt-mob-break {
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: #757575;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.tt-mob-time {
+    flex-shrink: 0;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tt-mob-time span:first-child {
+    font-size: 11px;
+    font-weight: 700;
+    color: #3a0ca3;
+}
+
+.tt-mob-time-str {
+    font-size: 10px;
+    color: #888;
+}
+
+.tt-mob-card { flex: 1; }
+
+/* ── Responsive Breakpoints ── */
+@media (max-width: 900px) {
+    .tt-grid-wrapper { display: none; }
+    .tt-mobile-accordion { display: flex; }
+}
+
+@media (max-width: 1100px) and (min-width: 900px) {
+    .tt-grid-wrapper { overflow-x: auto; }
+}
+
+/* ── Print Styles ── */
+@media print {
+    /* A4 landscape — extra top margin clears browser's native date/title header */
+    @page { size: A4 landscape; margin: 14mm 8mm 8mm 8mm; }
+
+    .tt-mobile-accordion { display: none !important; }
+
+    .tt-grid-wrapper {
+        display: block !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        width: 100% !important;
+        /* Prevent ANY page break inside the wrapper */
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    /* Fit entire grid on one landscape page.
+       A4 landscape usable height with 14mm top margin ≈ ~680px for content.
+       Title ~20px + grid (34px header + 9 × 60px rows = 34+540=574px) = 594px — fits. */
+    .tt-grid {
+        min-width: unset !important;
+        width: 100% !important;
+        grid-template-columns: 96px repeat(6, 1fr) !important;
+        grid-template-rows: 34px repeat(9, 60px) !important;
+        border-radius: 0 !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    /* Force header background colors to print */
+    .tt-header-cell {
+        background: #3a0ca3 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        font-size: 9px !important;
+        padding: 4px 4px !important;
+        overflow: hidden !important;
+        height: 34px !important;
+        box-sizing: border-box !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* TIME cell: hide icon, go horizontal, stay in row bounds */
+    .tt-time-header {
+        flex-direction: row !important;
+        gap: 3px !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .tt-clock-icon {
+        display: none !important;
+    }
+
+    /* Hide the ::after TODAY label — not enough height in print header row */
+    .tt-header-today::after {
+        display: none !important;
+    }
+
+    .tt-header-today {
+        background: #f72585 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Time cells */
+    .tt-time-cell {
+        height: 60px !important;
+        padding: 0 5px !important;
+        background: #f0f2ff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .tt-lecture-label { font-size: 10px !important; }
+    .tt-lecture-time  { font-size: 9px  !important; }
+    .tt-break-label   { font-size: 9px  !important; }
+    .tt-break-time    { font-size: 8px  !important; }
+    .tt-break-coffee  { display: none   !important; }
+
+    /* Data cells */
+    .tt-cell {
+        height: 60px !important;
+        padding: 3px 3px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .tt-cell--today {
+        background: rgba(67, 97, 238, 0.06) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Subject cards */
+    .subject-card {
+        height: 52px !important;
+        min-height: 52px !important;
+        max-height: 52px !important;
+        padding: 0 6px 0 7px !important;
+        box-shadow: none !important;
+        border-radius: 6px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        background: var(--card-bg) !important;
+        border-left: 3px solid var(--card-border) !important;
+    }
+
+    .sc-subject  { font-size: 10px !important; padding-right: 4px !important; }
+    .sc-teacher  { font-size: 8.5px !important; }
+    .now-badge   { display: none  !important; }
+
+    /* Break badge */
+    .tt-break-badge {
+        font-size: 9px !important;
+        padding: 3px 6px !important;
+        background: #e0e0e0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    .tt-dash { font-size: 12px !important; color: #ccc !important; }
+}
+        background: #f0f2ff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .tt-lecture-label { font-size: 11px !important; }
+    .tt-lecture-time  { font-size: 10px !important; }
+    .tt-break-label   { font-size: 10px !important; }
+    .tt-break-time    { font-size: 9px  !important; }
+
+    /* Data cells */
+    .tt-cell {
+        height: 72px !important;
+        padding: 5px 4px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .tt-cell--today {
+        background: rgba(67, 97, 238, 0.06) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Subject cards — force all colors to print */
+    .subject-card {
+        height: 62px !important;
+        min-height: 62px !important;
+        max-height: 62px !important;
+        box-shadow: none !important;
+        border-radius: 8px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        background: var(--card-bg) !important;
+        border-left-color: var(--card-border) !important;
+    }
+
+    .sc-subject  { font-size: 11px !important; }
+    .sc-teacher  { font-size: 9px  !important; }
+    .now-badge   { display: none  !important; }
+
+    /* Break badge */
+    .tt-break-badge {
+        font-size: 10px !important;
+        padding: 4px 8px !important;
+        background: #e0e0e0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    .tt-dash { font-size: 14px !important; }
+}

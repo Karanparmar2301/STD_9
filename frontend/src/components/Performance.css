@@ -1,0 +1,1084 @@
+/* ===== Design tokens (redesign) ===== */
+:root {
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --muted-border: #e9eef6;
+    --muted-text: #475569;
+    --primary: #4f6df5; /* muted royal */
+    --success: #2f855a;
+    --danger: #c24141;
+    --violet: #7c3aed;
+    --spacing-sm: 8px;
+    --spacing: 16px;
+    --spacing-lg: 24px;
+    --radius: 16px;
+    --shadow-1: 0 1px 8px rgba(16,24,40,0.04);
+}
+
+/* ── Page shell ── */
+.performance-page {
+    padding: 32px 36px;
+    background: var(--bg);
+    min-height: 100%;
+    font-family: 'Inter', 'Poppins', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Page header ─────────────────────────────────────────────────────────── */
+.perf-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.perf-page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.perf-page-sub {
+    font-size: 0.875rem;
+    color: #475569;
+    font-weight: 500;
+    margin: 4px 0 0;
+}
+
+/* ── Error banner ────────────────────────────────────────────────────────── */
+.perf-error-banner {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #92400e;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+}
+
+/* ── KPI grid ────────────────────────────────────────────────────────────── */
+.perf-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.perf-kpi-card {
+    background: var(--card-bg);
+    border: 1px solid var(--muted-border);
+    border-radius: var(--radius);
+    padding: 26px 22px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: default;
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+    box-shadow: var(--shadow-1);
+    position: relative;
+    overflow: hidden;
+}
+
+.perf-kpi-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.perf-kpi-body {
+    flex: 1;
+}
+
+.perf-kpi-label {
+    margin: 0 0 4px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.perf-kpi-value {
+    margin: 0;
+    font-size: clamp(20px, 2.2vw, 26px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: 0.5px;
+    color: var(--primary);
+}
+
+.perf-kpi-text {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.perf-kpi-bar-track {
+    height: 6px;
+    background: #f3f6fb;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.perf-kpi-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+}
+
+/* ── Section header ──────────────────────────────────────────────────────── */
+.perf-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-top: 8px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.perf-section-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+}
+
+.perf-search {
+    padding: 8px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    outline: none;
+    color: #1e293b;
+    background: #fff;
+    transition: border-color 0.18s;
+    width: 220px;
+}
+
+.perf-search:focus {
+    border-color: #4f6df5;
+}
+
+/* ── Subject grid ────────────────────────────────────────────────────────── */
+.perf-subj-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+/* ── Subject Card (clickable KPI cards) ───────────────────────────────────── */
+.perf-subj-card {
+    background: var(--card-bg);
+    border: 1px solid var(--muted-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+    box-shadow: var(--shadow-1);
+}
+
+.perf-subj-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 24, 40, 0.08);
+}
+
+.perf-subj-card:active {
+    transform: translateY(0);
+}
+
+/* ── Subject Detail Modal ───────────────────────────────────────────────────── */
+.perf-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9998;
+}
+
+.perf-modal-container {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 900px;
+    max-height: 80vh;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.perf-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    border-bottom: 1px solid #e2e8f0;
+    border-top: 4px solid;
+    background: #fafbfc;
+}
+
+.perf-modal-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.perf-modal-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.perf-modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.perf-modal-subtitle {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.perf-modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.perf-modal-close:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.perf-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px;
+}
+
+.perf-modal-loading,
+.perf-modal-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #64748b;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.perf-modal-spinner {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.perf-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── 1. Meta Information Grid ── */
+.perf-modal-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.perf-modal-meta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.perf-modal-meta-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.perf-modal-meta-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 4px;
+}
+
+.perf-modal-meta-value {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* ── 2. Performance Stats Grid ── */
+.perf-modal-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.perf-modal-stat {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-top: 3px solid;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.perf-modal-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.perf-modal-stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 8px;
+}
+
+.perf-modal-stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+/* ── 3. Two-Column Grid for Sections ── */
+.perf-modal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+/* ── Section Container ── */
+.perf-modal-section {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.perf-modal-section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 14px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.perf-modal-section-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ── Timetable Info Rows ── */
+.perf-modal-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.perf-modal-info-row:last-child {
+    border-bottom: none;
+}
+
+.perf-modal-info-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.perf-modal-info-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* ── Performance Trend Items ── */
+.perf-modal-trend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.perf-modal-trend-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #475569;
+    min-width: 90px;
+    flex-shrink: 0;
+}
+
+.perf-modal-trend-bar-wrapper {
+    flex: 1;
+    position: relative;
+    height: 20px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.perf-modal-trend-bar {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.6s ease;
+}
+
+.perf-modal-trend-score {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* ── AI Insight (full width) ── */
+.perf-modal-insight {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-left: 4px solid #0ea5e9;
+}
+
+.perf-modal-insight-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #0f172a;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ── Skill Breakdown (full width) ── */
+.perf-modal-skill-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.perf-modal-skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.perf-modal-skill-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.perf-modal-skill-score {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.perf-modal-skill-bar-track {
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.perf-modal-skill-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+
+/* ── Teacher Feedback (full width) ── */
+.perf-modal-feedback {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-left: 4px solid #f59e0b;
+}
+
+.perf-modal-feedback-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #0f172a;
+    margin: 0;
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* ── Responsive Modal ── */
+@media (max-width: 900px) {
+    .perf-modal-container {
+        top: 5%;
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .perf-modal-meta {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .perf-modal-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .perf-modal-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Old back-side classes (deprecated, but kept for compatibility) ── */
+.perf-back-accent {
+    height: 4px;
+    width: 100%;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.perf-back-content {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.perf-back-loading,
+.perf-back-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #64748b;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.perf-back-spinner {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ── 1. Subject Header ── */
+.perf-back-header {
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 10px;
+    margin-bottom: 6px;
+}
+
+.perf-back-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.2px;
+}
+
+.perf-back-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.7rem;
+    color: #64748b;
+}
+
+.perf-back-meta-item {
+    background: #f8fafc;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* ── 2. Performance Summary (4 mini stats) ── */
+.perf-back-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.perf-back-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: #f8fafc;
+    padding: 8px 6px;
+    border-radius: 6px;
+}
+
+.perf-back-stat-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.perf-back-stat-value {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ── 3. Timetable Intelligence ── */
+.perf-back-section {
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.perf-back-section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.perf-back-timetable-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.perf-back-timetable-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.perf-back-timetable-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.perf-back-timetable-value {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* ── 4. Performance Trend (recent scores) ── */
+.perf-back-trend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.perf-back-trend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.perf-back-trend-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #475569;
+    min-width: 75px;
+    flex-shrink: 0;
+}
+
+.perf-back-trend-bar-wrapper {
+    flex: 1;
+    position: relative;
+    height: 16px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.perf-back-trend-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.perf-back-trend-score {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* ── 5. AI Insight ── */
+.perf-back-insight {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-left: 3px solid #0ea5e9;
+}
+
+.perf-back-insight-text {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #0f172a;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ── 6. Skill Breakdown ── */
+.perf-back-skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.perf-back-skill-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.perf-back-skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.perf-back-skill-name {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.perf-back-skill-score {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.perf-back-skill-bar-track {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.perf-back-skill-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* ── 7. Teacher Feedback ── */
+.perf-back-feedback {
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+}
+
+.perf-back-feedback-text {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #0f172a;
+    margin: 0;
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* ── Footer ── */
+.perf-back-footer {
+    text-align: center;
+    padding-top: 8px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 0;
+}
+
+.perf-back-hint {
+    font-size: 0.68rem;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* ── DEPRECATED (old simple grid) - kept for compatibility ── */
+.perf-back-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    flex: 1;
+}
+
+.perf-back-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.perf-back-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.perf-back-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* ── Front Side Elements (original KPI view) ──────────────────────────────── */
+.perf-subj-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.perf-subj-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.perf-subj-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0b1220;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.perf-trend-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.perf-trend-badge.pos {
+    background: #ecfdf5; /* softer positive */
+    color: #2f855a;     /* muted green */
+}
+
+.perf-trend-badge.neg {
+    background: #fff1f2; /* softer negative */
+    color: #c24141;      /* muted red */
+}
+
+.perf-trend-badge.neutral {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.perf-subj-score {
+    font-size: clamp(20px, 2vw, 24px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px; /* breathing space between number and bar */
+}
+
+.perf-subj-bottom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.perf-bar-track {
+    flex: 1;
+    height: 10px;
+    background: #f6f9fd;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.perf-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+}
+
+.perf-grade-badge {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 8px;
+    border: 1px solid;
+    flex-shrink: 0;
+}
+
+/* Optional soft gradient variant for numbers (commented by default)
+.perf-kpi-value.gradient, .perf-subj-score.gradient {
+    background: linear-gradient(90deg, rgba(79,109,245,1), rgba(99,102,241,0.9));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+*/
+
+/* ── Chart card ──────────────────────────────────────────────────────────── */
+.perf-chart-card {
+    background: var(--card-bg);
+    border: 1px solid var(--muted-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow-1);
+    margin-bottom: 26px;
+}
+
+.perf-chart-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 20px;
+}
+
+.perf-tooltip {
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+}
+
+.perf-tooltip-label {
+    color: #94a3b8;
+    margin: 0 0 2px;
+    font-weight: 500;
+}
+
+.perf-tooltip-value {
+    color: #fff;
+    margin: 0;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+.perf-empty {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 24px;
+}
+
+/* ── Skeleton ────────────────────────────────────────────────────────────── */
+.perf-skeleton {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+}
+
+.perf-skeleton-inner {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: perf-shimmer 1.4s infinite;
+}
+
+@keyframes perf-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+    .perf-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .perf-subj-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .perf-kpi-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+    .performance-page {
+        padding: 16px;
+    }
+
+    .perf-kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .perf-subj-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .perf-search {
+        width: 100%;
+    }
+
+    .perf-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

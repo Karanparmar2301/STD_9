@@ -1,0 +1,43 @@
+[
+  {"date":"2026-01-01","name":"New Year's Day","type":"Optional"},
+  {"date":"2026-01-14","name":"Makar Sankranti / Pongal / Uttarayan","type":"Festival"},
+  {"date":"2026-01-23","name":"Parakram Diwas / Netaji Jayanti","type":"National Observance"},
+  {"date":"2026-01-26","name":"Republic Day","type":"National"},
+
+  {"date":"2026-02-12","name":"Maharishi Dayanand Saraswati Jayanti","type":"Festival"},
+  {"date":"2026-02-15","name":"Maha Shivaratri","type":"Festival"},
+  {"date":"2026-02-19","name":"Chhatrapati Shivaji Maharaj Jayanti","type":"Regional"},
+
+  {"date":"2026-03-03","name":"Holika Dahan","type":"Festival"},
+  {"date":"2026-03-04","name":"Holi","type":"Festival"},
+  {"date":"2026-03-19","name":"Ugadi / Gudi Padwa / Chaitra Navratri","type":"Festival"},
+  {"date":"2026-03-21","name":"Eid-ul-Fitr","type":"Festival"},
+  {"date":"2026-03-26","name":"Ram Navami","type":"Festival"},
+  {"date":"2026-03-31","name":"Mahavir Jayanti","type":"Festival"},
+
+  {"date":"2026-04-02","name":"Hanuman Jayanti","type":"Festival"},
+  {"date":"2026-04-03","name":"Good Friday","type":"National"},
+  {"date":"2026-04-14","name":"Baisakhi / Ambedkar Jayanti / Tamil New Year","type":"Festival"},
+  {"date":"2026-04-19","name":"Akshaya Tritiya","type":"Festival"},
+
+  {"date":"2026-05-01","name":"Labour Day / Buddha Purnima","type":"National"},
+  {"date":"2026-05-27","name":"Bakrid / Eid-ul-Zuha","type":"Festival"},
+
+  {"date":"2026-06-26","name":"Muharram","type":"Festival"},
+
+  {"date":"2026-08-15","name":"Independence Day","type":"National"},
+  {"date":"2026-08-26","name":"Milad-un-Nabi","type":"Festival"},
+  {"date":"2026-08-28","name":"Raksha Bandhan","type":"Festival"},
+
+  {"date":"2026-09-04","name":"Janmashtami","type":"Festival"},
+  {"date":"2026-09-14","name":"Ganesh Chaturthi","type":"Festival"},
+  {"date":"2026-09-15","name":"Hartalika Teej","type":"Festival"},
+
+  {"date":"2026-10-02","name":"Gandhi Jayanti","type":"National"},
+  {"date":"2026-10-20","name":"Dussehra","type":"Festival"},
+
+  {"date":"2026-11-08","name":"Diwali","type":"Festival"},
+  {"date":"2026-11-24","name":"Guru Nanak Jayanti","type":"Festival"},
+
+  {"date":"2026-12-25","name":"Christmas Day","type":"National"}
+]

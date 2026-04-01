@@ -1,0 +1,192 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { motion, AnimatePresence } from 'framer-motion';
+import { updateProfile } from '../store/studentSlice';
+import './ProfilePage.css';
+
+/**
+ * ProfilePage - Advanced Profile View with Inline Editing
+ * 
+ * Features:
+ * - Inline profile editing (no page navigation)
+ * - Academic summary cards
+ * - Profile completeness indicator
+ * - Premium animations
+ * - Activity logging on save
+ */
+function ProfilePage() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.user);
+    const profile = useSelector((state) => state.student.profile);
+    const loading = useSelector((state) => state.student.loading);
+    const attendanceStats = useSelector((state) => state.attendance?.stats);
+    const performanceData = useSelector((state) => state.performance?.overallScore);
+    
+    // Edit mode state
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({});
+    const [saveLoading, setSaveLoading] = useState(false);
+    const [saveSuccess, setSaveSuccess] = useState(false);
+
+    const getInitials = (name) => {
+        if (!name) return '?';
+        return name
+            .split(' ')
+            .map(word => word[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2);
+    };
+
+    const handleBack = () => {
+        navigate(-1);
+    };
+
+    const handleEdit = () => {
+        // This will be handled by parent component (Dashboard) via event
+        navigate('/dashboard/' + user?.uid);
+        // Trigger edit drawer via custom event
+        setTimeout(() => {
+            window.dispatchEvent(new CustomEvent('openEditProfile'));
+        }, 100);
+    };
+
+    if (loading && !profile) {
+        return (
+            <div className="profile-page-loading">
+                <div className="spinner"></div>
+                <p>Loading profile...</p>
+            </div>
+        );
+    }
+
+    if (!profile) {
+        return (
+            <div className="profile-page-error">
+                <h2>Profile not found</h2>
+                <button onClick={handleBack}>Go Back</button>
+            </div>
+        );
+    }
+
+    // Personal information fields
+    const profileFields = [
+        { label: 'STUDENT NAME', value: profile.student_name, icon: '👤' },
+        { label: 'STUDENT ID', value: profile.student_id, icon: '🆔' },
+        { label: 'CLASS & SECTION', value: profile.class_section, icon: '📚' },
+        { label: "FATHER'S NAME", value: profile.father_name, icon: '👨' },
+        { label: "MOTHER'S NAME", value: profile.mother_name, icon: '👩' },
+        { label: 'MOBILE NUMBER', value: profile.mobile, icon: '📱' },
+        { label: 'EMAIL', value: profile.email || user?.email, icon: '✉️' },
+        { label: 'ADDRESS', value: profile.address, icon: '📍' }
+    ];
+
+    return (
+        <div className="profile-page">
+            {/* Header Section */}
+            <motion.div 
+                className="profile-page-header"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+            >
+                <button className="back-button" onClick={handleBack}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path
+                            d="M12 16L6 10L12 4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                    Back
+                </button>
+
+                <div className="profile-header-content">
+                    {/* Large Avatar */}
+                    <motion.div 
+                        className="profile-avatar-large"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                    >
+                        {getInitials(profile.student_name)}
+                    </motion.div>
+
+                    {/* Student Info */}
+                    <motion.div 
+                        className="profile-header-info"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.2 }}
+                    >
+                        <h1>{profile.student_name}</h1>
+                        <div className="class-badge">{profile.class_section}</div>
+                    </motion.div>
+
+                    {/* Edit Button */}
+                    <motion.button 
+                        className="edit-profile-button"
+                        onClick={handleEdit}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3, delay: 0.3 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path
+                                d="M11.333 2.00004C11.5081 1.82494 11.716 1.68605 11.9447 1.59129C12.1735 1.49653 12.4187 1.44775 12.6663 1.44775C12.914 1.44775 13.1592 1.49653 13.3879 1.59129C13.6167 1.68605 13.8246 1.82494 13.9997 2.00004C14.1748 2.17513 14.3137 2.383 14.4084 2.61178C14.5032 2.84055 14.552 3.08575 14.552 3.33337C14.552 3.58099 14.5032 3.82619 14.4084 4.05497C14.3137 4.28374 14.1748 4.49161 13.9997 4.66671L5.33301 13.3334L1.66634 14.3334L2.66634 10.6667L11.333 2.00004Z"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                        Edit Profile
+                    </motion.button>
+                </div>
+            </motion.div>
+
+            {/* Profile Information Grid */}
+            <motion.div 
+                className="profile-info-section"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.3 }}
+            >
+                <h2 className="section-title">Personal Information</h2>
+                <div className="profile-info-grid">
+                    {profileFields.map((field, index) => (
+                        <motion.div
+                            key={field.label}
+                            className="profile-info-card"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ 
+                                duration: 0.4, 
+                                delay: 0.4 + (index * 0.05),
+                                ease: 'easeOut'
+                            }}
+                            whileHover={{ 
+                                y: -4,
+                                boxShadow: '0 12px 24px rgba(0, 0, 0, 0.1)'
+                            }}
+                        >
+                            <div className="card-icon">{field.icon}</div>
+                            <div className="card-content">
+                                <span className="card-label">{field.label}</span>
+                                <span className="card-value">{field.value || 'Not provided'}</span>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </motion.div>
+        </div>
+    );
+}
+
+export default ProfilePage;

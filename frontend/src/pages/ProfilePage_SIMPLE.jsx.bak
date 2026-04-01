@@ -1,0 +1,405 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { motion, AnimatePresence } from 'framer-motion';
+import { updateProfile } from '../store/studentSlice';
+import './ProfilePage.css';
+
+/**
+ * ProfilePage - Advanced Profile View with Inline Editing
+ * 
+ * Features:
+ * - Inline profile editing (no page navigation)
+ * - Academic summary cards
+ * - Profile completeness indicator
+ * - Premium animations
+ * - Activity logging on save
+ */
+function ProfilePage() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.user);
+    const profile = useSelector((state) => state.student.profile);
+    const loading = useSelector((state) => state.student.loading);
+    
+    // Edit mode state
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({});
+    const [saveLoading, setSaveLoading] = useState(false);
+    const [saveSuccess, setSaveSuccess] = useState(false);
+
+    // Initialize form data when profile loads
+    useEffect(() => {
+        if (profile) {
+            setFormData({
+                student_name: profile.student_name || '',
+                father_name: profile.father_name || '',
+                mother_name: profile.mother_name || '',
+                mobile: profile.mobile || '',
+                email: profile.email || user?.email || '',
+                address: profile.address || ''
+            });
+        }
+    }, [profile, user]);
+
+    const getInitials = (name) => {
+        if (!name) return '?';
+        return name
+            .split(' ')
+            .map(word => word[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2);
+    };
+
+    const calculateProfileCompleteness = () => {
+        if (!profile) return 0;
+        const fields = [
+            profile.student_name,
+            profile.father_name,
+            profile.mother_name,
+            profile.mobile,
+            profile.email,
+            profile.address
+        ];
+        const filledFields = fields.filter(field => field && field !== 'Not provided').length;
+        return Math.round((filledFields / fields.length) * 100);
+    };
+
+    const handleBack = () => {
+        navigate(-1);
+    };
+
+    const handleEditToggle = () => {
+        if (isEditing) {
+            // Cancel editing - reset form data
+            setFormData({
+                student_name: profile.student_name || '',
+                father_name: profile.father_name || '',
+                mother_name: profile.mother_name || '',
+                mobile: profile.mobile || '',
+                email: profile.email || user?.email || '',
+                address: profile.address || ''
+            });
+        }
+        setIsEditing(!isEditing);
+        setSaveSuccess(false);
+    };
+
+    const handleInputChange = (field, value) => {
+        setFormData(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
+
+    const handleSave = async () => {
+        setSaveLoading(true);
+        setSaveSuccess(false);
+
+        try {
+            // Validate required fields
+            if (!formData.student_name?.trim()) {
+                alert('Student name is required');
+                setSaveLoading(false);
+                return;
+            }
+
+            // Dispatch update action
+            await dispatch(updateProfile(formData)).unwrap();
+            
+            setSaveSuccess(true);
+            setIsEditing(false);
+            
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+                setSaveSuccess(false);
+            }, 3000);
+        } catch (error) {
+            console.error('Failed to update profile:', error);
+            alert(error || 'Failed to update profile');
+        } finally {
+            setSaveLoading(false);
+        }
+    };
+
+    if (loading && !profile) {
+        return (
+            <div className="profile-page-loading">
+                <div className="spinner"></div>
+                <p>Loading profile...</p>
+            </div>
+        );
+    }
+
+    if (!profile) {
+        return (
+            <div className="profile-page-error">
+                <h2>Profile not found</h2>
+                <button onClick={handleBack}>Go Back</button>
+            </div>
+        );
+    }
+
+    const completeness = calculateProfileCompleteness();
+
+    // Personal information fields for inline editing
+    const editableFields = [
+        { 
+            key: 'student_name', 
+            label: 'STUDENT NAME', 
+            icon: '👤',
+            editable: true,
+            type: 'text'
+        },
+        { 
+            key: 'student_id', 
+            label: 'STUDENT ID', 
+            icon: '🆔',
+            editable: false,
+            value: profile.student_id
+        },
+        { 
+            key: 'class_section', 
+            label: 'CLASS & SECTION', 
+            icon: '📚',
+            editable: false,
+            value: profile.class_section
+        },
+        { 
+            key: 'father_name', 
+            label: "FATHER'S NAME", 
+            icon: '👨',
+            editable: true,
+            type: 'text'
+        },
+        { 
+            key: 'mother_name', 
+            label: "MOTHER'S NAME", 
+            icon: '👩',
+            editable: true,
+            type: 'text'
+        },
+        { 
+            key: 'mobile', 
+            label: 'MOBILE NUMBER', 
+            icon: '📱',
+            editable: true,
+            type: 'tel'
+        },
+        { 
+            key: 'email', 
+            label: 'EMAIL', 
+            icon: '✉️',
+            editable: true,
+            type: 'email'
+        },
+        { 
+            key: 'address', 
+            label: 'ADDRESS', 
+            icon: '📍',
+            editable: true,
+            type: 'text'
+        }
+    ];
+
+    return (
+        <div className="profile-page">
+            {/* Success Toast */}
+            <AnimatePresence>
+                {saveSuccess && (
+                    <motion.div 
+                        className="success-toast"
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -50 }}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        Profile updated successfully!
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Header Section */}
+            <motion.div 
+                className="profile-page-header"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+            >
+                <button className="back-button" onClick={handleBack}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path
+                            d="M12 16L6 10L12 4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                    Back
+                </button>
+
+                {/* Profile Hero Card */}
+                <motion.div 
+                    className="profile-hero-card"
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    {/* Background Gradient */}
+                    <div className="hero-gradient"></div>
+
+                    {/* Avatar with Status */}
+                    <div className="avatar-container">
+                        <motion.div 
+                            className="profile-avatar-large"
+                            whileHover={{ scale: 1.05 }}
+                        >
+                            {getInitials(profile.student_name)}
+                            <div className="status-indicator active" title="Active Student"></div>
+                        </motion.div>
+                    </div>
+
+                    {/* Student Info */}
+                    <div className="profile-header-info">
+                        <h1>{profile.student_name}</h1>
+                        <div className="class-badge">{profile.class_section}</div>
+                        <div className="email-verified">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                <path d="M12.833 6.417v.583a5.833 5.833 0 11-3.458-5.333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M12.833 2.333L7 8.172 5.25 6.422" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            Email Verified
+                        </div>
+                    </div>
+
+                    {/* Profile Completeness Bar */}
+                    <div className="completeness-widget">
+                        <div className="completeness-header">
+                            <span>Profile Completeness</span>
+                            <span className="completeness-percent">{completeness}%</span>
+                        </div>
+                        <div className="completeness-bar">
+                            <motion.div 
+                                className="completeness-fill"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${completeness}%` }}
+                                transition={{ duration: 1, delay: 0.5 }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Edit/Save/Cancel Buttons */}
+                    <div className="action-buttons">
+                        {!isEditing ? (
+                            <motion.button 
+                                className="edit-profile-button"
+                                onClick={handleEditToggle}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M11.333 2C11.5081 1.82494 11.716 1.68605 11.9447 1.59129C12.1735 1.49653 12.4187 1.44775 12.6663 1.44775C12.914 1.44775 13.1592 1.49653 13.3879 1.59129C13.6167 1.68605 13.8246 1.82494 13.9997 2C14.1748 2.17513 14.3137 2.383 14.4084 2.61178C14.5032 2.84055 14.552 3.08575 14.552 3.33337C14.552 3.58099 14.5032 3.82619 14.4084 4.05497C14.3137 4.28374 14.1748 4.49161 13.9997 4.66671L5.33301 13.3334L1.66634 14.3334L2.66634 10.6667L11.333 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                                Edit Profile
+                            </motion.button>
+                        ) : (
+                            <motion.div 
+                                className="edit-actions"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                            >
+                                <button 
+                                    className="save-button"
+                                    onClick={handleSave}
+                                    disabled={saveLoading}
+                                >
+                                    {saveLoading ? (
+                                        <>
+                                            <div className="button-spinner"></div>
+                                            Saving...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <path d="M13.333 7.387v4.947a1.333 1.333 0 01-1.333 1.333H4a1.333 1.333 0 01-1.333-1.333V4a1.333 1.333 0 011.333-1.333h4.947" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path d="M12 1.333h2.667V4M7.333 8.667l6.334-6.334" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                            Save Changes
+                                        </>
+                                    )}
+                                </button>
+                                <button 
+                                    className="cancel-button"
+                                    onClick={handleEditToggle}
+                                    disabled={saveLoading}
+                                >
+                                    Cancel
+                                </button>
+                            </motion.div>
+                        )}
+                    </div>
+                </motion.div>
+            </motion.div>
+
+            {/* Personal Information Section */}
+            <motion.div 
+                className="profile-info-section"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+            >
+                <h2 className="section-title">Personal Information</h2>
+                
+                <div className="profile-info-grid">
+                    {editableFields.map((field, index) => {
+                        const displayValue = field.value || formData[field.key] || profile[field.key] || 'Not provided';
+                        
+                        return (
+                            <motion.div
+                                key={field.key}
+                                className={`profile-info-card ${isEditing && field.editable ? 'editing' : ''}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ 
+                                    duration: 0.4, 
+                                    delay: 0.4 + (index * 0.05),
+                                    ease: 'easeOut'
+                                }}
+                                whileHover={{ 
+                                    y: -4,
+                                    boxShadow: '0 12px 24px rgba(0, 0, 0, 0.1)'
+                                }}
+                            >
+                                <div className="card-icon">{field.icon}</div>
+                                <div className="card-content">
+                                    <span className="card-label">{field.label}</span>
+                                    
+                                    {isEditing && field.editable ? (
+                                        <motion.input
+                                            type={field.type}
+                                            className="card-input"
+                                            value={formData[field.key] || ''}
+                                            onChange={(e) => handleInputChange(field.key, e.target.value)}
+                                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ duration: 0.3 }}
+                                        />
+                                    ) : (
+                                        <span className="card-value">{displayValue}</span>
+                                    )}
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </div>
+            </motion.div>
+        </div>
+    );
+}
+
+export default ProfilePage;

@@ -1,0 +1,560 @@
+/* =========================================================
+   HolidayKPI.css — Premium Orange Holiday Card
+   ========================================================= */
+
+.holiday-kpi-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 55%, #fed7aa 100%);
+    border: 1.5px solid rgba(249, 115, 22, 0.2);
+    border-radius: 20px;
+    padding: 20px 22px;
+    box-shadow:
+        0 4px 20px rgba(249, 115, 22, 0.12),
+        0 1px 4px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* ── Decorative blobs ─────────────────────────────────── */
+.hkpi-blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hkpi-blob--1 {
+    width: 160px;
+    height: 160px;
+    top: -50px;
+    right: -40px;
+    background: radial-gradient(circle, rgba(251, 146, 60, 0.25) 0%, transparent 70%);
+}
+
+.hkpi-blob--2 {
+    width: 120px;
+    height: 120px;
+    bottom: -30px;
+    left: -30px;
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+}
+
+/* ── Header ───────────────────────────────────────────── */
+.hkpi-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.hkpi-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
+    flex-shrink: 0;
+}
+
+.hkpi-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.hkpi-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #9a3412;
+    margin: 0 0 2px;
+    letter-spacing: -0.3px;
+}
+
+.hkpi-subtitle {
+    font-size: 12px;
+    color: #c2410c;
+    margin: 0;
+    font-weight: 500;
+}
+
+.hkpi-badge {
+    margin-left: auto;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+    letter-spacing: 0.2px;
+}
+
+/* ── Stats row ────────────────────────────────────────── */
+.hkpi-stats {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.hkpi-stat {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(249, 115, 22, 0.15);
+    border-radius: 12px;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hkpi-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.18);
+}
+
+.hkpi-stat-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.hkpi-stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #c2410c;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.hkpi-stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #9a3412;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ── Divider ──────────────────────────────────────────── */
+.hkpi-divider {
+    position: relative;
+    z-index: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(249, 115, 22, 0.25), transparent);
+    margin-bottom: 14px;
+}
+
+/* ── Next holiday panel ───────────────────────────────── */
+.hkpi-next {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(249, 115, 22, 0.18);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.hkpi-next-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+}
+
+.hkpi-next-emoji {
+    font-size: 28px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.hkpi-next-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #ea580c;
+    margin: 0 0 2px;
+}
+
+.hkpi-next-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #7c2d12;
+    margin: 0 0 2px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+}
+
+.hkpi-next-date {
+    font-size: 11px;
+    color: #c2410c;
+    margin: 0;
+    font-weight: 500;
+}
+
+.hkpi-countdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: #fff;
+    border-radius: 12px;
+    padding: 8px 14px;
+    min-width: 58px;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
+    flex-shrink: 0;
+}
+
+.hkpi-countdown-num {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.hkpi-countdown-unit {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.9;
+    line-height: 1;
+}
+
+.hkpi-countdown-sub {
+    font-size: 9px;
+    opacity: 0.75;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-top: 1px;
+}
+
+/* No upcoming holidays */
+.hkpi-no-next {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #9a3412;
+}
+
+/* ── Type legend chips ────────────────────────────────── */
+.hkpi-type-legend {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+}
+
+.hkpi-type-hint {
+    font-size: 10px;
+    font-weight: 500;
+    color: #c2410c;
+    opacity: 0.7;
+    width: 100%;
+    margin-bottom: 2px;
+    letter-spacing: 0.2px;
+}
+
+.hkpi-type-chip {
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(249, 115, 22, 0.15);
+    color: #9a3412;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.hkpi-type-chip--btn {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px 4px 8px;
+    transition: background 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    user-select: none;
+}
+
+.hkpi-type-chip--btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(249, 115, 22, 0.45);
+    box-shadow: 0 3px 10px rgba(249, 115, 22, 0.18);
+}
+
+.hkpi-chip-count {
+    background: rgba(249, 115, 22, 0.15);
+    color: #c2410c;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 10px;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* Clickable next-holiday panel */
+.hkpi-next--clickable {
+    cursor: pointer;
+    transition: background 0.18s ease, box-shadow 0.18s ease;
+}
+.hkpi-next--clickable:hover {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.18);
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 768px) {
+    .holiday-kpi-card {
+        padding: 16px 16px;
+    }
+
+    .hkpi-stat-value {
+        font-size: 18px;
+    }
+
+    .hkpi-next-name {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hkpi-stats {
+        flex-direction: row;
+    }
+
+    .hkpi-stat {
+        padding: 8px 6px;
+    }
+
+    .hkpi-type-legend {
+        display: none; /* save space on very small screens */
+    }
+}
+
+/* ═══════════════════════════════════════════════════════
+   HOLIDAY DETAIL MODAL
+═══════════════════════════════════════════════════════ */
+
+.hkpi-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9998;
+}
+
+.hkpi-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    width: min(560px, 92vw);
+    max-height: 82vh;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.18),
+        0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.hkpi-modal__body {
+    overflow-y: auto;
+    padding: 28px 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: #fed7aa #fff7ed;
+}
+
+.hkpi-modal__body::-webkit-scrollbar { width: 5px; }
+.hkpi-modal__body::-webkit-scrollbar-track { background: #fff7ed; }
+.hkpi-modal__body::-webkit-scrollbar-thumb { background: #fed7aa; border-radius: 10px; }
+
+.hkpi-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f1f5f9;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.hkpi-modal__close:hover { background: #ef4444; color: #fff; }
+.hkpi-modal__close svg { width: 14px; height: 14px; }
+
+/* ── Modal TOP banner ──────────────────────────── */
+.hkpi-modal__top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    border: 1.5px solid;
+}
+
+.hkpi-modal__type-emoji {
+    font-size: 2.4rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.hkpi-modal__type-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin: 0 0 4px;
+    letter-spacing: -0.3px;
+}
+
+.hkpi-modal__badge {
+    display: inline-block;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    margin-right: 4px;
+}
+
+/* ── Modal description text ─────────────────────── */
+.hkpi-modal__desc {
+    font-size: 0.875rem;
+    color: #475569;
+    line-height: 1.7;
+    margin: 0;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border-left: 3px solid #f97316;
+}
+
+/* ── Holiday list inside modal ───────────────────── */
+.hkpi-modal__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hkpi-modal__item {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fafafa;
+    border: 1px solid #f1f5f9;
+    border-left: 4px solid;
+    transition: background 0.15s ease;
+}
+
+.hkpi-modal__item:hover {
+    background: #f8fafc;
+}
+
+.hkpi-modal__item-info {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.hkpi-modal__item-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.3;
+}
+
+.hkpi-modal__item-date {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #94a3b8;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.hkpi-modal__item-fact {
+    font-size: 0.78rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ── Type info block (single holiday modal) ─────────── */
+.hkpi-modal__type-info {
+    padding: 14px 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.hkpi-modal__type-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+}
+
+.hkpi-modal__type-text {
+    font-size: 0.82rem;
+    color: #475569;
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* ── Responsive modal ───────────────────────────── */
+@media (max-width: 480px) {
+    .hkpi-modal { border-radius: 18px; }
+    .hkpi-modal__body { padding: 20px 18px 18px; }
+    .hkpi-modal__type-emoji { font-size: 1.8rem; }
+    .hkpi-modal__type-title { font-size: 1rem; }
+}

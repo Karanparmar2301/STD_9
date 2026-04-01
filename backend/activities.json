@@ -1,0 +1,2675 @@
+{
+  "41647fe0-1b2e-4800-a1d9-9684d7bb595b": [
+    {
+      "event_id": "ee318bd5-7c98-44d0-9b4b-457734abaaa5",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:59:37.872733Z"
+    },
+    {
+      "event_id": "2c1d3f8c-78f8-4fa6-b2fc-fc7ed289a765",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 4",
+      "description": "Opened Chapter 4 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "4",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 4.pdf"
+      },
+      "timestamp": "2026-03-23T06:59:32.038370Z"
+    },
+    {
+      "event_id": "6b9c9713-044d-4e3e-8f3f-4372fa503493",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:59:23.697789Z"
+    },
+    {
+      "event_id": "ef658c93-5ada-44bd-bd1b-5d2f1880674a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T06:59:05.551653Z"
+    },
+    {
+      "event_id": "a0df9750-ad3b-457d-ad63-8a8908fdc254",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:59:03.540757Z"
+    },
+    {
+      "event_id": "cad95e42-8dbc-47b3-8b78-b0701a3b63fc",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:58:26.107725Z"
+    },
+    {
+      "event_id": "5fcf7f84-d32d-4f86-b790-0d2814040350",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:58:24.321014Z"
+    },
+    {
+      "event_id": "ccdb8504-ec46-4c06-aad1-3b985e272477",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:51:50.344965Z"
+    },
+    {
+      "event_id": "bae023db-97cb-435c-8860-097f1bad5470",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:51:50.250981Z"
+    },
+    {
+      "event_id": "b3c4262e-c9da-452e-b6bf-6681dde31fe1",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:49:41.042692Z"
+    },
+    {
+      "event_id": "15cf93a1-1725-4746-8edb-73b2535e2c81",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:43:26.278026Z"
+    },
+    {
+      "event_id": "28964557-1e86-4de4-9f5a-156af1f9b32a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:43:26.235809Z"
+    },
+    {
+      "event_id": "35c1e4fc-9ce5-46dd-a045-aa59fb4c1c62",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:35:41.063609Z"
+    },
+    {
+      "event_id": "44921edc-4881-4ee8-97b2-1878dafe8ed6",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:35:37.233159Z"
+    },
+    {
+      "event_id": "df4604f8-321d-4370-8b48-8b12a44b5b9b",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T06:35:35.848937Z"
+    },
+    {
+      "event_id": "7e50ccfb-9ebf-4144-b7f8-3a1fdf03d17a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:26:19.629679Z"
+    },
+    {
+      "event_id": "37a06920-ab08-4818-85a9-4c47cfc7275f",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T06:26:16.164280Z"
+    },
+    {
+      "event_id": "88d29c45-b62a-462d-8152-1669d0888a83",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:26:06.244101Z"
+    },
+    {
+      "event_id": "ab9058f6-fcea-4c41-98c5-0e4b1e365c53",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:26:01.143515Z"
+    },
+    {
+      "event_id": "4db44071-e902-4679-9666-e7304e13e1a6",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:25:59.255559Z"
+    },
+    {
+      "event_id": "43c4f090-acc9-492d-be26-d9f3c7a7fc32",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:25:03.307546Z"
+    },
+    {
+      "event_id": "9874964c-43b4-4acf-bdf4-9e6a11582a74",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T06:25:00.450973Z"
+    },
+    {
+      "event_id": "89a74ddd-5d9a-48a0-9539-bdb0d02d4eda",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T06:24:58.191109Z"
+    },
+    {
+      "event_id": "222b70ff-0fa7-4e96-af4e-32dd35346487",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Science",
+      "description": "Browsing Science chapters",
+      "subject": "Science",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_science",
+        "chapter_count": 15
+      },
+      "timestamp": "2026-03-23T06:11:06.985342Z"
+    },
+    {
+      "event_id": "8c22906e-25c3-4efe-aa10-d23f2feae3a7",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened English Literature",
+      "description": "Browsing English Literature chapters",
+      "subject": "English Literature",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_eng",
+        "chapter_count": 7
+      },
+      "timestamp": "2026-03-23T06:10:58.371299Z"
+    },
+    {
+      "event_id": "d694f67a-1f6f-4219-957f-5a06b6c2eb77",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Unit",
+      "description": "Opened Unit from Std_8_eng",
+      "subject": "Std_8_eng",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_eng",
+        "pdf_url": "/uploads/Std_8_eng/UNIT.pdf"
+      },
+      "timestamp": "2026-03-23T06:10:49.804974Z"
+    },
+    {
+      "event_id": "5842e29a-2aff-45f4-a8a3-9a2fb8caef4a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened English Literature",
+      "description": "Browsing English Literature chapters",
+      "subject": "English Literature",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_eng",
+        "chapter_count": 7
+      },
+      "timestamp": "2026-03-23T06:10:47.259693Z"
+    },
+    {
+      "event_id": "5a7b62a5-0df3-4861-83ae-fbd70c515e48",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-20T07:40:14.534443Z"
+    },
+    {
+      "event_id": "5b7cab06-19ff-454b-8182-c4ddb2d57da4",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-20T07:40:10.498148Z"
+    },
+    {
+      "event_id": "a4479f12-e8f8-49ce-940e-c4530ce5a0ca",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-20T07:40:07.833519Z"
+    },
+    {
+      "event_id": "c3522272-3e24-445b-9c0d-319fd38f70a1",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "41647fe0-1b2e-4800-a1d9-9684d7bb595b_20260315_114919.jpg"
+      },
+      "timestamp": "2026-03-15T06:19:19.445111Z"
+    },
+    {
+      "event_id": "7ee3b8fd-f267-4d8d-81c8-58bb395a3cdc",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-07T15:15:44.401777Z"
+    },
+    {
+      "event_id": "cfea67bd-58d5-404d-9260-2a66fb459158",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened English Literature",
+      "description": "Browsing English Literature chapters",
+      "subject": "English Literature",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_eng",
+        "chapter_count": 7
+      },
+      "timestamp": "2026-03-07T15:15:39.303225Z"
+    },
+    {
+      "event_id": "b8577c4a-f2ee-4aff-ae21-cea7081675cc",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Hindi",
+      "description": "Browsing Hindi chapters",
+      "subject": "Hindi",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_hindi",
+        "chapter_count": 11
+      },
+      "timestamp": "2026-03-07T15:15:35.628241Z"
+    },
+    {
+      "event_id": "efa945bb-d34f-44a4-aac0-0b03b97011dd",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Science",
+      "description": "Browsing Science chapters",
+      "subject": "Science",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_science",
+        "chapter_count": 15
+      },
+      "timestamp": "2026-03-07T15:15:29.728283Z"
+    },
+    {
+      "event_id": "39d0ae1b-edd6-4b8b-a67a-abaebcfc7dbe",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Fine Arts",
+      "description": "Browsing Fine Arts chapters",
+      "subject": "Fine Arts",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_arts",
+        "chapter_count": 19
+      },
+      "timestamp": "2026-03-07T15:15:17.881370Z"
+    },
+    {
+      "event_id": "fc89938d-cd21-48b8-a9dd-da48f28eb7f0",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Social Science",
+      "description": "Browsing Social Science chapters",
+      "subject": "Social Science",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_social",
+        "chapter_count": 9
+      },
+      "timestamp": "2026-03-07T15:15:07.492293Z"
+    },
+    {
+      "event_id": "456d3691-7668-43e8-9142-f46f7a13c43a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Sanskrit",
+      "description": "Browsing Sanskrit chapters",
+      "subject": "Sanskrit",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_sanskrit",
+        "chapter_count": 18
+      },
+      "timestamp": "2026-03-07T15:14:59.650747Z"
+    },
+    {
+      "event_id": "9f5d5f5f-01ca-4f1b-b15a-e5c3aa363fe9",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Physical Education",
+      "description": "Browsing Physical Education chapters",
+      "subject": "Physical Education",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_physed",
+        "chapter_count": 9
+      },
+      "timestamp": "2026-03-07T15:14:28.524747Z"
+    },
+    {
+      "event_id": "2f81ca29-bdcd-430d-98d0-141ffbf78ea8",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Vocational Education",
+      "description": "Browsing Vocational Education chapters",
+      "subject": "Vocational Education",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_voced",
+        "chapter_count": 9
+      },
+      "timestamp": "2026-03-07T15:14:24.408234Z"
+    },
+    {
+      "event_id": "da419152-6967-4fea-9457-6909413b41ad",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Physical Education",
+      "description": "Browsing Physical Education chapters",
+      "subject": "Physical Education",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_physed",
+        "chapter_count": 9
+      },
+      "timestamp": "2026-03-07T15:14:11.364098Z"
+    },
+    {
+      "event_id": "8b4254e7-0c32-45aa-95a7-b62bdc64030b",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Fine Arts",
+      "description": "Browsing Fine Arts chapters",
+      "subject": "Fine Arts",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_arts",
+        "chapter_count": 19
+      },
+      "timestamp": "2026-03-07T15:14:04.109084Z"
+    },
+    {
+      "event_id": "a5024e44-f8e1-4535-a555-000fa4c29c4a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Fine Arts",
+      "description": "Browsing Fine Arts chapters",
+      "subject": "Fine Arts",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_arts",
+        "chapter_count": 19
+      },
+      "timestamp": "2026-03-07T15:13:51.249486Z"
+    },
+    {
+      "event_id": "a90918cd-d484-4079-8732-fcd36b9a5da2",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-07T15:13:45.211273Z"
+    },
+    {
+      "event_id": "4876f95e-571c-4ba7-8d37-ccdf24615ffd",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened English Literature",
+      "description": "Browsing English Literature chapters",
+      "subject": "English Literature",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_eng",
+        "chapter_count": 7
+      },
+      "timestamp": "2026-03-07T15:13:39.456040Z"
+    },
+    {
+      "event_id": "13ac21f2-e85f-4507-b572-db1453c5f8de",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-07T10:13:40.914705Z"
+    },
+    {
+      "event_id": "259a23bf-bc1e-4a0f-a051-6c39db6afab9",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-07T10:13:33.233247Z"
+    },
+    {
+      "event_id": "215374c1-c70f-4525-9e40-1fae3f910e25",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-07T10:13:31.994745Z"
+    },
+    {
+      "event_id": "2f34ec30-64d6-4e69-b4ba-d54677dedbcb",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "41647fe0-1b2e-4800-a1d9-9684d7bb595b_20260307_154147.jpg"
+      },
+      "timestamp": "2026-03-07T10:11:47.342287Z"
+    },
+    {
+      "event_id": "b51eb75d-064f-4ad7-b6a9-ded5c51f5d49",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-05T12:11:25.957819Z"
+    },
+    {
+      "event_id": "2d9d38b0-04ee-4335-9d76-7ac936f9f83a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-05T12:04:51.073421Z"
+    },
+    {
+      "event_id": "79113b22-17d5-4bbb-a34b-05b9257cbd87",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-05T11:36:29.484646Z"
+    },
+    {
+      "event_id": "58b323a1-c8ff-4271-9379-8708b1d4c820",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-05T11:36:27.901126Z"
+    },
+    {
+      "event_id": "61bc076f-d444-484b-a6ee-125555dedaa4",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-05T11:36:26.534389Z"
+    },
+    {
+      "event_id": "cf8f968f-8936-463b-968d-58303a37f492",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-05T05:16:48.808869Z"
+    },
+    {
+      "event_id": "d73eb17d-8351-4342-97e2-bb612c1c98ce",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 6",
+      "description": "Opened Chapter 6 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "6",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 6.pdf"
+      },
+      "timestamp": "2026-03-05T05:16:40.714799Z"
+    },
+    {
+      "event_id": "37b253c5-f7b5-4e22-bf6b-91a565acd86e",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-05T05:16:38.299631Z"
+    },
+    {
+      "event_id": "a2cc7530-e464-41d9-8340-b7cff8d18501",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-05T05:16:36.447052Z"
+    },
+    {
+      "event_id": "1709410b-8ef3-4ce9-ad94-51168d2d8779",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-05T05:16:33.684065Z"
+    },
+    {
+      "event_id": "b8a50f5b-03f7-4d7b-83c9-9830559ae1d3",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 7",
+      "description": "Opened Chapter 7 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "7",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 7.pdf"
+      },
+      "timestamp": "2026-03-05T05:16:31.829200Z"
+    },
+    {
+      "event_id": "57c4e6c0-5770-44fc-b52c-77f734ded869",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 4",
+      "description": "Opened Chapter 4 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "7",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 4.pdf"
+      },
+      "timestamp": "2026-03-05T05:16:31.778739Z"
+    },
+    {
+      "event_id": "877937f9-f21e-41a7-bcdf-e8d38f4f04bc",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 4",
+      "description": "Opened Chapter 4 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "4",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 4.pdf"
+      },
+      "timestamp": "2026-03-05T05:16:29.943319Z"
+    },
+    {
+      "event_id": "394e09c5-8396-49ea-9e9e-5f3ce2de77a8",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "4",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-05T05:16:29.880109Z"
+    },
+    {
+      "event_id": "86363e6f-d3af-4231-a58d-a8d8b5c50b6e",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-05T05:16:27.093444Z"
+    },
+    {
+      "event_id": "f0f6ad47-8434-4312-b6db-76ed5667a42a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-05T05:16:25.032857Z"
+    },
+    {
+      "event_id": "e88e4a45-90b2-4bc0-9d07-fab254c66c82",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened English Literature",
+      "description": "Browsing English Literature chapters",
+      "subject": "English Literature",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_eng",
+        "chapter_count": 7
+      },
+      "timestamp": "2026-03-03T14:25:49.420196Z"
+    },
+    {
+      "event_id": "97e1d62e-3eb5-4930-ae5f-79298528ea12",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Unit",
+      "description": "Opened Unit from Std_8_eng",
+      "subject": "Std_8_eng",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_eng",
+        "pdf_url": "/uploads/Std_8_eng/UNIT.pdf"
+      },
+      "timestamp": "2026-03-03T14:25:42.432486Z"
+    },
+    {
+      "event_id": "6e1778f2-5f77-4f48-8cac-6b159ebdcf3a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened English Literature",
+      "description": "Browsing English Literature chapters",
+      "subject": "English Literature",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_eng",
+        "chapter_count": 7
+      },
+      "timestamp": "2026-03-03T14:25:40.846390Z"
+    },
+    {
+      "event_id": "4159e8fc-fc10-4885-9030-bd8a226b6713",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-03T14:25:37.506561Z"
+    },
+    {
+      "event_id": "c6c8d14e-ad22-4e61-ab54-30ea9d974bbd",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 2",
+      "description": "Opened Chapter 2 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "2",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 2.pdf"
+      },
+      "timestamp": "2026-03-03T14:25:23.922050Z"
+    },
+    {
+      "event_id": "21431fc3-93d7-4235-9ed4-65e44b714beb",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "2",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-03T14:25:23.898432Z"
+    },
+    {
+      "event_id": "3f31c5b5-dd91-4e0c-b5c5-2af195c3e462",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-03T14:25:18.091114Z"
+    },
+    {
+      "event_id": "e3f87629-ab08-42b9-8883-d43ced3396af",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-03T14:25:16.865746Z"
+    },
+    {
+      "event_id": "77b284b8-7436-4e85-a0f3-5e29b598f185",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-03T14:08:51.119304Z"
+    },
+    {
+      "event_id": "a1cae453-a839-4476-a142-20a79dffd319",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-03T14:08:40.924455Z"
+    },
+    {
+      "event_id": "0d1c572c-29f3-4a91-802d-a897a6a9f5bc",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 3",
+      "description": "Opened Chapter 3 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 3.pdf"
+      },
+      "timestamp": "2026-03-03T14:08:40.894848Z"
+    },
+    {
+      "event_id": "f568ffa5-cde4-472a-8858-ca4adb7add2e",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 3",
+      "description": "Opened Chapter 3 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "3",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 3.pdf"
+      },
+      "timestamp": "2026-03-03T14:08:39.458140Z"
+    },
+    {
+      "event_id": "afd774ae-f86f-4593-8dec-1807a1ccd666",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-03T14:08:36.633123Z"
+    },
+    {
+      "event_id": "e2080fcc-ac4b-48c5-9907-9afd7dab5993",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 4",
+      "description": "Opened Chapter 4 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "4",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 4.pdf"
+      },
+      "timestamp": "2026-03-03T14:08:29.945139Z"
+    },
+    {
+      "event_id": "b4b268d0-a67f-4a33-889e-7d8b0d2f8261",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 2",
+      "description": "Opened Chapter 2 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "4",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 2.pdf"
+      },
+      "timestamp": "2026-03-03T14:08:29.914134Z"
+    },
+    {
+      "event_id": "d9eb483c-79ab-4d76-bb45-ee205083bb4a",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 2",
+      "description": "Opened Chapter 2 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "2",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 2.pdf"
+      },
+      "timestamp": "2026-03-03T14:08:25.225909Z"
+    },
+    {
+      "event_id": "2efd1569-c4f7-42ce-9693-86316da661d3",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-03T14:08:22.086297Z"
+    },
+    {
+      "event_id": "cdd2befe-66e6-4672-aa60-fa5b1439da9b",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 2",
+      "description": "Opened Chapter 2 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "2",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 2.pdf"
+      },
+      "timestamp": "2026-03-03T14:08:15.887369Z"
+    },
+    {
+      "event_id": "f9a9cad4-816d-4fbc-98e6-38ef438b37c1",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "2",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-03T14:08:15.853901Z"
+    },
+    {
+      "event_id": "ecd5175f-0cdf-4b7e-865f-0ba3658ee0d2",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-03T14:08:11.054164Z"
+    },
+    {
+      "event_id": "6acba614-2f7c-4044-bd84-6367014d4010",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-03T14:08:09.328671Z"
+    },
+    {
+      "event_id": "311393d7-9193-4ff5-80ec-2e79a2b83c2e",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-02T13:10:37.124251Z"
+    },
+    {
+      "event_id": "3191701e-7b4b-4a77-8a7e-966a4db8b352",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-02T12:42:22.932199Z"
+    },
+    {
+      "event_id": "026fa67c-e528-4946-8326-e9dcb146247e",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Fine Arts",
+      "description": "Browsing Fine Arts chapters",
+      "subject": "Fine Arts",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_arts",
+        "chapter_count": 19
+      },
+      "timestamp": "2026-03-02T12:42:02.639156Z"
+    },
+    {
+      "event_id": "161c8cb3-1ff3-440e-b60c-09f3306dfd8d",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened English Literature",
+      "description": "Browsing English Literature chapters",
+      "subject": "English Literature",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_eng",
+        "chapter_count": 7
+      },
+      "timestamp": "2026-03-02T12:41:44.846129Z"
+    },
+    {
+      "event_id": "c7895156-f95f-427c-b3d4-7c0134a5a393",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "41647fe0-1b2e-4800-a1d9-9684d7bb595b_20260302_175544.jpg"
+      },
+      "timestamp": "2026-03-02T12:25:44.044199Z"
+    },
+    {
+      "event_id": "5b4e5c7a-3eb1-46ca-82a1-39978ddb40a0",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "41647fe0-1b2e-4800-a1d9-9684d7bb595b_20260302_174013.jpg"
+      },
+      "timestamp": "2026-03-02T12:10:13.486865Z"
+    },
+    {
+      "event_id": "39a7c6f4-062a-42f1-ab7c-cef32707762e",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "41647fe0-1b2e-4800-a1d9-9684d7bb595b_20260302_173958.jpg"
+      },
+      "timestamp": "2026-03-02T12:09:58.958109Z"
+    },
+    {
+      "event_id": "82322627-fce4-4c82-90ee-6dd519a0ff78",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "41647fe0-1b2e-4800-a1d9-9684d7bb595b_20260302_172805.jpg"
+      },
+      "timestamp": "2026-03-02T11:58:05.656289Z"
+    },
+    {
+      "event_id": "8be9c0c4-d0f7-4218-927a-12a7cb7fb6b1",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "41647fe0-1b2e-4800-a1d9-9684d7bb595b_20260302_172741.jpg"
+      },
+      "timestamp": "2026-03-02T11:57:41.471026Z"
+    },
+    {
+      "event_id": "d51fb6bf-16b8-40d0-9266-80aa1823446b",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "41647fe0-1b2e-4800-a1d9-9684d7bb595b_20260302_170509.jpg"
+      },
+      "timestamp": "2026-03-02T11:35:09.847756Z"
+    },
+    {
+      "event_id": "86cf59dd-31c5-4d3a-b788-463debdc4166",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "41647fe0-1b2e-4800-a1d9-9684d7bb595b_20260302_170501.jpg"
+      },
+      "timestamp": "2026-03-02T11:35:01.267994Z"
+    },
+    {
+      "event_id": "1b386ddb-6fb4-4a2d-b451-ad477aaf7c15",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "level_up",
+      "title": "Level 2 Reached!",
+      "description": "Congratulations on reaching Level 2!",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {},
+      "timestamp": "2026-03-02T10:00:12.539896Z"
+    },
+    {
+      "event_id": "e1f5e2c8-5a11-4a29-bb14-27db31bd9138",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_updated",
+      "title": "Profile Updated",
+      "description": "Updated personal information",
+      "subject": null,
+      "xp_earned": 5,
+      "impact_score": 1,
+      "metadata": {
+        "fields_updated": [
+          "student_name",
+          "gender",
+          "age",
+          "dob",
+          "mobile",
+          "email",
+          "address",
+          "father_name",
+          "mother_name",
+          "parent_contact",
+          "parent_email",
+          "emergency_contact",
+          "parent_occupation",
+          "guardian_info",
+          "prev_term_grade",
+          "overall_percentage",
+          "attendance_percentage",
+          "best_subject",
+          "weak_subject",
+          "total_exams",
+          "homework_completion",
+          "sports",
+          "arts",
+          "music",
+          "clubs",
+          "achievements",
+          "awards",
+          "leadership_role",
+          "community_service",
+          "updated_at"
+        ]
+      },
+      "timestamp": "2026-03-02T10:00:12.537510Z"
+    },
+    {
+      "event_id": "caa480a3-f2cf-43b0-871b-510dc0125a61",
+      "user_id": "41647fe0-1b2e-4800-a1d9-9684d7bb595b",
+      "event_type": "profile_updated",
+      "title": "Profile Updated",
+      "description": "Updated personal information",
+      "subject": null,
+      "xp_earned": 5,
+      "impact_score": 1,
+      "metadata": {
+        "fields_updated": [
+          "student_name",
+          "gender",
+          "age",
+          "dob",
+          "mobile",
+          "email",
+          "address",
+          "father_name",
+          "mother_name",
+          "parent_contact",
+          "parent_email",
+          "emergency_contact",
+          "parent_occupation",
+          "guardian_info",
+          "prev_term_grade",
+          "overall_percentage",
+          "attendance_percentage",
+          "best_subject",
+          "weak_subject",
+          "total_exams",
+          "homework_completion",
+          "sports",
+          "arts",
+          "music",
+          "clubs",
+          "achievements",
+          "awards",
+          "leadership_role",
+          "community_service",
+          "updated_at"
+        ]
+      },
+      "timestamp": "2026-03-02T09:58:52.147424Z"
+    }
+  ],
+  "d2a595ea-e7e6-4441-90ee-bd759120bb99": [
+    {
+      "event_id": "867ca10e-9cc6-4230-aeb4-3dc851d8171e",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T15:26:12.231299Z"
+    },
+    {
+      "event_id": "43aa54da-ff77-49b8-b9d3-e47ee3cd62bc",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T15:24:04.892768Z"
+    },
+    {
+      "event_id": "f5ed8f7d-51a3-45f5-974e-d12e6ca871dd",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T14:47:59.571037Z"
+    },
+    {
+      "event_id": "30dbba12-72c4-4d7d-8c60-7cacf2461e2c",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-24T14:47:46.080087Z"
+    },
+    {
+      "event_id": "3901379d-b470-4397-81d6-318a1a40dc1d",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-24T14:47:46.052557Z"
+    },
+    {
+      "event_id": "ca3b7a6b-c498-49a2-9bf0-60d0855eac0e",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-24T14:44:49.698254Z"
+    },
+    {
+      "event_id": "3af0722e-c2d8-41cd-bf43-7242f5bd3e76",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T14:44:41.674771Z"
+    },
+    {
+      "event_id": "703fd74a-6f53-4dc9-ba94-8d3c966e5c87",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T14:44:41.620206Z"
+    },
+    {
+      "event_id": "bdf8bc59-da34-427f-850e-47804a319149",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T14:44:33.047362Z"
+    },
+    {
+      "event_id": "4ef49686-4ae3-483b-9463-b8681bdcdc5a",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T14:44:33.007634Z"
+    },
+    {
+      "event_id": "178c6de7-96d5-41bf-98b4-2d6f9bf9f1a0",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T14:43:14.903303Z"
+    },
+    {
+      "event_id": "f59782f7-3cc9-4299-b77d-5492e6002e2c",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Sanskrit",
+      "description": "Browsing Sanskrit chapters",
+      "subject": "Sanskrit",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_sanskrit",
+        "chapter_count": 18
+      },
+      "timestamp": "2026-03-24T14:42:30.528612Z"
+    },
+    {
+      "event_id": "664aa234-0555-4dbe-9ad3-f40bdb81fcf4",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 17",
+      "description": "Opened Chapter 17 from Sanskrit",
+      "subject": "Sanskrit",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "17",
+        "subject_slug": "Std_8_sanskrit",
+        "pdf_url": "/uploads/Std_8_sanskrit/Chapter 17.pdf"
+      },
+      "timestamp": "2026-03-24T14:41:54.986848Z"
+    },
+    {
+      "event_id": "26122a93-6f03-459c-9cf1-4200a4e4955d",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Sanskrit",
+      "description": "Browsing Sanskrit chapters",
+      "subject": "Sanskrit",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_sanskrit",
+        "chapter_count": 18
+      },
+      "timestamp": "2026-03-24T14:41:41.873036Z"
+    },
+    {
+      "event_id": "7bea9aea-35c2-4ebc-82cc-861bfa610bc6",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened English Literature",
+      "description": "Browsing English Literature chapters",
+      "subject": "English Literature",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_eng",
+        "chapter_count": 7
+      },
+      "timestamp": "2026-03-24T14:41:22.027675Z"
+    },
+    {
+      "event_id": "23454a0e-88a4-4782-99dd-3ab27eb910f7",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T14:38:26.070924Z"
+    },
+    {
+      "event_id": "5ae6a211-7bc1-4977-855c-4672ff79b93b",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T14:28:12.456191Z"
+    },
+    {
+      "event_id": "050bfada-b049-4fa8-ab98-25213913c347",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T14:10:14.326909Z"
+    },
+    {
+      "event_id": "845fe699-4ea0-48e8-ba2d-9edfc12ab0db",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T13:02:48.547168Z"
+    },
+    {
+      "event_id": "1c7e78ec-cfbc-4176-95e8-8f93dac53e0d",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-24T13:02:43.831676Z"
+    },
+    {
+      "event_id": "c661a1e0-f6c8-45bf-bacd-3cd2505c7fb6",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T13:02:41.488631Z"
+    },
+    {
+      "event_id": "c333b6f1-2b0e-4cff-b475-8aedd39701b9",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-24T13:02:18.639313Z"
+    },
+    {
+      "event_id": "962d84cc-3d0a-4386-8b26-f0bffa59612e",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T13:02:16.572119Z"
+    },
+    {
+      "event_id": "307b0c4e-5b08-4fb4-8fb6-4c5c2faf42ff",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-24T13:02:12.307961Z"
+    },
+    {
+      "event_id": "9688068c-fdbe-4aba-81a5-62857702fe3d",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-24T13:02:10.009830Z"
+    },
+    {
+      "event_id": "6c67f152-ed1e-4758-988c-709e53940624",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T09:20:38.105611Z"
+    },
+    {
+      "event_id": "63722751-4fe3-4bbc-98f5-c24bd61dbeae",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 5",
+      "description": "Opened Chapter 5 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "5",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 5.pdf"
+      },
+      "timestamp": "2026-03-23T09:20:32.075885Z"
+    },
+    {
+      "event_id": "96e2d327-4139-4067-8cb6-74074a375f70",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T09:20:29.836871Z"
+    },
+    {
+      "event_id": "d1da4b70-647d-4e3c-9ea5-496655ae6eb2",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T09:20:20.162465Z"
+    },
+    {
+      "event_id": "40dcc337-0a04-4ffc-80a8-6db6c7da131c",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T09:20:02.741231Z"
+    },
+    {
+      "event_id": "2b636ed0-9263-4263-a4c9-c0d72c48663f",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "d2a595ea-e7e6-4441-90ee-bd759120bb99_20260323_144610.jpg"
+      },
+      "timestamp": "2026-03-23T09:16:10.926453Z"
+    },
+    {
+      "event_id": "fb8fcff8-6e65-4f70-a0ca-b4631cbddb23",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "profile_updated",
+      "title": "Profile Updated",
+      "description": "Updated personal information",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "fields_updated": [
+          "student_name",
+          "gender",
+          "age",
+          "dob",
+          "mobile",
+          "email",
+          "address",
+          "father_name",
+          "mother_name",
+          "parent_contact",
+          "parent_email",
+          "emergency_contact",
+          "parent_occupation",
+          "guardian_info",
+          "prev_term_grade",
+          "overall_percentage",
+          "attendance_percentage",
+          "best_subject",
+          "weak_subject",
+          "total_exams",
+          "homework_completion",
+          "sports",
+          "arts",
+          "music",
+          "clubs",
+          "achievements",
+          "awards",
+          "leadership_role",
+          "community_service",
+          "updated_at"
+        ]
+      },
+      "timestamp": "2026-03-23T09:15:23.244657Z"
+    },
+    {
+      "event_id": "059a7f38-bccd-4816-8477-111e38d7129f",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T09:03:08.140358Z"
+    },
+    {
+      "event_id": "06b21a39-097a-425c-9b7b-45c5d2bb3e1e",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T09:03:04.775213Z"
+    },
+    {
+      "event_id": "d24c65fd-a649-4c19-b37c-141d510212d5",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T08:57:56.124447Z"
+    },
+    {
+      "event_id": "014846b7-05da-40a6-8057-4989b01aed83",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T08:57:53.124361Z"
+    },
+    {
+      "event_id": "8f90d255-78f4-4217-a903-65ef1950249d",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T08:57:51.748401Z"
+    },
+    {
+      "event_id": "c5b8f8a8-929b-4b03-90fa-d3be368f0ede",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T08:50:49.921397Z"
+    },
+    {
+      "event_id": "46d094b1-4b76-4c3a-8d70-833903151f4c",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T08:50:42.532622Z"
+    },
+    {
+      "event_id": "8e1e1021-5c7c-4460-ae5e-d53b4395896a",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-03-23T08:50:41.032569Z"
+    },
+    {
+      "event_id": "76bb4c91-1ad4-4a90-a4de-c45d3bd80814",
+      "user_id": "d2a595ea-e7e6-4441-90ee-bd759120bb99",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "d2a595ea-e7e6-4441-90ee-bd759120bb99_20260321_142328.jpg"
+      },
+      "timestamp": "2026-03-21T08:53:28.768900Z"
+    }
+  ],
+  "e9e02b71-6931-49c1-9cf1-d020a952f339": [
+    {
+      "event_id": "702ebdc3-760e-45f3-994f-5462ac0d58b5",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:51:49.694811Z"
+    },
+    {
+      "event_id": "f1b0e7fc-2db9-4948-9b87-c87456b623b8",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T06:51:49.661961Z"
+    },
+    {
+      "event_id": "f7eb005f-fb20-4ed1-9ab2-5ad5fee3bc84",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:51:49.623991Z"
+    },
+    {
+      "event_id": "ebf24f4a-1dd6-47bb-aec7-63accdb101f1",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T06:51:49.602619Z"
+    },
+    {
+      "event_id": "1dc1f033-6a61-434b-b701-e02aa05954a5",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:50:11.975825Z"
+    },
+    {
+      "event_id": "30b5e91c-bafb-4b6e-9b20-8845f57f87ac",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:49:40.272777Z"
+    },
+    {
+      "event_id": "73464c7c-7687-49b1-8f12-b99cc55d2d1c",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T06:49:40.251105Z"
+    },
+    {
+      "event_id": "eb10477b-258f-48da-a6b8-a5526f0b3cf6",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T06:47:47.124696Z"
+    },
+    {
+      "event_id": "f80e2231-27af-4f29-986a-d55e96f8746c",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:47:47.077494Z"
+    },
+    {
+      "event_id": "a4056491-39a5-4d3d-bb08-cf4802e2b247",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:46:34.623200Z"
+    },
+    {
+      "event_id": "d51972aa-bf48-4393-91e3-44d82531be92",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:43:54.248004Z"
+    },
+    {
+      "event_id": "0c70a9fd-55f0-41f2-aab1-35404b5e79a5",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:43:26.081378Z"
+    },
+    {
+      "event_id": "d59bbdef-7409-4c04-bc8e-a50064823729",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:43:26.042748Z"
+    },
+    {
+      "event_id": "87ab526f-aa2e-4743-b9b2-6a95f7bca9ed",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:43:26.017573Z"
+    },
+    {
+      "event_id": "d464abf4-721d-4ca6-a521-ebe766ac6e7f",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:43:25.993425Z"
+    },
+    {
+      "event_id": "7c35b1f8-4ea2-4b5e-af40-d6ba19dc8ee3",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:41:43.015709Z"
+    },
+    {
+      "event_id": "051fa450-3925-4594-8a03-13cc675c0109",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Chapter 1",
+      "description": "Opened Chapter 1 from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "1",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Chapter 1.pdf"
+      },
+      "timestamp": "2026-03-23T06:41:16.306939Z"
+    },
+    {
+      "event_id": "1b5c016f-eb31-4f67-aa72-eae3d96e7c84",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:40:40.137152Z"
+    },
+    {
+      "event_id": "077906be-be36-4301-afd1-2d8687948f1d",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:40:21.058949Z"
+    },
+    {
+      "event_id": "e817d14a-87f2-43ab-a4ca-5a318743abe4",
+      "user_id": "e9e02b71-6931-49c1-9cf1-d020a952f339",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-03-23T06:39:31.320861Z"
+    }
+  ],
+  "d2947123-157e-4677-8b4a-7a537f3c7218": [
+    {
+      "event_id": "fb197df2-fb6d-4ba2-85c2-b7ac2231f39b",
+      "user_id": "d2947123-157e-4677-8b4a-7a537f3c7218",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-04-01T13:46:56.669083Z"
+    },
+    {
+      "event_id": "e30e62fc-4310-49fc-a4c5-f5f8ccdb970d",
+      "user_id": "d2947123-157e-4677-8b4a-7a537f3c7218",
+      "event_type": "PDF_VIEWED",
+      "title": "Reading: Index",
+      "description": "Opened Index from Mathematics",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "chapter_id": "0",
+        "subject_slug": "Std_8_math",
+        "pdf_url": "/uploads/Std_8_math/Index.pdf"
+      },
+      "timestamp": "2026-04-01T13:46:45.840115Z"
+    },
+    {
+      "event_id": "f00ca27b-99c2-48eb-b5d9-4256e94b193b",
+      "user_id": "d2947123-157e-4677-8b4a-7a537f3c7218",
+      "event_type": "BOOK_OPENED",
+      "title": "Opened Mathematics",
+      "description": "Browsing Mathematics chapters",
+      "subject": "Mathematics",
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "subject_slug": "Std_8_math",
+        "chapter_count": 8
+      },
+      "timestamp": "2026-04-01T13:46:44.008926Z"
+    },
+    {
+      "event_id": "b90aa3e9-61d2-4faa-b7a3-7742a04516e5",
+      "user_id": "d2947123-157e-4677-8b4a-7a537f3c7218",
+      "event_type": "profile_photo_updated",
+      "title": "Profile Photo Updated",
+      "description": "Uploaded new profile photo",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "filename": "d2947123-157e-4677-8b4a-7a537f3c7218_20260401_191457.jpg"
+      },
+      "timestamp": "2026-04-01T13:44:57.991079Z"
+    },
+    {
+      "event_id": "57f96d8c-9ead-45a2-8da8-ffb324b441d7",
+      "user_id": "d2947123-157e-4677-8b4a-7a537f3c7218",
+      "event_type": "profile_updated",
+      "title": "Profile Updated",
+      "description": "Updated personal information",
+      "subject": null,
+      "xp_earned": 0,
+      "impact_score": 1,
+      "metadata": {
+        "fields_updated": [
+          "student_name",
+          "gender",
+          "age",
+          "dob",
+          "mobile",
+          "email",
+          "address",
+          "father_name",
+          "mother_name",
+          "parent_contact",
+          "parent_email",
+          "emergency_contact",
+          "parent_occupation",
+          "guardian_info",
+          "prev_term_grade",
+          "overall_percentage",
+          "attendance_percentage",
+          "best_subject",
+          "weak_subject",
+          "total_exams",
+          "homework_completion",
+          "sports",
+          "arts",
+          "music",
+          "clubs",
+          "achievements",
+          "awards",
+          "leadership_role",
+          "community_service",
+          "updated_at"
+        ]
+      },
+      "timestamp": "2026-04-01T13:44:35.188167Z"
+    }
+  ]
+}

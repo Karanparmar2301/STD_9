@@ -1,0 +1,116 @@
+/* =========================================================
+   INFO CARD COMPONENT - Reusable Personal Information Card
+   Premium EdTech SaaS Design with Framer Motion Animation
+   ========================================================= */
+
+.info-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem; /* rounded-2xl */
+    border: 1px solid #e5e7eb;
+    border-left: 4px solid #3b82f6;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Soft shadow */
+    transition: all 0.3s ease; /* Smooth transition */
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 110px;
+    cursor: default;
+}
+
+/* Hover Lift Effect - Matches Master Prompt Requirements */
+.info-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Lifted shadow */
+    border-left-width: 5px;
+}
+
+/* ========== ACCENT COLOR VARIATIONS ========== */
+.info-card[data-index="0"] {
+    border-left-color: #3b82f6; /* Blue - Student Name */
+}
+
+.info-card[data-index="1"] {
+    border-left-color: #8b5cf6; /* Purple - Student ID */
+}
+
+.info-card[data-index="2"] {
+    border-left-color: #ec4899; /* Pink - Class */
+}
+
+.info-card[data-index="3"] {
+    border-left-color: #10b981; /* Green - Father */
+}
+
+.info-card[data-index="4"] {
+    border-left-color: #f59e0b; /* Orange - Mother */
+}
+
+.info-card[data-index="5"] {
+    border-left-color: #06b6d4; /* Cyan - Mobile */
+}
+
+.info-card[data-index="6"] {
+    border-left-color: #6366f1; /* Indigo - Email */
+}
+
+.info-card[data-index="7"] {
+    border-left-color: #14b8a6; /* Teal - Address */
+}
+
+/* Card Label */
+.info-card-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    display: block;
+}
+
+/* Card Value */
+.info-card-value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablet */
+@media (max-width: 1023px) {
+    .info-card {
+        padding: 1.25rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .info-card {
+        padding: 1.25rem;
+        min-height: 100px;
+    }
+
+    .info-card-value {
+        font-size: 1rem;
+    }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 479px) {
+    .info-card {
+        padding: 1rem;
+        min-height: 90px;
+    }
+
+    .info-card-label {
+        font-size: 0.688rem;
+    }
+
+    .info-card-value {
+        font-size: 0.938rem;
+    }
+}

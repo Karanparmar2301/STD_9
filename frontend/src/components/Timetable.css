@@ -1,0 +1,177 @@
+.timetable-section {
+    padding: 4px 0 24px;
+}
+
+/* ── Page Header ── */
+.tt-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.tt-page-header-left { display: flex; flex-direction: column; gap: 4px; }
+
+.tt-page-title {
+    font-size: 24px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tt-title-icon {
+    -webkit-text-fill-color: initial;
+    font-size: 26px;
+}
+
+.tt-page-subtitle {
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* ── Action Buttons ── */
+.tt-page-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.tt-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tt-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.tt-action-btn--primary {
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(67, 97, 238, 0.35);
+}
+
+.tt-action-btn--secondary {
+    background: #f0f2ff;
+    color: #3a0ca3;
+    border: 1.5px solid #dce3ff;
+}
+
+/* ── Legend ── */
+.tt-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    border: 1px solid #e8ecff;
+    backdrop-filter: blur(8px);
+}
+
+.tt-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #444;
+}
+
+.tt-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+/* ── Error State ── */
+.tt-error {
+    background: #fdecea;
+    border: 1px solid #f44336;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    color: #c62828;
+}
+
+.tt-error button {
+    margin-top: 10px;
+    padding: 8px 20px;
+    border-radius: 8px;
+    background: #f44336;
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ── Print Media ── */
+@media print {
+    /* Hide all dashboard chrome */
+    .tt-page-actions   { display: none !important; }
+    .tt-legend         { display: none !important; }
+    .next-class-widget { display: none !important; }
+
+    .timetable-section {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Compact page header — single line, minimal height */
+    .tt-page-header {
+        margin-bottom: 4px !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+    }
+
+    .tt-page-title {
+        background: none !important;
+        -webkit-text-fill-color: #3a0ca3 !important;
+        color: #3a0ca3 !important;
+        font-size: 13px !important;
+    }
+
+    .tt-title-icon {
+        font-size: 14px !important;
+    }
+
+    .tt-page-subtitle {
+        display: none !important;
+    }
+
+    /* Force no overflow or scroll on section container */
+    .timetable-section,
+    .timetable-section * {
+        overflow: visible !important;
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .tt-page-title { font-size: 20px; }
+    .tt-action-btn span { display: none; }
+    .tt-action-btn { padding: 10px 14px; }
+    .tt-legend { gap: 8px; padding: 10px 12px; }
+    .tt-legend-item { font-size: 11px; }
+}

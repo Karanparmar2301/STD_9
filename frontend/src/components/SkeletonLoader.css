@@ -1,0 +1,194 @@
+/* Skeleton Loader Styles */
+.skeleton-container {
+    width: 100%;
+}
+
+.skeleton-item {
+    margin-bottom: 20px;
+}
+
+.skeleton {
+    background: linear-gradient(90deg,
+            var(--gray-200) 0%,
+            var(--gray-100) 50%,
+            var(--gray-200) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Card Skeleton */
+.skeleton-card {
+    background: white;
+    padding: 24px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.skeleton-title {
+    height: 24px;
+    width: 60%;
+    margin-bottom: 16px;
+}
+
+.skeleton-text {
+    height: 16px;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.skeleton-text.short {
+    width: 70%;
+}
+
+.skeleton-button {
+    height: 40px;
+    width: 120px;
+    margin-top: 20px;
+}
+
+/* Stat Skeleton */
+.skeleton-stat {
+    background: white;
+    padding: 24px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.skeleton-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.skeleton-value {
+    height: 32px;
+    width: 80px;
+}
+
+.skeleton-label {
+    height: 14px;
+    width: 100px;
+}
+
+/* List Skeleton */
+.skeleton-list {
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.skeleton-list-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.skeleton-list-item:last-child {
+    border-bottom: none;
+}
+
+.skeleton-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.skeleton-list-content {
+    flex: 1;
+}
+
+/* Table Skeleton */
+.skeleton-table {
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.skeleton-table-header,
+.skeleton-table-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 12px 0;
+}
+
+.skeleton-table-header {
+    border-bottom: 2px solid var(--gray-200);
+    margin-bottom: 8px;
+}
+
+.skeleton-table-row {
+    border-bottom: 1px solid var(--gray-100);
+}
+
+/* Profile Skeleton */
+.skeleton-profile {
+    background: white;
+    padding: 32px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.skeleton-avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.skeleton-profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+    margin-top: 24px;
+}
+
+.skeleton-stat-box {
+    height: 80px;
+    border-radius: var(--radius-md);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .skeleton-card,
+    .skeleton-stat,
+    .skeleton-list,
+    .skeleton-table,
+    .skeleton-profile {
+        padding: 16px;
+    }
+
+    .skeleton-profile-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .skeleton-table-header,
+    .skeleton-table-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

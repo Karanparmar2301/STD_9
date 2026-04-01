@@ -1,0 +1,195 @@
+/* ═══════════════════════════════════════
+   AI INSIGHT CARD
+   ═══════════════════════════════════════ */
+
+.ai-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem 1.75rem 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    border: 1px solid #f1f5f9;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle gradient tint top-left */
+.ai-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 280px; height: 140px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+/* ── Loading skeleton ── */
+.ai-card--loading { gap: 14px; display: flex; flex-direction: column; }
+
+.ai-skeleton {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: ai-shimmer 1.5s infinite;
+    border-radius: 8px;
+}
+
+.ai-sk-header { height: 44px; width: 60%; }
+.ai-sk-line   { height: 14px; }
+.ai-sk-short  { width: 70%; }
+
+@keyframes ai-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ── Header ── */
+.ai-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.1rem;
+}
+
+.ai-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ai-brain-icon {
+    font-size: 2.25rem;
+    display: block;
+    line-height: 1;
+}
+
+.ai-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #111827;
+    -webkit-text-fill-color: #111827;
+    margin: 0 0 2px;
+}
+
+.ai-subtitle {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    -webkit-text-fill-color: #6b7280;
+    margin: 0;
+}
+
+.ai-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* Score ring */
+.ai-score-ring {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 3px solid var(--score-color, #6366f1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ai-score-num {
+    font-size: 1.0625rem;
+    font-weight: 800;
+    -webkit-text-fill-color: inherit;
+    line-height: 1;
+}
+
+.ai-score-label {
+    font-size: 0.6875rem;
+    color: #9ca3af;
+    -webkit-text-fill-color: #9ca3af;
+    line-height: 1;
+}
+
+/* Trend badge */
+.ai-trend-badge {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.ai-trend--up     { background: #dcfce7; color: #15803d; -webkit-text-fill-color: #15803d; }
+.ai-trend--stable { background: #fef3c7; color: #b45309; -webkit-text-fill-color: #b45309; }
+.ai-trend--down   { background: #fee2e2; color: #b91c1c; -webkit-text-fill-color: #b91c1c; }
+
+/* ── Summary ── */
+.ai-summary {
+    font-size: 0.9375rem;
+    color: #374151;
+    -webkit-text-fill-color: #374151;
+    line-height: 1.6;
+    margin: 0 0 1.1rem;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border-left: 3px solid #6366f1;
+}
+
+/* ── Rows ── */
+.ai-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin-bottom: 0.5rem;
+}
+
+.ai-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+}
+
+.ai-row-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 1px; }
+
+.ai-row-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9ca3af;
+    -webkit-text-fill-color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 2px;
+}
+
+.ai-row-value {
+    font-size: 0.875rem;
+    color: #374151;
+    -webkit-text-fill-color: #374151;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.ai-row--warn   { background: #fffbeb; border: 1px solid #fde68a; }
+.ai-row--blue   { background: #eff6ff; border: 1px solid #bfdbfe; }
+.ai-row--purple { background: #f5f3ff; border: 1px solid #ddd6fe; }
+.ai-row--gold   { background: #fffbeb; border: 1px solid #fde68a; }
+
+/* ── Refresh hint ── */
+.ai-refresh-hint {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    -webkit-text-fill-color: #9ca3af;
+    margin: 0;
+    text-align: center;
+    opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+    .ai-card { padding: 1.1rem 1.25rem; }
+    .ai-header { flex-wrap: wrap; }
+}

@@ -1,0 +1,257 @@
+/* ========== DRAWER BACKDROP ========== */
+.drawer-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+}
+
+/* ========== DRAWER CONTAINER ========== */
+.drawer-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========== DRAWER HEADER ========== */
+.drawer-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.drawer-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 0.25rem 0;
+}
+
+.drawer-subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+.drawer-close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 0.5rem;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.drawer-close-button:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+/* ========== DRAWER FORM ========== */
+.drawer-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.drawer-form-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.drawer-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.drawer-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.drawer-input,
+.drawer-textarea {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #111827;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.drawer-input:focus,
+.drawer-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.drawer-input:disabled {
+    background: #f3f4f6;
+    cursor: not-allowed;
+    color: #9ca3af;
+}
+
+.drawer-input.error,
+.drawer-textarea.error {
+    border-color: #ef4444;
+}
+
+.drawer-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.drawer-error {
+    font-size: 0.875rem;
+    color: #ef4444;
+}
+
+.drawer-hint {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.drawer-error-banner {
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+}
+
+/* ========== DRAWER FOOTER ========== */
+.drawer-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    gap: 1rem;
+    background: #f9fafb;
+}
+
+.drawer-button-cancel,
+.drawer-button-save {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.drawer-button-cancel {
+    background: white;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+}
+
+.drawer-button-cancel:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.drawer-button-save {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.drawer-button-save:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+}
+
+.drawer-button-save:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ========== LOADING SPINNER ========== */
+.drawer-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: drawer-spin 0.8s linear infinite;
+}
+
+@keyframes drawer-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========== SCROLLBAR STYLING ========== */
+.drawer-form-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.drawer-form-content::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+.drawer-form-content::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 12px;
+}
+
+.drawer-form-content::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .drawer-container {
+        max-width: 100%;
+    }
+
+    .drawer-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .drawer-form-content {
+        padding: 1.5rem;
+    }
+
+    .drawer-footer {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+    }
+
+    .drawer-button-cancel,
+    .drawer-button-save {
+        width: 100%;
+    }
+}

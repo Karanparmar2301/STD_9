@@ -1,0 +1,126 @@
+/* ── Subject Card — fixed size, no content-driven growth ── */
+.subject-card {
+    /* Fixed dimensions — locked, never grow, never shrink */
+    width: 100%;
+    height: 80px;
+    min-height: 80px;
+    max-height: 80px;
+    box-sizing: border-box;
+
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 10px 12px;
+
+    /* Appearance */
+    background: var(--card-bg);
+    border-left: 4px solid var(--card-border);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+
+    /* Font */
+    font-family: 'Inter', 'Poppins', 'Segoe UI', sans-serif;
+
+    /* Font smoothing */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.07);
+    transition: box-shadow 0.22s ease, transform 0.22s ease, filter 0.22s ease;
+}
+
+.subject-card:hover {
+    filter: brightness(1.03);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.11);
+}
+
+.subject-card--now {
+    border-left-width: 5px;
+    box-shadow: 0 0 0 2px var(--card-border), 0 4px 16px rgba(0, 0, 0, 0.15);
+    animation: nowGlow 2s ease-in-out infinite;
+}
+
+/* Upcoming next class — green top accent bar */
+.subject-card--next {
+    border-top: 3px solid #2f855a;
+    box-shadow: 0 -2px 0 0 #2f855a, 0 2px 10px rgba(47, 133, 90, 0.12);
+}
+
+@keyframes nowGlow {
+    0%, 100% { box-shadow: 0 0 0 2px var(--card-border), 0 4px 16px rgba(0,0,0,.15); }
+    50%       { box-shadow: 0 0 0 4px var(--card-border), 0 6px 24px rgba(0,0,0,.25); }
+}
+
+/* Subject name — primary, dominant, single line */
+.sc-subject {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--card-text);
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 38px;
+    box-sizing: border-box;
+    /* removed heavy text-shadow for cleaner white-dashboard look */
+    filter: brightness(0.88);
+}
+
+/* Teacher name — secondary, readable but subdued */
+.sc-teacher {
+    font-size: 17px;
+    color: var(--card-text);
+    opacity: 0.87;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.15px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 4px;
+    box-sizing: border-box;
+    filter: brightness(0.78);
+}
+
+/* NOW badge — absolutely positioned, zero layout impact */
+.now-badge {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    background: var(--card-border);
+    color: #fff;
+    font-size: 8.5px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.now-dot {
+    width: 5px;
+    height: 5px;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 50%;
+    animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(1.6); }
+}
