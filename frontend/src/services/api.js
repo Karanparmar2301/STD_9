@@ -1,10 +1,16 @@
 import axios from 'axios';
 
-// All requests go through the Vite proxy (both dev and prod)
-const API_BASE_URL = '/api';
+// Safely read the environment variable that Vite injects at build time
+const rawApiUrl = import.meta.env.VITE_API_URL;
+// Use the Vercel provided proxy URL if available, otherwise assume Vite proxy locally
+// Also remove any trailing slashes from the URL to prevent double slashes like "http://...//api"
+const BACKEND_URL = rawApiUrl ? rawApiUrl.replace(/\/+$/, '') : '';
 
-// Auth endpoints also go through the Vite proxy
-const AUTH_BASE_URL = '';
+// All requests go through the Vite proxy (both dev and prod) -> In prod, appending /api to BACKEND_URL
+const API_BASE_URL = BACKEND_URL ? `${BACKEND_URL}/api` : '/api';
+
+// Auth endpoints also go through the Vite proxy -> In prod, absolute URL to backend
+const AUTH_BASE_URL = BACKEND_URL;
 
 // Create axios instance
 const api = axios.create({
@@ -215,7 +221,7 @@ export const apiService = {
 
 // Create a separate axios instance for auth without interceptors affecting auth
 const authAxios = axios.create({
-    baseURL: '',
+    baseURL: AUTH_BASE_URL,
     headers: {
         'Content-Type': 'application/json'
     }
