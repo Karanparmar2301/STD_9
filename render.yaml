@@ -1,0 +1,44 @@
+services:
+  # ----------------------------------------
+  # 1. FastAPI Backend (Web Service)
+  # ----------------------------------------
+  - type: web
+    name: student-dashboard-backend
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_ALGORITHM
+        value: "HS256"
+      - key: CORS_ORIGINS
+        value: "https://student-dashboard-frontend.onrender.com" # We will update this later
+      # Add Groq API Key here later in Render Dashboard
+      - key: GROQ_API_KEY
+        sync: false 
+        
+    # We must mount a persistent disk since you use users.json, uploads/, etc.
+    disk:
+      name: app-storage
+      mountPath: /opt/render/project/src/data_storage
+      sizeGB: 5
+
+  # ----------------------------------------
+  # 2. React Vite Frontend (Static Site)
+  # ----------------------------------------
+  - type: web
+    name: student-dashboard-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        # Render automatically provides the URL of the backend service defined above
+        fromService:
+          type: web
+          name: student-dashboard-backend
+          envVarKey: RENDER_EXTERNAL_URL
