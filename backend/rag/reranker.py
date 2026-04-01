@@ -4,14 +4,17 @@ Uses BAAI/bge-reranker-large for accurate scoring.
 Falls back to score-based sorting if model fails to load.
 """
 
+_reranker = None
+_reranker_failed = False
+
 def _get_reranker():
     global _reranker, _reranker_failed
     import os
     if _reranker_failed:
         return None
-    if os.getenv("RENDER") == "true" or os.environ.get("KOYEB_APP_NAME") is not None:
-        # Skip reranker on Free Tier completely to save RAM (takes over 500MB on its own)
-        print("[Reranker] Skipping local cross-encoder on Free Tier to prevent OOM crash.")
+    if os.getenv("RENDER") == "true":
+        # Skip reranker on Render completely to save RAM (takes over 500MB on its own)
+        print("[Reranker] Skipping local cross-encoder on Render Free Tier to prevent OOM crash.")
         _reranker_failed = True
         return None
     if _reranker is None:
