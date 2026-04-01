@@ -25,18 +25,27 @@ qdrant_client = QdrantClient(
 def get_embedding_model():
     global _embedding_model
     if _embedding_model is None:
-        try:
-            from langchain_huggingface import HuggingFaceEmbeddings
-            _embedding_model = HuggingFaceEmbeddings(
-                model_name="BAAI/bge-large-en-v1.5"
-            )
-        except ImportError:
-            from langchain_community.embeddings import HuggingFaceEmbeddings
-            _embedding_model = HuggingFaceEmbeddings(
-                model_name="BAAI/bge-large-en-v1.5"
-            )
-    return _embedding_model
+        hf_token = os.getenv("HF_TOKEN")
+        is_render = os.getenv("RENDER") == "true"
 
-def embed_text(text: str) -> list[float]:
+        if hf_token:
+            from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
+            _embedding_model = HuggingFaceInferenceAPIEmbeddings(
+                api_key=hf_token,
+                model_name="BAAI/bge-large-en-v1.5"
+            )
+        elif is_render:
+            raise Exception("HF_TOKEN_REQUIRED")
+        else:
+            try:
+                from langchain_huggingface import HuggingFaceEmbeddings
+                _embedding_model = HuggingFaceEmbeddings(
+                    model_name="BAAI/bge-large-en-v1.5"
+                )
+            except ImportError:
+                from langchain_community.embeddings import HuggingFaceEmbeddings    
+                _embedding_model = HuggingFaceEmbeddings(
+                    model_name="BAAI/bge-large-en-v1.5"
+                )
     """Embed a single text string and return a 1024-dim vector."""
     return get_embedding_model().embed_query(text)

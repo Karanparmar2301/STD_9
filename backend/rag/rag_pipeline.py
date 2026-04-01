@@ -91,48 +91,49 @@ def generate_answer(
     """
     start = time.time()
 
-    # 1. Language detection
-    lang = detect_language(question)
-    search_query = question
+    try:
+        # 1. Language detection
+        lang = detect_language(question)
+        search_query = question
 
-    # 2. Translate to English if needed
-    if lang != "english":
-        search_query = translate_to_english(question, lang)
+        # 2. Translate to English if needed
+        if lang != "english":
+            search_query = translate_to_english(question, lang)
 
-    # 3. Hybrid search (vector + keyword + multi-query)
-    raw_docs = hybrid_search(search_query)
+        # 3. Hybrid search (vector + keyword + multi-query)
+        raw_docs = hybrid_search(search_query)
 
-    # 4. Re-rank for most relevant context (Top 10 → Reranker → Top 5)
-    top_docs = rerank(search_query, raw_docs, top_k=5)
+        # 4. Re-rank for most relevant context (Top 10 → Reranker → Top 5)
+        top_docs = rerank(search_query, raw_docs, top_k=5)
 
-    # 5. Build context with source citations
-    context, sources = _build_context(top_docs)
+        # 5. Build context with source citations
+        context, sources = _build_context(top_docs)
 
-    # 6. Build chat memory context
-    memory_ctx = ""
-    if student_id:
-        history = _get_memory(student_id)
-        if history:
-            memory_ctx = "\nPrevious conversation:\n"
-            for msg in history:
-                memory_ctx += f"{msg['role'].title()}: {msg['content']}\n"
-            memory_ctx += "\n"
+        # 6. Build chat memory context
+        memory_ctx = ""
+        if student_id:
+            history = _get_memory(student_id)
+            if history:
+                memory_ctx = "\nPrevious conversation:\n"
+                for msg in history:
+                    memory_ctx += f"{msg['role'].title()}: {msg['content']}\n"  
+                memory_ctx += "\n"
 
-    # 6b. Similarity threshold — reject if best score is too low
-    if top_docs:
-        best_score = max(d.get('score', 0) for d in top_docs)
-        if best_score < 0.40:
-            elapsed = time.time() - start
-            return {
-                "answer": "I cannot find the answer in the provided textbooks.",
-                "sources": [],
-                "chunks_found": 0,
-                "elapsed_sec": round(elapsed, 2),
-                "language": lang,
-            }
+        # 6b. Similarity threshold — reject if best score is too low
+        if top_docs:
+            best_score = max(d.get('score', 0) for d in top_docs)
+            if best_score < 0.40:
+                elapsed = time.time() - start
+                return {
+                    "answer": "I cannot find the answer in the provided textbooks.",
+                    "sources": [],
+                    "chunks_found": 0,
+                    "elapsed_sec": round(elapsed, 2),
+                    "language": lang,
+                }
 
-    # 7. Generate answer with strict anti-hallucination prompt
-    prompt = f"""You are a helpful Class 8 tutor assisting {student_name}.
+        # 7. Generate answer with strict anti-hallucination prompt
+        prompt = f"""You are a helpful Class 8 tutor assisting {student_name}.  
 
 Answer the question ONLY using the provided textbook context.
 
@@ -155,44 +156,52 @@ Question:
 
 Answer:"""
 
-    response = _groq.chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=[
-            {"role": "system", "content": "You are a textbook tutor. Answer ONLY from the given context. Never use your own knowledge. Never mention source names, file names, or page numbers in your answer."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.2,
-        max_tokens=1024,
-    )
+        response = _groq.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+                {"role": "system", "content": "You are a textbook tutor. Answer ONLY from the given context. Never use your own knowledge. Never mention source names, file names, or page numbers in your answer."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.2,
+            max_tokens=1024,
+        )
 
-    answer = response.choices[0].message.content
+        answer = response.choices[0].message.content
 
-    # 8. Translate answer back if needed
-    if lang != "english":
-        answer = translate_from_english(answer, lang)
+        # 8. Translate answer back if needed
+        if lang != "english":
+            answer = translate_from_english(answer, lang)
 
-    elapsed = time.time() - start
+        elapsed = time.time() - start
 
-    # 9. Update chat memory
-    if student_id:
-        _add_to_memory(student_id, "user", question)
-        _add_to_memory(student_id, "assistant", answer)
+        # 9. Update chat memory
+        if student_id:
+            _add_to_memory(student_id, "user", question)
+            _add_to_memory(student_id, "assistant", answer)
 
-    # 10. Log the interaction
-    _log_interaction(question, answer, sources, elapsed, lang, student_id)
+        # 10. Log the interaction
+        _log_interaction(question, answer, sources, elapsed, lang, student_id)
 
-    return {
-        "answer": answer,
-        "sources": sources,
-        "chunks_found": len(top_docs),
-        "elapsed_sec": round(elapsed, 2),
-        "language": lang,
-    }
+        return {
+            "answer": answer,
+            "sources": sources,
+            "chunks_found": len(top_docs),
+            "elapsed_sec": round(elapsed, 2),
+            "language": lang,
+        }
 
-
-if __name__ == "__main__":
-    result = generate_answer("What is photosynthesis?")
-    print(f"\nAnswer:\n{result['answer']}")
-    print(f"\nSources: {result['sources']}")
-    print(f"Chunks: {result['chunks_found']}")
-    print(f"Time: {result['elapsed_sec']}s")
+    except Exception as e:
+        elapsed = time.time() - start
+        error_msg = str(e)
+        if "HF_TOKEN_REQUIRED" in error_msg:
+            answer = "Sorry! I cannot process PDF textbooks correctly right now because the free web server is out of memory. To fix this, please follow the developer instructions to add a free HF_TOKEN to your hosting settings, or try running the server locally!"
+        else:
+            answer = f"I'm sorry, I ran into an error while finding the answer: {error_msg}"
+            
+        return {
+            "answer": answer,
+            "sources": [],
+            "chunks_found": 0,
+            "elapsed_sec": round(elapsed, 2),
+            "language": "english",
+        }
