@@ -13,8 +13,14 @@ import os
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 
+# Render persistent storage path or local development path
+if os.getenv("RENDER") == "true":
+    _DATA_DIR = "/opt/render/project/src/data_storage"
+else:
+    _DATA_DIR = os.path.dirname(os.path.dirname(__file__))
+
 # Path to insights storage
-INSIGHTS_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), "insights.json")
+INSIGHTS_FILE = os.path.join(_DATA_DIR, "insights.json")
 
 # Maximum insights per user
 MAX_INSIGHTS_PER_USER = 20

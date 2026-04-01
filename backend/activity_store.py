@@ -8,7 +8,12 @@ import os
 from typing import List, Dict, Optional
 from datetime import datetime
 
-ACTIVITIES_FILE = "backend/activities.json"
+if os.getenv("RENDER") == "true":
+    _DATA_DIR = "/opt/render/project/src/data_storage"
+else:
+    _DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "backend")
+
+ACTIVITIES_FILE = os.path.join(_DATA_DIR, "activities.json")
 MAX_ACTIVITIES_PER_USER = 100
 
 

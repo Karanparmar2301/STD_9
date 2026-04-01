@@ -13,8 +13,14 @@ from backend.exception_handlers import StorageError
 
 logger = logging.getLogger(__name__)
 
-# Default path: users.json at the project root
-_DEFAULT_USERS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "users.json")
+# Render persistent storage path or local development path
+if os.getenv("RENDER") == "true":
+    _DATA_DIR = "/opt/render/project/src/data_storage"
+else:
+    _DATA_DIR = os.path.dirname(os.path.dirname(__file__))
+
+# Default path: users.json at the project root or data_storage if on Render
+_DEFAULT_USERS_PATH = os.path.join(_DATA_DIR, "users.json")
 
 _storage_instance: Optional["UsersStorage"] = None
 _instance_lock = threading.Lock()

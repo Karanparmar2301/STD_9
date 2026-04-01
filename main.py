@@ -137,8 +137,16 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
+if os.getenv("RENDER") == "true":
+    UPLOADS_DIR = "/opt/render/project/src/data_storage/uploads"
+else:
+    UPLOADS_DIR = "backend/uploads"
+
+os.makedirs(UPLOADS_DIR, exist_ok=True)
+os.makedirs(os.path.join(UPLOADS_DIR, "profile_photos"), exist_ok=True)
+
 # Mount static files for profile photos
-app.mount("/api/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
+app.mount("/api/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 
 
 # ========== PYDANTIC MODELS ==========
@@ -1046,7 +1054,7 @@ async def upload_profile_photo(
         # Delete old photo if exists
         old_photo_url = all_users[uid].get("profile_photo_url")
         if old_photo_url:
-            old_photo_path = Path(old_photo_url.replace("/api/uploads/", "backend/uploads/"))
+            old_photo_path = Path(old_photo_url.replace("/api/uploads/", f"{UPLOADS_DIR}/"))
             if old_photo_path.exists():
                 try:
                     old_photo_path.unlink()
@@ -1058,9 +1066,9 @@ async def upload_profile_photo(
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         file_extension = Path(file.filename).suffix or ".jpg"
         new_filename = f"{uid}_{timestamp}{file_extension}"
-        
+
         # Save file
-        upload_dir = Path("backend/uploads/profile_photos")
+        upload_dir = Path(UPLOADS_DIR) / "profile_photos"
         upload_dir.mkdir(parents=True, exist_ok=True)
         
         file_path = upload_dir / new_filename
