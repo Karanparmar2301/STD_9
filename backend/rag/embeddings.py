@@ -26,7 +26,7 @@ def get_embedding_model():
     global _embedding_model
     if _embedding_model is None:
         hf_token = os.getenv("HF_TOKEN")
-        is_render = os.getenv("RENDER") == "true"
+        is_render = os.getenv("RENDER") == "true" or os.environ.get("KOYEB_APP_NAME") is not None
 
         if hf_token:
             from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
