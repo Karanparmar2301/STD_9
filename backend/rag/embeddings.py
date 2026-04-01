@@ -26,7 +26,7 @@ def get_embedding_model():
     global _embedding_model
     if _embedding_model is None:
         hf_token = os.getenv("HF_TOKEN")
-        is_render = os.getenv("RENDER") == "true" or os.environ.get("KOYEB_APP_NAME") is not None
+        is_render = os.getenv("RENDER") == "true"
 
         if hf_token:
             from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
@@ -43,9 +43,13 @@ def get_embedding_model():
                     model_name="BAAI/bge-large-en-v1.5"
                 )
             except ImportError:
-                from langchain_community.embeddings import HuggingFaceEmbeddings    
+                from langchain_community.embeddings import HuggingFaceEmbeddings
+
                 _embedding_model = HuggingFaceEmbeddings(
                     model_name="BAAI/bge-large-en-v1.5"
                 )
+    return _embedding_model
+
+def embed_text(text: str) -> list[float]:
     """Embed a single text string and return a 1024-dim vector."""
     return get_embedding_model().embed_query(text)
