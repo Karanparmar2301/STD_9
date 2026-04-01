@@ -45,6 +45,9 @@ load_dotenv()
 # ── Configure Logging ────────────────────────────────────────────────────────
 import logging
 
+# Ensure logs directory exists
+os.makedirs('backend/logs', exist_ok=True)
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -53,9 +56,6 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
-
-# Ensure logs directory exists
-os.makedirs('backend/logs', exist_ok=True)
 
 logger = logging.getLogger(__name__)
 
