@@ -951,7 +951,7 @@ async def update_profile(
         
         # Log activity for profile update
         try:
-            from backend.activity_middleware import log_activity_manual
+            from activity_middleware import log_activity_manual
             log_activity_manual(
                 user_id=uid,
                 event_type="profile_updated",
@@ -1083,7 +1083,7 @@ async def upload_profile_photo(
         
         # Log activity
         try:
-            from backend.activity_middleware import log_activity_manual
+            from activity_middleware import log_activity_manual
             log_activity_manual(
                 user_id=uid,
                 event_type="profile_photo_updated",
