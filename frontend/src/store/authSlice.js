@@ -1,6 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api, { authApi } from '../services/api';
 
+const DEMO_MODE_KEY = 'demoMode';
+const DEMO_USER = {
+    uid: '46a04e54-aedf-4c38-bb23-571b7e0ba0e1',
+    name: 'Demo Student',
+    student_name: 'Demo Student',
+    email: 'demo@school.com',
+    class_section: '8-A',
+    isDemoMode: true
+};
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function decodeTokenPayload(token) {
     try {
@@ -75,6 +85,7 @@ export const logoutUser = createAsyncThunk(
     async () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem(DEMO_MODE_KEY);
         return null;
     }
 );
@@ -84,6 +95,13 @@ export const checkSession = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem('authToken');
+            const isDemoMode = localStorage.getItem(DEMO_MODE_KEY) === 'true';
+
+            if (!token && isDemoMode) {
+                console.log('[Auth] Demo mode session restored');
+                return { ...DEMO_USER, token: null };
+            }
+
             if (!token) {
                 console.log('[Auth] No token found, user not logged in');
                 return null;
@@ -137,6 +155,7 @@ export const checkSession = createAsyncThunk(
                             console.error('[Auth] Token refresh failed:', refreshErr.message);
                             localStorage.removeItem('authToken');
                             localStorage.removeItem('refreshToken');
+                            localStorage.removeItem(DEMO_MODE_KEY);
                             return null;
                         }
                     }
@@ -145,12 +164,14 @@ export const checkSession = createAsyncThunk(
                 console.error('[Auth] Token verification failed:', authErr.message);
                 localStorage.removeItem('authToken');
                 localStorage.removeItem('refreshToken');
+                localStorage.removeItem(DEMO_MODE_KEY);
                 return null;
             }
         } catch (err) {
             console.error('[Auth] Session check failed:', err.message);
             localStorage.removeItem('authToken');
             localStorage.removeItem('refreshToken');
+            localStorage.removeItem(DEMO_MODE_KEY);
             return null;
         }
     }
@@ -182,6 +203,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             localStorage.removeItem('authToken');
             localStorage.removeItem('refreshToken');
+            localStorage.removeItem(DEMO_MODE_KEY);
         }
     },
     extraReducers: (builder) => {
@@ -237,7 +259,11 @@ const authSlice = createSlice({
                     state.user = action.payload;
                     state.token = action.payload.token;
                     state.isAuthenticated = true;
-                    localStorage.setItem('authToken', action.payload.token);
+                    if (action.payload.token) {
+                        localStorage.setItem('authToken', action.payload.token);
+                    } else {
+                        localStorage.removeItem('authToken');
+                    }
                 } else {
                     // No existing session - clear auth state
                     state.user = null;

@@ -1,15 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser, clearError } from '../store/authSlice';
+import { loginUser, clearError, setUser } from '../store/authSlice';
 import './Auth.css';
+
+const DEMO_USER = {
+    uid: '46a04e54-aedf-4c38-bb23-571b7e0ba0e1',
+    name: 'Demo Student',
+    student_name: 'Demo Student',
+    email: 'demo@school.com',
+    class_section: '8-A',
+    isDemoMode: true
+};
+
+function isNetworkErrorMessage(message) {
+    return typeof message === 'string' && message.toLowerCase().includes('network error');
+}
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { loading, error } = useSelector((state) => state.auth);
+    const { loading, error, user } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (user?.uid) {
+            navigate(`/dashboard/${user.uid}`);
+        }
+    }, [user, navigate]);
+
+    const startDemoSession = () => {
+        localStorage.setItem('demoMode', 'true');
+        dispatch(setUser(DEMO_USER));
+        navigate(`/dashboard/${DEMO_USER.uid}`);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,26 +49,24 @@ function Login() {
             if (result.payload.refresh_token) {
                 localStorage.setItem('refreshToken', result.payload.refresh_token);
             }
+            localStorage.removeItem('demoMode');
             navigate(`/dashboard/${uid}`);
+            return;
+        }
+
+        if (result.type === 'auth/login/rejected' && isNetworkErrorMessage(result.payload)) {
+            startDemoSession();
         }
     };
 
-    const handleDemoLogin = async () => {
+    const handleDemoLogin = () => {
         dispatch(clearError());
         setEmail('demo@school.com');
         setPassword('Demo@123');
-        const result = await dispatch(loginUser({ email: 'demo@school.com', password: 'Demo@123' }));
-
-        if (result.type === 'auth/login/fulfilled') {
-            const token = result.payload.token || result.payload.access_token;
-            const uid = result.payload.uid;
-            if (token) localStorage.setItem('authToken', token);
-            if (result.payload.refresh_token) {
-                localStorage.setItem('refreshToken', result.payload.refresh_token);
-            }
-            navigate(`/dashboard/${uid}`);
-        }
+        startDemoSession();
     };
+
+    const shouldShowError = error && !isNetworkErrorMessage(error);
 
     return (
         <div className="auth-container">
@@ -54,7 +77,7 @@ function Login() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="auth-form">
-                    {error && (
+                    {shouldShowError && (
                         <div className="error-message">
                             {error.includes('Invalid login credentials') || error.includes('Invalid email')
                                 ? 'Email or password is incorrect'
