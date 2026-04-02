@@ -61,3 +61,4 @@ frontend/build/
 # Large backend data folders
 backend/data/
 backend/uploads/
+backend/embeddings_cache.json
