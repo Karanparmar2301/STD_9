@@ -57,6 +57,18 @@ const BOOKS_META = [
 
 const FILTERS = ['All Books', 'Video Learning', 'Recently Opened', 'Completed', 'Favorites', 'Pending'];
 
+const DEMO_BOOK_STATS = {
+    Std_8_math: { count: 12, completedCount: 5 },
+    Std_8_eng: { count: 10, completedCount: 4 },
+    Std_8_hindi: { count: 9, completedCount: 3 },
+    Std_8_science: { count: 11, completedCount: 6 },
+    Std_8_arts: { count: 8, completedCount: 2 },
+    Std_8_social: { count: 10, completedCount: 4 },
+    Std_8_sanskrit: { count: 7, completedCount: 2 },
+    Std_8_physed: { count: 6, completedCount: 1 },
+    Std_8_voced: { count: 5, completedCount: 1 },
+};
+
 const SUBJECT_YOUTUBE_LINKS = {
     Std_8_math: 'https://www.youtube.com/results?search_query=Class+8+Mathematics+NCERT+chapter+wise',
     Std_8_eng: 'https://www.youtube.com/results?search_query=Class+8+English+NCERT+chapter+wise',
@@ -538,6 +550,7 @@ function SubjectCard({ book, isFav, onFavToggle }) {
 export default function Books() {
     const navigate  = useNavigate();
     const user      = useSelector((state) => state.auth.user);
+    const isDemoUser = !!user?.isDemoMode || String(user?.email || '').toLowerCase() === 'demo@school.com';
     const [filter,    setFilter]    = useState('All Books');
     const [search,    setSearch]    = useState('');
     const [favorites, setFavorites] = useState(() => {
@@ -580,10 +593,13 @@ export default function Books() {
     const BOOKS = useMemo(() => {
         return BOOKS_META.map(meta => {
             const api = apiSubjects.find(s => s.slug === meta.slug);
-            const chapters = api?.count || 0;
-            const completedCount = api?.completedCount || 0;
+            const demoStats = DEMO_BOOK_STATS[meta.slug] || { count: 0, completedCount: 0 };
+            const apiCount = typeof api?.count === 'number' ? api.count : 0;
+            const shouldUseDemoStats = isDemoUser && apiCount === 0;
+            const chapters = shouldUseDemoStats ? demoStats.count : apiCount;
+            const completedCount = shouldUseDemoStats ? demoStats.completedCount : (api?.completedCount || 0);
             const progress = chapters > 0 ? Math.round((completedCount / chapters) * 100) : 0;
-            const lastOpenedAt = api?.lastOpenedAt || null;
+            const lastOpenedAt = api?.lastOpenedAt || (shouldUseDemoStats ? new Date(Date.now() - 86400000).toISOString() : null);
 
             // Format last opened as relative time
             let lastOpened = null;
@@ -608,7 +624,7 @@ export default function Books() {
                 lastOpened,
             };
         }); // Always show all 9 subjects regardless of whether PDFs are uploaded
-    }, [apiSubjects]);
+    }, [apiSubjects, isDemoUser]);
 
     // KPI totals — always based on all 9 subjects
     const totalCompleted = useMemo(() => BOOKS.filter(b => b.progress === 100).length, [BOOKS]);

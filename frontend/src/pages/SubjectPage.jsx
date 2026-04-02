@@ -40,6 +40,38 @@ const META = {
     Std_8_voced:    { label: 'Vocational Education', icon: '🛠️', color: '#3730A3', bg: '#EEF2FF' },
 };
 
+const DEMO_PDF_URL = 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf';
+
+function getDemoChapters(subjectSlug) {
+    return [
+        {
+            id: 1,
+            title: 'Chapter 1: Introduction',
+            file: DEMO_PDF_URL,
+            filename: `${subjectSlug}_Chapter_1.pdf`,
+            is_index: false,
+            completed: true,
+            isLastOpened: true,
+        },
+        {
+            id: 2,
+            title: 'Chapter 2: Core Concepts',
+            file: DEMO_PDF_URL,
+            filename: `${subjectSlug}_Chapter_2.pdf`,
+            is_index: false,
+            completed: false,
+        },
+        {
+            id: 3,
+            title: 'Chapter 3: Practice and Revision',
+            file: DEMO_PDF_URL,
+            filename: `${subjectSlug}_Chapter_3.pdf`,
+            is_index: false,
+            completed: false,
+        },
+    ];
+}
+
 /* ── Icons ── */
 const SearchIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -199,6 +231,7 @@ export default function SubjectPage() {
     const dispatch    = useDispatch();
     const meta        = META[subject] || { label: subject, icon: '📚', color: '#6366f1', bg: '#EEF2FF' };
     const user        = useSelector((state) => state.auth.user);
+    const isDemoUser = !!user?.isDemoMode || String(user?.email || '').toLowerCase() === 'demo@school.com';
 
     const goToBooks = () => {
         dispatch(setActiveSection('books'));
@@ -234,20 +267,30 @@ export default function SubjectPage() {
         setError(null);
         try {
             const { data } = await apiService.getSubjectChapters(subject);
-            setChapters(Array.isArray(data) ? data : []);
+            const chapterList = Array.isArray(data) ? data : [];
+
+            if (chapterList.length === 0 && isDemoUser) {
+                setChapters(getDemoChapters(subject));
+            } else {
+                setChapters(chapterList);
+            }
         } catch (e) {
             const status = e.response?.status;
             const detail = e.response?.data?.detail || '';
             // Treat 404 / "not found" as simply no PDFs uploaded yet
             if (status === 404 || detail.toLowerCase().includes('not found')) {
-                setChapters([]);
+                if (isDemoUser) {
+                    setChapters(getDemoChapters(subject));
+                } else {
+                    setChapters([]);
+                }
             } else {
                 setError(detail || 'Could not load chapters');
             }
         } finally {
             setLoading(false);
         }
-    }, [subject]);
+    }, [subject, isDemoUser]);
 
     useEffect(() => { fetchChapters(); }, [fetchChapters]);
 
