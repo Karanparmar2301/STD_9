@@ -58,24 +58,28 @@
 
 /* Subject name — primary, dominant, single line */
 .sc-subject {
-    font-size: 24px;
+    font-size: clamp(14px, 1.1vw, 20px);
     font-weight: 700;
     color: var(--card-text);
-    line-height: 1.2;
+    line-height: 1.15;
     letter-spacing: 0.3px;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-right: 38px;
+    padding-right: 8px;
     box-sizing: border-box;
     /* removed heavy text-shadow for cleaner white-dashboard look */
     filter: brightness(0.88);
 }
 
+.subject-card--now .sc-subject {
+    padding-right: 38px;
+}
+
 /* Teacher name — secondary, readable but subdued */
 .sc-teacher {
-    font-size: 17px;
+    font-size: clamp(11px, 0.85vw, 15px);
     color: var(--card-text);
     opacity: 0.87;
     font-weight: 500;
