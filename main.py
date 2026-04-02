@@ -2300,13 +2300,17 @@ async def assistant_chat(
 ):
     """Context-aware AI Learning Assistant — personalized responses using student data."""
     try:
+        token_uid = _optional_auth(authorization)
         user_token = None
-        if authorization and authorization.startswith('Bearer '):
+        if token_uid and authorization and authorization.startswith('Bearer '):
             user_token = authorization.split('Bearer ')[1]
 
-        user_data = await verify_supabase_token(authorization)
-        uid       = body.get('uid') or user_data.get('id')
-        message   = (body.get('message') or '').strip()
+        requested_uid = str(body.get('uid') or '').strip()
+        if token_uid and requested_uid and requested_uid != token_uid:
+            raise HTTPException(status_code=403, detail="Unauthorized")
+
+        uid = token_uid or requested_uid or "anonymous"
+        message = (body.get('message') or '').strip()
 
         if not message:
             raise HTTPException(status_code=400, detail="Message is required")
@@ -2381,13 +2385,16 @@ async def assistant_chat(
 async def assistant_history(uid: str, authorization: str = Header(None)):
     """Load last 40 chat messages for a student (20 exchanges)."""
     try:
+        token_uid = _optional_auth(authorization)
+        if not token_uid:
+            return JSONResponse({"messages": []})
+
+        if token_uid != uid:
+            raise HTTPException(status_code=403, detail="Unauthorized")
+
         user_token = None
         if authorization and authorization.startswith('Bearer '):
             user_token = authorization.split('Bearer ')[1]
-
-        user_data = await verify_supabase_token(authorization)
-        if user_data.get("id") != uid:
-            raise HTTPException(status_code=403, detail="Unauthorized")
 
         try:
             msgs = await supabase_query("chat_messages", filters={"uid": uid}, token=user_token)
