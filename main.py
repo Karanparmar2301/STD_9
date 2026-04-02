@@ -30,13 +30,18 @@ from backend.jwt_manager import get_jwt_manager
 try:
     from backend.rag.rag_pipeline import generate_answer as _rag_generate
     RAG_ENGINE_AVAILABLE = True
-    def rag_pipeline(question, student_name="Student", subject_filter=""):
-        result = _rag_generate(question, student_name=student_name, subject_filter=subject_filter)
+    def rag_pipeline(question, student_name="Student", student_id="", subject_filter=""):
+        result = _rag_generate(
+            question,
+            student_name=student_name,
+            student_id=student_id,
+            subject_filter=subject_filter,
+        )
         return result
 except ImportError as _rag_err:
     print(f"[WARNING] RAG engine not loaded: {_rag_err}")
     RAG_ENGINE_AVAILABLE = False
-    def rag_pipeline(question, student_name="Student", subject_filter=""):
+    def rag_pipeline(question, student_name="Student", student_id="", subject_filter=""):
         return {"answer": None, "sources": [], "chunks_found": 0}
 
 # Load environment variables
@@ -2260,12 +2265,17 @@ def _build_ai_reply(intent: str, message: str, ctx: dict):
     return reply, suggestions
 
 
-async def _groq_rag_reply(message: str, student_name: str, subject_filter: str = "") -> Tuple[str, List[str]]:
+async def _groq_rag_reply(
+    message: str,
+    student_name: str,
+    student_id: str = "",
+    subject_filter: str = "",
+) -> Tuple[str, List[str]]:
     """Call Groq RAG pipeline and return (reply, suggestions)."""
     import asyncio
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(
-        None, rag_pipeline, message, student_name, subject_filter
+        None, rag_pipeline, message, student_name, student_id, subject_filter
     )
     answer  = result.get("answer") or ""
     sources = result.get("sources", [])
@@ -2327,7 +2337,9 @@ async def assistant_chat(
         if RAG_ENGINE_AVAILABLE and intent not in _NON_RAG_INTENTS:
             try:
                 reply, suggestions = await _groq_rag_reply(
-                    message, student_ctx.get("name", "Student")
+                    message,
+                    student_ctx.get("name", "Student"),
+                    uid,
                 )
                 intent = "rag"
             except Exception as _rag_exc:
@@ -2476,8 +2488,9 @@ async def rag_chat(
 
         import asyncio
         loop = asyncio.get_event_loop()
+        uid = _optional_auth(authorization) or ""
         result = await loop.run_in_executor(
-            None, rag_pipeline, message, student_name, subject_filter
+            None, rag_pipeline, message, student_name, uid, subject_filter
         )
 
         answer  = result.get("answer", "")

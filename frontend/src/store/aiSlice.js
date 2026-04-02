@@ -23,16 +23,12 @@ export const sendChatMessage = createAsyncThunk(
 
       // Route to RAG by default — only skip for personal/greeting messages (and no image)
       if (!isPersonalMessage(message) || image) {
-        try {
-          const ragRes = await apiService.sendRagMessage({
-            message,
-            student_name: studentName || 'Student',
-            image: image || undefined,
-          });
-          return ragRes.data; // { reply, suggestions, timestamp, intent: 'rag' }
-        } catch (_ragErr) {
-          // RAG failed — fall through to regular chat
-        }
+        const ragRes = await apiService.sendRagMessage({
+          message,
+          student_name: studentName || 'Student',
+          image: image || undefined,
+        });
+        return ragRes.data; // { reply, suggestions, timestamp, intent: 'rag' }
       }
 
       const res = await apiService.sendChatMessage({ uid, message });
