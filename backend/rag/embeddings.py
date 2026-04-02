@@ -4,6 +4,7 @@ Loaded once at import time and reused across the pipeline.
 """
 import os
 from dotenv import load_dotenv
+from pydantic import SecretStr
 from qdrant_client import QdrantClient
 
 # Load env from backend/.env
@@ -31,7 +32,7 @@ def get_embedding_model():
         if hf_token:
             from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
             _embedding_model = HuggingFaceInferenceAPIEmbeddings(
-                api_key=hf_token,
+                api_key=SecretStr(hf_token),
                 model_name="BAAI/bge-large-en-v1.5"
             )
         elif is_render:

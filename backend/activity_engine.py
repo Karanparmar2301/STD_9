@@ -79,15 +79,15 @@ class ActivityEngine:
     def _generate_title(self, event_type: str, subject: Optional[str] = None) -> str:
         """Generate a default title for the event"""
         titles = {
-            EventType.HOMEWORK_COMPLETED: f"{subject or 'Homework'} Completed",
-            EventType.HOMEWORK_OPENED: f"Started {subject or 'Homework'}",
-            EventType.ATTENDANCE_MARKED: "Attendance Marked",
-            EventType.BOOK_OPENED: f"Opened {subject or 'Book'}",
-            EventType.PDF_VIEWED: "Viewed Study Material",
-            EventType.EXAM_SUBMITTED: f"{subject or 'Exam'} Submitted",
-            EventType.SCORE_IMPROVED: "Score Improved!",
-            EventType.AI_QUESTION_ASKED: "Asked AI Assistant",
-            EventType.LOGIN: "Logged In",
+            EventType.HOMEWORK_COMPLETED.value: f"{subject or 'Homework'} Completed",
+            EventType.HOMEWORK_OPENED.value: f"Started {subject or 'Homework'}",
+            EventType.ATTENDANCE_MARKED.value: "Attendance Marked",
+            EventType.BOOK_OPENED.value: f"Opened {subject or 'Book'}",
+            EventType.PDF_VIEWED.value: "Viewed Study Material",
+            EventType.EXAM_SUBMITTED.value: f"{subject or 'Exam'} Submitted",
+            EventType.SCORE_IMPROVED.value: "Score Improved!",
+            EventType.AI_QUESTION_ASKED.value: "Asked AI Assistant",
+            EventType.LOGIN.value: "Logged In",
         }
         return titles.get(event_type, "Activity Logged")
 

@@ -3,7 +3,7 @@ reingest.py — Re-chunk, re-embed, and re-upload all PDFs to Qdrant.
 Run this whenever you change chunk_size or embedding model.
 
 Usage:
-  cd "c:\student dashboard"
+    cd "c:/student dashboard"
   python -m backend.rag.reingest
 """
 import os, sys, json, time
@@ -11,7 +11,7 @@ import hashlib
 from tqdm import tqdm
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
-from qdrant_client.models import VectorParams, Distance, PointStruct
+from qdrant_client.models import VectorParams, Distance, PointStruct, PayloadSchemaType
 
 # Ensure backend/.env is loaded
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"), override=True)
@@ -107,12 +107,12 @@ def reingest():
         qclient.create_payload_index(
             collection_name=COLLECTION_NAME,
             field_name="subject",
-            field_schema="keyword",
+            field_schema=PayloadSchemaType.KEYWORD,
         )
         qclient.create_payload_index(
             collection_name=COLLECTION_NAME,
             field_name="source",
-            field_schema="keyword",
+            field_schema=PayloadSchemaType.KEYWORD,
         )
         print("Payload indexes created for fields: subject, source")
     except Exception as e:

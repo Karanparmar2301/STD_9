@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from rag_pipeline import generate_answer
+
+try:
+    from backend.rag_pipeline import generate_answer
+except ImportError:
+    from rag_pipeline import generate_answer
 
 app = FastAPI()
 

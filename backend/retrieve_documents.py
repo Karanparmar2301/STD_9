@@ -42,11 +42,12 @@ def search_documents(question):
     documents = []
 
     for result in results.points:
+        payload = result.payload or {}
 
         documents.append({
-            "text": result.payload["text"],
-            "source": result.payload["source"],
-            "page": result.payload["page"],
+            "text": payload.get("text", ""),
+            "source": payload.get("source", "Unknown"),
+            "page": payload.get("page", 0),
             "score": result.score
         })
 

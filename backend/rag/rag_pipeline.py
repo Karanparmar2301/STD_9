@@ -385,7 +385,7 @@ def _looks_unrelated_answer(answer: str, question: str) -> bool:
     if not ans_l.strip():
         return True
 
-    if "i cannot find the answer in the provided textbooks" in ans_l:
+    if "The textbook does not contain this information" in ans_l:
         return False
 
     if any(re.search(pattern, ans_l) for pattern in _UNRELATED_ANSWER_PATTERNS):
@@ -478,11 +478,15 @@ def _low_relevance_context(docs: list[dict]) -> bool:
     ]
     best_vector = max(vector_scores) if vector_scores else 0.0
 
-    rerank_scores = [
-        float(d.get("rerank_score"))
-        for d in docs
-        if d.get("rerank_score") is not None
-    ]
+    rerank_scores = []
+    for d in docs:
+        rerank_score = d.get("rerank_score")
+        if rerank_score is None:
+            continue
+        try:
+            rerank_scores.append(float(rerank_score))
+        except (TypeError, ValueError):
+            continue
 
     if rerank_scores:
         best_rerank = max(rerank_scores)
@@ -692,7 +696,7 @@ def generate_answer(
         if not top_docs:
             elapsed = time.time() - start
             return {
-                "answer": "I cannot find the answer in the provided textbooks.",
+                "answer": "The textbook does not contain this information.",
                 "sources": [],
                 "chunks_found": 0,
                 "elapsed_sec": round(elapsed, 2),
@@ -740,7 +744,7 @@ def generate_answer(
         if _low_relevance_context(top_docs):
             elapsed = time.time() - start
             return {
-                "answer": "I cannot find the answer in the provided textbooks.",
+                "answer": "The textbook does not contain this information.",
                 "sources": [],
                 "chunks_found": 0,
                 "elapsed_sec": round(elapsed, 2),
@@ -751,7 +755,7 @@ def generate_answer(
         if _is_insufficient_grounding(search_query, context):
             elapsed = time.time() - start
             return {
-                "answer": "I cannot find the answer in the provided textbooks.",
+                "answer": "The textbook does not contain this information.",
                 "sources": [],
                 "chunks_found": 0,
                 "elapsed_sec": round(elapsed, 2),
@@ -771,7 +775,7 @@ Rules:
 - Do NOT use your own knowledge.
 - Do NOT add guesses or inferred facts that are not explicitly in context.
 - If the answer is not present in the context, say:
-  "I cannot find the answer in the provided textbooks."
+    "The textbook does not contain this information."
 - Keep answers student-friendly.
 - Use bullet points or numbered lists when explaining steps.
 - If context seems incomplete for a long list question, say what is available and state that context is partial.
@@ -790,7 +794,7 @@ Answer:"""
         response = _groq.chat.completions.create(
             model="llama-3.1-8b-instant",
             messages=[
-                {"role": "system", "content": "You are a textbook tutor. Answer ONLY from the given context. Never use your own knowledge. Never mention source names, file names, or page numbers in your answer."},
+                {"role": "system", "content": "You are a strict textbook AI tutor. Answer ONLY using the provided textbook context. If the context does not provide the answer, reply EXACTLY with \"The textbook does not contain this information.\" Do NOT guess, hallucinate, or use outside knowledge. Never mention source names, file names, or page numbers in your answer."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.2,
@@ -801,7 +805,7 @@ Answer:"""
         if not answer_en:
             elapsed = time.time() - start
             return {
-                "answer": "I cannot find the answer in the provided textbooks.",
+                "answer": "The textbook does not contain this information.",
                 "sources": [],
                 "chunks_found": 0,
                 "elapsed_sec": round(elapsed, 2),
@@ -809,7 +813,7 @@ Answer:"""
             }
 
         if _looks_unrelated_answer(answer_en, search_query):
-            answer_en = "I cannot find the answer in the provided textbooks."
+            answer_en = "The textbook does not contain this information."
 
         answer = answer_en
 
@@ -842,7 +846,7 @@ Answer:"""
         if "HF_TOKEN_REQUIRED" in error_msg:
             answer = "Sorry! I cannot process PDF textbooks correctly right now because the free web server is out of memory. To fix this, please follow the developer instructions to add a free HF_TOKEN to your hosting settings, or try running the server locally!"
         elif isinstance(e, IndexError) or error_msg.strip() in {"0", "1"}:
-            answer = "I cannot find the answer in the provided textbooks."
+            answer = "The textbook does not contain this information."
         else:
             answer = "I'm sorry, I couldn't process this question right now. Please try again."
             

@@ -28,7 +28,11 @@ def _resize_if_needed(img: Image.Image, max_side: int = 1280) -> Image.Image:
     if max(w, h) <= max_side:
         return img
     ratio = max_side / max(w, h)
-    return img.resize((int(w * ratio), int(h * ratio)), Image.LANCZOS)
+    if hasattr(Image, "Resampling"):
+        resample = Image.Resampling.LANCZOS
+    else:
+        resample = 3  # PIL constant for bicubic in older versions
+    return img.resize((int(w * ratio), int(h * ratio)), resample)
 
 
 def extract_text_from_image(image_bytes: bytes, mime_type: str = "image/png") -> str:
@@ -72,7 +76,10 @@ def extract_text_from_image(image_bytes: bytes, mime_type: str = "image/png") ->
             temperature=0.1,
             max_tokens=1024,
         )
-        text = response.choices[0].message.content.strip()
+        content = ""
+        if getattr(response, "choices", None):
+            content = response.choices[0].message.content or ""
+        text = content.strip()
         if text:
             return text
     except Exception as e:

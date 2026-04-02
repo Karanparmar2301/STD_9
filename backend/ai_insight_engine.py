@@ -12,7 +12,7 @@ Zero hallucination - pure deterministic logic
 """
 
 from enum import Enum
-from typing import List, Dict, Optional
+from typing import Any, List, Dict, Optional
 from datetime import datetime, timedelta
 import json
 
@@ -57,11 +57,11 @@ class AIInsightEngine:
     def analyze_user_activity(
         self, 
         user_id: str,
-        activities: List[Dict] = None,
-        performance_data: Dict = None,
-        attendance_data: Dict = None,
-        gamification_data: Dict = None
-    ) -> List[Dict]:
+        activities: Optional[List[Dict[str, Any]]] = None,
+        performance_data: Optional[Dict[str, Any]] = None,
+        attendance_data: Optional[Dict[str, Any]] = None,
+        gamification_data: Optional[Dict[str, Any]] = None
+    ) -> List[Dict[str, Any]]:
         """
         Main analysis entry point
         

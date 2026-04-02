@@ -13,15 +13,15 @@ DATA_PATH = BASE_DIR / "data"
 UPLOADS_PATH = BASE_DIR / "uploads"
 
 
-def _detect_subject(source_name: str) -> str:
-    name = (source_name or "").lower()
-    if "social" in name and "science" in name:
+def _detect_subject(file_path: Path) -> str:
+    name = str(file_path).lower()
+    if "social" in name:
         return "social"
     if "science" in name:
         return "science"
     if "math" in name:
         return "math"
-    if "english" in name:
+    if "eng" in name:
         return "english"
     if "hindi" in name:
         return "hindi"
@@ -29,7 +29,7 @@ def _detect_subject(source_name: str) -> str:
         return "sanskrit"
     if "art" in name:
         return "arts"
-    if "physical" in name or "physed" in name or "pt" in name:
+    if "phys" in name or "pt" in name:
         return "physed"
     if "voc" in name:
         return "voced"
@@ -53,7 +53,7 @@ def load_pdfs():
 
     for file_path in tqdm(pdf_files, desc="Loading PDFs", unit="file"):
         source_name = file_path.name
-        subject = _detect_subject(source_name)
+        subject = _detect_subject(file_path)
         try:
             loader = PyPDFLoader(str(file_path))
             docs = []

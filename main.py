@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime, timedelta
-from typing import Optional, List, Tuple
+from typing import Any, Optional, List, Tuple
 import os
 import sys
 import json
@@ -31,19 +31,22 @@ from backend.jwt_manager import get_jwt_manager
 try:
     from backend.rag.rag_pipeline import generate_answer as _rag_generate
     RAG_ENGINE_AVAILABLE = True
-    def rag_pipeline(question, student_name="Student", student_id="", subject_filter=""):
-        result = _rag_generate(
-            question,
-            student_name=student_name,
-            student_id=student_id,
-            subject_filter=subject_filter,
-        )
-        return result
 except ImportError as _rag_err:
     print(f"[WARNING] RAG engine not loaded: {_rag_err}")
+    _rag_generate = None
     RAG_ENGINE_AVAILABLE = False
-    def rag_pipeline(question, student_name="Student", student_id="", subject_filter=""):
+
+
+def rag_pipeline(question: str, student_name: str = "Student", student_id: str = "", subject_filter: str = "") -> dict[str, Any]:
+    if not RAG_ENGINE_AVAILABLE or _rag_generate is None:
         return {"answer": None, "sources": [], "chunks_found": 0}
+    result = _rag_generate(
+        question,
+        student_name=student_name,
+        student_id=student_id,
+        subject_filter=subject_filter,
+    )
+    return result
 
 # Load environment variables
 load_dotenv()
@@ -262,6 +265,8 @@ class HomeworkSubmitRequest(BaseModel):
 
 class AttendanceMarkRequest(BaseModel):
     student_id: str
+    date: Optional[str] = None
+    status: str = "present"
 
 
 
@@ -292,7 +297,13 @@ async def verify_supabase_token(authorization: str) -> dict:
     return {"id": payload["sub"], "email": payload.get("email", "")}
 
 
-async def supabase_query(table: str, method: str = "GET", data: dict = None, filters: dict = None, token: str = None):
+async def supabase_query(
+    table: str,
+    method: str = "GET",
+    data: Optional[dict[str, Any]] = None,
+    filters: Optional[dict[str, Any]] = None,
+    token: Optional[str] = None,
+):
     """No-op stub — database removed. All data served from local store."""
     return [] if method == "GET" else {}
 
@@ -964,7 +975,7 @@ async def update_profile(
         
         # Log activity for profile update
         try:
-            from activity_middleware import log_activity_manual
+            from backend.activity_middleware import log_activity_manual
             log_activity_manual(
                 user_id=uid,
                 event_type="profile_updated",
@@ -1077,7 +1088,8 @@ async def upload_profile_photo(
         
         # Generate unique filename
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        file_extension = Path(file.filename).suffix or ".jpg"
+        original_filename = file.filename or "photo.jpg"
+        file_extension = Path(original_filename).suffix or ".jpg"
         new_filename = f"{uid}_{timestamp}{file_extension}"
 
         # Save file
@@ -1096,7 +1108,7 @@ async def upload_profile_photo(
         
         # Log activity
         try:
-            from activity_middleware import log_activity_manual
+            from backend.activity_middleware import log_activity_manual
             log_activity_manual(
                 user_id=uid,
                 event_type="profile_photo_updated",
@@ -1508,13 +1520,20 @@ async def complete_game(
 
         if auth_uid != game_data.uid:
             raise HTTPException(status_code=403, detail="Unauthorized")
-        games_played = user_rec.get('games_played', 0) + 1
+
+        local_users = _load_users()
+        user_rec = local_users.get(game_data.uid, {})
+
+        old_level = int(user_rec.get("current_level", 1) or 1)
+        games_played = int(user_rec.get('games_played', 0) or 0) + 1
         if game_data.uid in local_users:
             local_users[game_data.uid]['games_played'] = games_played
             _save_users(local_users)
-        level = 1
+
+        total_xp = int(user_rec.get("reward_points", 0) or 0)
+        level = max(total_xp // 100 + 1, 1)
         current_level_xp = total_xp % 100
-        xp_to_next = 100 - current_level_xp
+        xp_to_next = max(100 - current_level_xp, 0)
         new_badges = []
         leveled_up = level > old_level
         new_badge = None
@@ -1820,7 +1839,10 @@ async def get_performance_analytics(
                 filters={"uid": uid},
                 token=user_token
             )
-            xp_history = raw_events if raw_events else []
+            if isinstance(raw_events, list):
+                xp_history = [event for event in raw_events if isinstance(event, dict)]
+            else:
+                xp_history = []
         except Exception:
             pass  # Table doesn't exist yet
 
@@ -2459,12 +2481,12 @@ async def simple_chat(
 # ── Dedicated Groq RAG Chat endpoint ─────────────────────────────────────────
 @app.post("/api/assistant/rag-chat")
 async def rag_chat(
+    background_tasks: BackgroundTasks,
     message: str = Form(None),
     student_name: str = Form("Student"),
     subject_filter: str = Form(""),
     image: UploadFile = File(None),
     authorization: str = Header(None),
-    background_tasks: BackgroundTasks = None,
 ):
     """
     Groq-powered RAG chat endpoint.
@@ -2956,7 +2978,7 @@ class BookProgressRequest(BaseModel):
 async def update_book_progress(
     uid: str,
     req: BookProgressRequest,
-    subject: str = None,
+    subject: Optional[str] = None,
     authorization: str = Header(None),
 ):
     """
@@ -2994,6 +3016,12 @@ async def update_book_progress(
         or req.scroll_pct >= 70
         or progress["readingTime"].get(ch_key, 0) >= 120
     )
+
+    newly_completed = False
+    if should_complete and req.chapter_id not in progress["completedChapters"]:
+        progress["completedChapters"].append(req.chapter_id)
+        newly_completed = True
+
     _save_user_book_progress(uid, subject, progress)
 
     return {
@@ -3533,7 +3561,7 @@ insight_engine = AIInsightEngine()
 @app.get("/api/insights/{uid}")
 async def get_user_insights(
     uid: str, 
-    status: str = None,
+    status: Optional[str] = None,
     limit: int = 20
 ):
     """
@@ -3646,10 +3674,13 @@ async def generate_insights(request: dict):
         
         gam_data = {}
         try:
-            from backend.gamification_engine import GamificationEngine
-            gam_engine = GamificationEngine()
-            gam_data = gam_engine.get_user_state(user_id)
-        except ImportError:
+            import importlib
+            gamification_module = importlib.import_module("backend.gamification_engine")
+            gamification_engine_cls = getattr(gamification_module, "GamificationEngine", None)
+            if gamification_engine_cls:
+                gam_engine = gamification_engine_cls()
+                gam_data = gam_engine.get_user_state(user_id)
+        except Exception:
             pass
         
         # Generate insights
