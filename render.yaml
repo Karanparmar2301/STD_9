@@ -9,7 +9,7 @@ services:
     startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: PYTHON_VERSION
-        value: 3.10.12
+        value: 3.11.8
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_ALGORITHM
@@ -17,10 +17,16 @@ services:
       - key: CORS_ORIGINS
         value: "https://student-dashboard-frontend.onrender.com,https://std-8.vercel.app,http://localhost:3000,http://127.0.0.1:3000"
       - key: CORS_ORIGIN_REGEX
-        value: "^https://.*\\.vercel\\.app$"
+        value: "^https://.*\\.vercel\\.app$|^https://.*\\.onrender\\.com$"
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false
       # Add Groq API Key here later in Render Dashboard
       - key: GROQ_API_KEY
-        sync: false 
+        sync: false
+      - key: HF_TOKEN
+        sync: false
         
     # We must mount a persistent disk since you use users.json, uploads/, etc.
     disk:
