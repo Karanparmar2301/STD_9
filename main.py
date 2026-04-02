@@ -27,26 +27,10 @@ from backend.exception_handlers import register_all_handlers, AuthenticationErro
 from backend.secure_storage import get_users_storage
 from backend.jwt_manager import get_jwt_manager
 
-# Groq RAG Engine (Production pipeline: Hybrid search + Reranker + Groq)
-try:
-    from backend.rag.rag_pipeline import generate_answer as _rag_generate
-    RAG_ENGINE_AVAILABLE = True
-except ImportError as _rag_err:
-    print(f"[WARNING] RAG engine not loaded: {_rag_err}")
-    _rag_generate = None
-    RAG_ENGINE_AVAILABLE = False
+RAG_ENGINE_AVAILABLE = False
 
-
-def rag_pipeline(question: str, student_name: str = "Student", student_id: str = "", subject_filter: str = "") -> dict[str, Any]:
-    if not RAG_ENGINE_AVAILABLE or _rag_generate is None:
-        return {"answer": None, "sources": [], "chunks_found": 0}
-    result = _rag_generate(
-        question,
-        student_name=student_name,
-        student_id=student_id,
-        subject_filter=subject_filter,
-    )
-    return result
+def rag_pipeline(question: str, *args, **kwargs):
+    return {'answer': 'RAG system removed for redesign.', 'sources': [], 'chunks_found': 0}
 
 # Load environment variables
 load_dotenv()
@@ -103,13 +87,7 @@ app = FastAPI()
 register_all_handlers(app)
 logger.info("Exception handlers registered")
 
-# ── RAG startup check ────────────────────────────────────────────────────────
-@app.on_event("startup")
-async def _startup_build_rag_index():
-    if RAG_ENGINE_AVAILABLE:
-        logger.info("[RAG] Production pipeline loaded (hybrid search + reranker + Groq)")
-    else:
-        logger.warning("[RAG] Pipeline not available")
+
 
 
 @app.get("/health")
@@ -118,16 +96,8 @@ async def health_check():
     """System health check endpoint."""
     rag_ready = False
     rag_chunks = 0
-    rag_rebuild_running = bool(globals().get("_RAG_REBUILD_STATE", {}).get("running", False))
-    if RAG_ENGINE_AVAILABLE:
-        try:
-            from backend.rag.embeddings import qdrant_client as _gq, COLLECTION_NAME as _cn
-            info = _gq.get_collection(_cn)
-            rag_chunks = int(getattr(info, "points_count", 0) or 0)
-            rag_ready = rag_chunks > 0
-        except Exception:
-            rag_ready = False
-            rag_chunks = 0
+    rag_rebuild_running = False
+
     return JSONResponse({
         "status":     "healthy",
         "rag_ready":  rag_ready,
@@ -2290,29 +2260,8 @@ def _build_ai_reply(intent: str, message: str, ctx: dict):
     return reply, suggestions
 
 
-async def _groq_rag_reply(
-    message: str,
-    student_name: str,
-    student_id: str = "",
-    subject_filter: str = "",
-) -> Tuple[str, List[str]]:
-    """Call Groq RAG pipeline and return (reply, suggestions)."""
-    import asyncio
-    loop = asyncio.get_event_loop()
-    result = await loop.run_in_executor(
-        None, rag_pipeline, message, student_name, student_id, subject_filter
-    )
-    answer  = result.get("answer") or ""
-    sources = result.get("sources", [])
-    reply   = answer
-
-    suggestions = [
-        "Explain more",
-        "Give me an example",
-        "What else should I know?",
-        "Test me on this topic",
-    ]
-    return reply, suggestions
+async def _groq_rag_reply(*args, **kwargs):
+    return 'RAG system removed for redesign.', []
 
 
 @app.post("/api/assistant/chat")
@@ -2438,7 +2387,7 @@ async def assistant_history(uid: str, authorization: str = Header(None)):
 def _extract_image_text(image_bytes: bytes, mime_type: str) -> str:
     """Extract text from uploaded image using Groq Vision + OCR fallback."""
     try:
-        from backend.rag.image_reader import extract_text_from_image
+        extract_text_from_image = lambda d: ''
         return extract_text_from_image(image_bytes, mime_type)
     except Exception as e:
         print(f"[image] text extraction failed: {e}")
@@ -2478,73 +2427,7 @@ async def simple_chat(
     }
 
 
-# ── Dedicated Groq RAG Chat endpoint ─────────────────────────────────────────
-@app.post("/api/assistant/rag-chat")
-async def rag_chat(
-    background_tasks: BackgroundTasks,
-    message: str = Form(None),
-    student_name: str = Form("Student"),
-    subject_filter: str = Form(""),
-    image: UploadFile = File(None),
-    authorization: str = Header(None),
-):
-    """
-    Groq-powered RAG chat endpoint.
-    Retrieves relevant NCERT PDF chunks, then answers via Groq llama3-8b-8192.
-    Accepts optional image upload for OCR-based questions.
-    Falls back to rule-based reply if Groq is unavailable.
-    """
-    try:
-        message        = (message or "").strip()
-        student_name   = (student_name or "Student")
-        subject_filter = (subject_filter or "")
 
-        # Extract text from image if provided
-        if image:
-            contents = await image.read()
-            mime = image.content_type or "image/png"
-            import asyncio as _aio
-            extracted = await _aio.get_event_loop().run_in_executor(
-                None, _extract_image_text, contents, mime
-            )
-            if extracted:
-                message = f"{message} {extracted}".strip() if message else extracted
-
-        if not message:
-            raise HTTPException(status_code=400, detail="message is required")
-        if len(message) > 3000:
-            raise HTTPException(status_code=400, detail="Message too long")
-
-        if not RAG_ENGINE_AVAILABLE:
-            raise HTTPException(status_code=503, detail="RAG engine not available")
-
-        import asyncio
-        loop = asyncio.get_event_loop()
-        uid = _optional_auth(authorization) or ""
-        result = await loop.run_in_executor(
-            None, rag_pipeline, message, student_name, uid, subject_filter
-        )
-
-        answer  = result.get("answer", "")
-        sources = result.get("sources", [])
-        reply   = answer
-
-        return JSONResponse({
-            "reply":        reply,
-            "answer":       answer,
-            "sources":      sources,
-            "chunks_found": result.get("chunks_found", 0),
-            "elapsed_sec":  result.get("elapsed_sec"),
-            "suggestions":  ["Explain more", "Give me an example", "What else?", "Test me on this"],
-            "timestamp":    datetime.now().isoformat(),
-            "intent":       "rag",
-        })
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"RAG chat error: {e}")
-        raise HTTPException(status_code=500, detail="RAG assistant temporarily unavailable")
 
 
 @app.post("/api/assistant/rebuild-index")
@@ -3699,6 +3582,13 @@ async def generate_insights(request: dict):
         return {"success": False, "error": str(e)}
 
 
+from backend.api.routes import router as rag_router
+app.include_router(rag_router, tags=['RAG'])
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
+
+
+
+
