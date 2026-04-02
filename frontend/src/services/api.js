@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const DEMO_MODE_KEY = 'demoMode';
 const DEMO_UID = '46a04e54-aedf-4c38-bb23-571b7e0ba0e1';
-const DEMO_REMOTE_PDF = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+const DEMO_REMOTE_PDF = 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf';
 
 // Safely read the environment variable that Vite injects at build time
 const rawApiUrl = import.meta.env.VITE_API_URL;
@@ -377,9 +377,50 @@ function getDemoDataForRequest(config) {
         return {
             teacher: 'Ms. Patel',
             weekly_periods: 5,
-            improvement_tip: 'Practice one short revision test every weekend.',
-            strongest_topic: 'Numbers and Operations',
-            focus_topic: 'Word Problems',
+            section: '8-A',
+            academic_year: '2025-26',
+            average_score: 88,
+            rank: 5,
+            total_exams: 8,
+            attendance_pct: 95,
+            days_scheduled: 'Mon-Sat',
+            next_class: {
+                relative: 'Tomorrow',
+                time: '08:00 AM',
+            },
+            last_class: {
+                relative: 'Today',
+            },
+            last_scores: [
+                { label: 'Unit Test 1', score: 84 },
+                { label: 'Unit Test 2', score: 88 },
+                { label: 'Mid Term', score: 90 },
+                { label: 'Quiz', score: 86 },
+            ],
+            insight: 'Consistent improvement trend. Focus a little more on application-based questions.',
+            skill_breakdown: [
+                { name: 'Concept Clarity', score: 90 },
+                { name: 'Problem Solving', score: 84 },
+                { name: 'Speed & Accuracy', score: 86 },
+            ],
+            teacher_feedback: 'Very good progress this term. Keep practicing regularly and ask doubts early.',
+        };
+    }
+
+    if (method === 'get' && /^\/books\/[^/]+\/progress-all$/i.test(path)) {
+        return {
+            progress: {
+                Std_8_math: { completed: [1], read: [1, 2] },
+                Std_8_eng: { completed: [1], read: [1] },
+                Std_8_science: { completed: [1], read: [1, 2] },
+            },
+        };
+    }
+
+    if (method === 'post' && /^\/books\/[^/]+\/progress$/i.test(path)) {
+        return {
+            success: true,
+            newlyCompleted: true,
         };
     }
 
@@ -398,6 +439,21 @@ function getDemoDataForRequest(config) {
             size_bytes: 1048576,
             size_mb: 1,
             chapter_count: 3,
+        };
+    }
+
+    if (method === 'get' && /^\/books\/std_8_[^/]+\/download-all$/i.test(path)) {
+        const demoZipText = `Demo ZIP package for ${rawPath}`;
+        if (typeof Blob !== 'undefined') {
+            return new Blob([demoZipText], { type: 'application/zip' });
+        }
+        return demoZipText;
+    }
+
+    if (method === 'delete' && /^\/books\/std_8_[^/]+\/zip-cache$/i.test(path)) {
+        return {
+            success: true,
+            message: 'Demo cache cleared',
         };
     }
 

@@ -186,6 +186,54 @@ function SubjectDetailModal({ subject, isOpen, onClose }) {
     const details = useSelector(selectSubjectDetails(subject?.name || ''));
     const detailsLoading = useSelector(selectSubjectDetailsLoading(subject?.name || ''));
 
+    const defaultDetails = {
+        teacher: 'Ms. Patel',
+        weekly_periods: 5,
+        section: '8-A',
+        academic_year: '2025-26',
+        average_score: subject?.avg ?? 0,
+        rank: 5,
+        total_exams: 8,
+        attendance_pct: 95,
+        days_scheduled: 'Mon-Sat',
+        next_class: { relative: 'Tomorrow', time: '08:00 AM' },
+        last_class: { relative: 'Today' },
+        last_scores: [
+            { label: 'Unit Test 1', score: 84 },
+            { label: 'Unit Test 2', score: 88 },
+            { label: 'Mid Term', score: 90 },
+            { label: 'Quiz', score: 86 },
+        ],
+        insight: 'Steady progress. Continue consistent revision for stronger outcomes.',
+        skill_breakdown: [
+            { name: 'Concept Clarity', score: 90 },
+            { name: 'Problem Solving', score: 84 },
+            { name: 'Speed & Accuracy', score: 86 },
+        ],
+        teacher_feedback: 'Good consistency. Keep practicing and ask doubts proactively.',
+    };
+
+    const safeDetails = {
+        ...defaultDetails,
+        ...(details || {}),
+        next_class: {
+            ...defaultDetails.next_class,
+            ...(details?.next_class || {}),
+        },
+        last_class: {
+            ...defaultDetails.last_class,
+            ...(details?.last_class || {}),
+        },
+        last_scores: Array.isArray(details?.last_scores) && details.last_scores.length > 0
+            ? details.last_scores
+            : defaultDetails.last_scores,
+        skill_breakdown: Array.isArray(details?.skill_breakdown) && details.skill_breakdown.length > 0
+            ? details.skill_breakdown
+            : defaultDetails.skill_breakdown,
+    };
+
+    const shouldShowFallbackDetails = !!user?.isDemoMode;
+
     // Fetch details when modal opens
     useEffect(() => {
         if (isOpen && subject && !details && !detailsLoading && user?.uid) {
@@ -246,7 +294,7 @@ function SubjectDetailModal({ subject, isOpen, onClose }) {
                                 <div className="perf-modal-loading">
                                     <div className="perf-modal-spinner">🔄 Loading details...</div>
                                 </div>
-                            ) : details ? (
+                            ) : (details || shouldShowFallbackDetails) ? (
                                 <div className="perf-modal-content">
                                     {/* ── 1. SUBJECT HEADER ── */}
                                     <div className="perf-modal-meta">
@@ -254,28 +302,28 @@ function SubjectDetailModal({ subject, isOpen, onClose }) {
                                             <span className="perf-modal-meta-icon">👨‍🏫</span>
                                             <div>
                                                 <div className="perf-modal-meta-label">Teacher</div>
-                                                <div className="perf-modal-meta-value">{details.teacher}</div>
+                                                <div className="perf-modal-meta-value">{safeDetails.teacher}</div>
                                             </div>
                                         </div>
                                         <div className="perf-modal-meta-item">
                                             <span className="perf-modal-meta-icon">📅</span>
                                             <div>
                                                 <div className="perf-modal-meta-label">Weekly Periods</div>
-                                                <div className="perf-modal-meta-value">{details.weekly_periods}</div>
+                                                <div className="perf-modal-meta-value">{safeDetails.weekly_periods}</div>
                                             </div>
                                         </div>
                                         <div className="perf-modal-meta-item">
                                             <span className="perf-modal-meta-icon">🏫</span>
                                             <div>
                                                 <div className="perf-modal-meta-label">Section</div>
-                                                <div className="perf-modal-meta-value">{details.section}</div>
+                                                <div className="perf-modal-meta-value">{safeDetails.section}</div>
                                             </div>
                                         </div>
                                         <div className="perf-modal-meta-item">
                                             <span className="perf-modal-meta-icon">📚</span>
                                             <div>
                                                 <div className="perf-modal-meta-label">Academic Year</div>
-                                                <div className="perf-modal-meta-value">{details.academic_year}</div>
+                                                <div className="perf-modal-meta-value">{safeDetails.academic_year}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -284,21 +332,21 @@ function SubjectDetailModal({ subject, isOpen, onClose }) {
                                     <div className="perf-modal-stats">
                                         <div className="perf-modal-stat" style={{ borderTopColor: color }}>
                                             <div className="perf-modal-stat-label">Average</div>
-                                            <div className="perf-modal-stat-value" style={{ color }}>{details.average_score}%</div>
+                                            <div className="perf-modal-stat-value" style={{ color }}>{safeDetails.average_score}%</div>
                                         </div>
                                         <div className="perf-modal-stat" style={{ borderTopColor: color }}>
                                             <div className="perf-modal-stat-label">Rank</div>
                                             <div className="perf-modal-stat-value" style={{ color }}>
-                                                {details.rank}{details.rank === 1 ? 'st' : details.rank === 2 ? 'nd' : details.rank === 3 ? 'rd' : 'th'}
+                                                {safeDetails.rank}{safeDetails.rank === 1 ? 'st' : safeDetails.rank === 2 ? 'nd' : safeDetails.rank === 3 ? 'rd' : 'th'}
                                             </div>
                                         </div>
                                         <div className="perf-modal-stat" style={{ borderTopColor: color }}>
                                             <div className="perf-modal-stat-label">Exams</div>
-                                            <div className="perf-modal-stat-value" style={{ color }}>{details.total_exams}</div>
+                                            <div className="perf-modal-stat-value" style={{ color }}>{safeDetails.total_exams}</div>
                                         </div>
                                         <div className="perf-modal-stat" style={{ borderTopColor: color }}>
                                             <div className="perf-modal-stat-label">Attendance</div>
-                                            <div className="perf-modal-stat-value" style={{ color }}>{details.attendance_pct}%</div>
+                                            <div className="perf-modal-stat-value" style={{ color }}>{safeDetails.attendance_pct}%</div>
                                         </div>
                                     </div>
 
@@ -309,17 +357,17 @@ function SubjectDetailModal({ subject, isOpen, onClose }) {
                                             <div className="perf-modal-section-content">
                                                 <div className="perf-modal-info-row">
                                                     <span className="perf-modal-info-label">Days</span>
-                                                    <span className="perf-modal-info-value">{details.days_scheduled}</span>
+                                                    <span className="perf-modal-info-value">{safeDetails.days_scheduled}</span>
                                                 </div>
                                                 <div className="perf-modal-info-row">
                                                     <span className="perf-modal-info-label">Next Class</span>
                                                     <span className="perf-modal-info-value">
-                                                        {details.next_class?.relative} {details.next_class?.time}
+                                                        {safeDetails.next_class?.relative} {safeDetails.next_class?.time}
                                                     </span>
                                                 </div>
                                                 <div className="perf-modal-info-row">
                                                     <span className="perf-modal-info-label">Last Class</span>
-                                                    <span className="perf-modal-info-value">{details.last_class?.relative}</span>
+                                                    <span className="perf-modal-info-value">{safeDetails.last_class?.relative}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -328,7 +376,7 @@ function SubjectDetailModal({ subject, isOpen, onClose }) {
                                         <div className="perf-modal-section">
                                             <h4 className="perf-modal-section-title">📈 Recent Scores</h4>
                                             <div className="perf-modal-section-content">
-                                                {details.last_scores?.map((exam, i) => (
+                                                {safeDetails.last_scores?.map((exam, i) => (
                                                     <div key={i} className="perf-modal-trend-item">
                                                         <span className="perf-modal-trend-label">{exam.label}</span>
                                                         <div className="perf-modal-trend-bar-wrapper">
@@ -350,14 +398,14 @@ function SubjectDetailModal({ subject, isOpen, onClose }) {
                                     {/* ── 5. AI SUBJECT INSIGHT ── */}
                                     <div className="perf-modal-section perf-modal-insight">
                                         <h4 className="perf-modal-section-title">🧠 AI Insight</h4>
-                                        <p className="perf-modal-insight-text">{details.insight}</p>
+                                        <p className="perf-modal-insight-text">{safeDetails.insight}</p>
                                     </div>
 
                                     {/* ── 6. SKILL BREAKDOWN ── */}
                                     <div className="perf-modal-section">
                                         <h4 className="perf-modal-section-title">🏆 Skill Breakdown</h4>
                                         <div className="perf-modal-section-content">
-                                            {details.skill_breakdown?.map((skill, i) => (
+                                            {safeDetails.skill_breakdown?.map((skill, i) => (
                                                 <div key={i} className="perf-modal-skill-item">
                                                     <div className="perf-modal-skill-header">
                                                         <span className="perf-modal-skill-name">{skill.name}</span>
@@ -380,7 +428,7 @@ function SubjectDetailModal({ subject, isOpen, onClose }) {
                                     {/* ── 7. TEACHER FEEDBACK ── */}
                                     <div className="perf-modal-section perf-modal-feedback">
                                         <h4 className="perf-modal-section-title">👨‍🏫 Teacher Feedback</h4>
-                                        <p className="perf-modal-feedback-text">"{details.teacher_feedback}"</p>
+                                        <p className="perf-modal-feedback-text">"{safeDetails.teacher_feedback}"</p>
                                     </div>
                                 </div>
                             ) : (
