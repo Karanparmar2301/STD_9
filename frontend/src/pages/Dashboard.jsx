@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -38,25 +38,35 @@ function Dashboard() {
     const user = useSelector((state) => state.auth.user);
     const { loading, error, profileExists } = useSelector((state) => state.student);
     const activeSection = useSelector((state) => state.ui.activeSection);
+    const isDemoMode = !!user?.isDemoMode;
+    const lastProfileCheckUid = useRef(null);
 
     const [showCompletionModal, setShowCompletionModal] = useState(false);
     const [showEditDrawer, setShowEditDrawer] = useState(false);
 
     useEffect(() => {
-        // Check profile existence on mount (database-driven)
+        // In demo mode we skip backend profile checks to avoid noisy retries when offline.
+        if (isDemoMode) {
+            return;
+        }
+
         if (user?.uid && typeof user.uid === 'string' && user.uid.length > 0) {
-            if (profileExists === null && !loading) {
+            const isNewUser = lastProfileCheckUid.current !== user.uid;
+            if (isNewUser && profileExists === null && !loading) {
+                lastProfileCheckUid.current = user.uid;
                 dispatch(checkProfile(user.uid));
             }
         }
-    }, [user, dispatch, profileExists, loading]);
+    }, [user?.uid, dispatch, profileExists, loading, isDemoMode]);
 
     useEffect(() => {
         // Show completion modal if database confirms profile doesn't exist
-        if (profileExists === false) {
+        if (!isDemoMode && profileExists === false) {
             setShowCompletionModal(true);
+        } else if (isDemoMode) {
+            setShowCompletionModal(false);
         }
-    }, [profileExists]);
+    }, [profileExists, isDemoMode]);
 
     useEffect(() => {
         // Initialize all KPIs when user data loads
@@ -122,15 +132,17 @@ function Dashboard() {
     };
 
     const renderSection = () => {
+        const effectiveError = isDemoMode ? null : error;
+
         if (loading && !user) {
             return <SkeletonLoader type="profile" count={1} />;
         }
 
-        if (error) {
+        if (effectiveError) {
             return (
                 <div className="error-container">
                     <h3>Unable to load dashboard</h3>
-                    <p>{typeof error === 'string' ? error : 'Server connection failed'}</p>
+                    <p>{typeof effectiveError === 'string' ? effectiveError : 'Server connection failed'}</p>
                     <button
                         className="retry-btn"
                         onClick={() => user?.uid && dispatch(checkProfile(user.uid))}
