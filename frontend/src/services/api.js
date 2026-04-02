@@ -636,6 +636,13 @@ function getDemoDataForRequest(config) {
 function getDemoFallbackResponse(error) {
     if (!isDemoModeEnabled()) return null;
 
+    const path = normalizeApiPath(error?.config?.url || '/').toLowerCase();
+    // Never fake AI assistant responses in demo fallback.
+    // If assistant API fails, surface the real error instead of masking it.
+    if (path.startsWith('/assistant/') || path === '/chat') {
+        return null;
+    }
+
     const status = error?.response?.status;
     const msg = String(error?.message || '').toLowerCase();
     const isNetworkError = !error?.response || error?.code === 'ERR_NETWORK' || msg.includes('network error');

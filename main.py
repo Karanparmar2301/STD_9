@@ -11,6 +11,7 @@ import json
 import uuid
 import hashlib
 import shutil
+import threading
 from pathlib import Path
 from dotenv import load_dotenv
 from jose import JWTError, jwt
@@ -2516,9 +2517,56 @@ async def rag_chat(
 
 
 @app.post("/api/assistant/rebuild-index")
-async def rebuild_rag_index(authorization: str = Header(None)):
-    """Rebuild index is handled by Qdrant — no local index to rebuild."""
-    return JSONResponse({"status": "ok", "message": "RAG uses Qdrant cloud — no local rebuild needed"})
+async def rebuild_rag_index(background_tasks: BackgroundTasks, authorization: str = Header(None)):
+    """Trigger full PDF re-ingestion to Qdrant using current chunking + embeddings settings."""
+    if not RAG_ENGINE_AVAILABLE:
+        raise HTTPException(status_code=503, detail="RAG engine not available")
+
+    if _RAG_REBUILD_STATE["running"]:
+        return JSONResponse({
+            "status": "running",
+            "message": "RAG rebuild is already in progress",
+            "state": _RAG_REBUILD_STATE,
+        })
+
+    _RAG_REBUILD_STATE["running"] = True
+    _RAG_REBUILD_STATE["last_started"] = datetime.utcnow().isoformat()
+    _RAG_REBUILD_STATE["last_error"] = None
+
+    def _rebuild_job():
+        try:
+            from backend.rag.reingest import reingest
+            reingest()
+            _RAG_REBUILD_STATE["last_error"] = None
+        except Exception as exc:
+            _RAG_REBUILD_STATE["last_error"] = str(exc)
+            logger.exception("RAG rebuild failed")
+        finally:
+            _RAG_REBUILD_STATE["running"] = False
+            _RAG_REBUILD_STATE["last_finished"] = datetime.utcnow().isoformat()
+
+    # Launch in a detached thread so the request returns immediately.
+    background_tasks.add_task(lambda: threading.Thread(target=_rebuild_job, daemon=True).start())
+
+    return JSONResponse({
+        "status": "started",
+        "message": "RAG rebuild started in background",
+        "state": _RAG_REBUILD_STATE,
+    })
+
+
+@app.get("/api/assistant/rebuild-index/status")
+async def rebuild_rag_index_status(authorization: str = Header(None)):
+    """Check asynchronous RAG rebuild status."""
+    return JSONResponse({"status": "ok", "state": _RAG_REBUILD_STATE})
+
+
+_RAG_REBUILD_STATE = {
+    "running": False,
+    "last_started": None,
+    "last_finished": None,
+    "last_error": None,
+}
 
 
 

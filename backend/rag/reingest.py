@@ -7,6 +7,7 @@ Usage:
   python -m backend.rag.reingest
 """
 import os, sys, json, time
+import hashlib
 from tqdm import tqdm
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
@@ -32,7 +33,7 @@ def reingest():
 
     # 1. Load and chunk PDFs
     print("=" * 60)
-    print("Step 1: Loading and chunking PDFs (chunk_size=500, overlap=120)")
+    print("Step 1: Loading and chunking PDFs")
     print("=" * 60)
     chunks = chunk_documents()
     print(f"\nTotal chunks: {len(chunks)}")
@@ -53,7 +54,7 @@ def reingest():
         print(f"  Embedding {len(chunks)} chunks from scratch...")
         embeddings_data = []
         # Batch embed for speed (embed_documents processes multiple texts at once)
-        batch_size = 50
+        batch_size = int(os.getenv("RAG_EMBED_BATCH_SIZE", "48"))
         texts = [c.page_content for c in chunks]
         for i in tqdm(range(0, len(texts), batch_size), desc="Embedding batches", unit="batch"):
             batch_texts = texts[i:i + batch_size]
@@ -62,11 +63,20 @@ def reingest():
                 idx = i + j
                 chunk = chunks[idx]
                 source = chunk.metadata.get("source", "unknown")
+                source_path = chunk.metadata.get("source_path", source)
+                page = chunk.metadata.get("page", 0)
+                subject = chunk.metadata.get("subject", "")
+                chunk_id = chunk.metadata.get("chunk_id", f"{source}::p{page}::c{idx}")
+                stable_id = hashlib.sha1(f"{source}|{page}|{chunk_id}".encode("utf-8")).hexdigest()
                 embeddings_data.append({
+                    "id": stable_id,
                     "vector": vec,
                     "text": chunk.page_content,
                     "source": os.path.basename(source) if os.path.sep in source else source,
-                    "page": chunk.metadata.get("page", 0),
+                    "source_path": source_path,
+                    "page": page,
+                    "subject": subject,
+                    "chunk_id": chunk_id,
                 })
         # Cache for resume
         print(f"  Saving cache ({len(embeddings_data)} embeddings)...")
@@ -103,15 +113,18 @@ def reingest():
         batch = embeddings_data[i:i + batch_size]
         points = [
             PointStruct(
-                id=i + j,
+                id=item["id"],
                 vector=item["vector"],
                 payload={
                     "text": item["text"],
                     "source": item["source"],
                     "page": item["page"],
+                    "subject": item.get("subject", ""),
+                    "source_path": item.get("source_path", item["source"]),
+                    "chunk_id": item.get("chunk_id", ""),
                 }
             )
-            for j, item in enumerate(batch)
+            for item in batch
         ]
         for attempt in range(3):
             try:
@@ -129,7 +142,7 @@ def reingest():
     print(f"\n{'=' * 60}")
     print(f"Done! Vectors in Qdrant: {count}")
     print(f"Collection: {COLLECTION_NAME}")
-    print(f"Chunk size: 500 | Overlap: 120")
+    print(f"Embedding batch size: {batch_size}")
     print(f"{'=' * 60}")
 
     # Clean up cache

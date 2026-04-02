@@ -18,6 +18,18 @@ _DEVANAGARI = re.compile(r'[\u0900-\u097F]')
 _GUJARATI = re.compile(r'[\u0A80-\u0AFF]')
 
 
+def _extract_groq_content(response) -> str:
+    try:
+        choices = getattr(response, "choices", None)
+        if not choices:
+            return ""
+        message = getattr(choices[0], "message", None)
+        content = getattr(message, "content", None)
+        return (content or "").strip()
+    except Exception:
+        return ""
+
+
 def detect_language(text: str) -> str:
     """Detect if input is Hindi, Gujarati, or English."""
     if _GUJARATI.search(text):
@@ -41,7 +53,8 @@ def translate_to_english(text: str, source_lang: str) -> str:
             temperature=0.1,
             max_tokens=500
         )
-        return response.choices[0].message.content.strip()
+        translated = _extract_groq_content(response)
+        return translated or text
     except Exception as e:
         print(f"[Translator] to-English failed: {e}")
         return text
@@ -62,7 +75,8 @@ def translate_from_english(text: str, target_lang: str) -> str:
             temperature=0.1,
             max_tokens=1000
         )
-        return response.choices[0].message.content.strip()
+        translated = _extract_groq_content(response)
+        return translated or text
     except Exception as e:
         print(f"[Translator] to-{lang_name} failed: {e}")
         return text

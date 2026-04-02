@@ -143,11 +143,35 @@ def vector_search(
     subject_key = _detect_subject_key(subject_filter)
     query_limit = max(limit * 4, limit) if subject_tokens else limit
 
-    results = qdrant_client.query_points(
-        collection_name=COLLECTION_NAME,
-        query=query_vector,
-        limit=query_limit
-    )
+    query_filter = None
+    if subject_key:
+        try:
+            from qdrant_client.models import Filter, FieldCondition, MatchValue
+            query_filter = Filter(
+                must=[
+                    FieldCondition(
+                        key="subject",
+                        match=MatchValue(value=subject_key)
+                    )
+                ]
+            )
+        except Exception:
+            query_filter = None
+
+    try:
+        results = qdrant_client.query_points(
+            collection_name=COLLECTION_NAME,
+            query=query_vector,
+            query_filter=query_filter,
+            limit=query_limit
+        )
+    except Exception:
+        # Fallback query without payload filter in case of cloud/provider incompatibility.
+        results = qdrant_client.query_points(
+            collection_name=COLLECTION_NAME,
+            query=query_vector,
+            limit=query_limit
+        )
 
     documents: list[dict[str, Any]] = []
     for result in results.points:
@@ -182,8 +206,8 @@ def keyword_search(
     subject_filter: str = "",
 ) -> list[dict[str, Any]]:
     """
-    Keyword-based search using Qdrant scroll + payload filtering.
-    Searches for exact keyword matches in stored chunk text.
+    Keyword-style relevance over semantic candidates.
+    This avoids fragile Qdrant scroll text-match calls on hosted instances.
     """
     # Extract meaningful keywords (3+ chars, no stopwords)
     stopwords = {'the', 'is', 'are', 'was', 'were', 'what', 'how', 'why', 'when',
@@ -198,61 +222,42 @@ def keyword_search(
     if not keywords:
         return []
 
-    subject_tokens = _normalize_subject_filter(subject_filter)
-    subject_key = _detect_subject_key(subject_filter)
+    # Pull a wider semantic candidate set and score lexical relevance locally.
+    candidates = vector_search(
+        question,
+        limit=max(limit * 6, 24),
+        subject_filter=subject_filter,
+    )
 
-    # Use Qdrant scroll with text matching for each keyword
-    documents: list[dict[str, Any]] = []
+    rescored: list[dict[str, Any]] = []
     seen_texts: set[str] = set()
 
-    for kw in keywords[:3]:  # max 3 keywords
-        try:
-            from qdrant_client.models import Filter, FieldCondition, MatchText
-            results = qdrant_client.scroll(
-                collection_name=COLLECTION_NAME,
-                scroll_filter=Filter(
-                    must=[
-                        FieldCondition(
-                            key="text",
-                            match=MatchText(text=kw)
-                        )
-                    ]
-                ),
-                limit=limit,
-                with_payload=True,
-                with_vectors=False,
-            )
-
-            for point in results[0]:  # scroll returns (points, next_offset)
-                payload = point.payload or {}
-                text = str(payload.get("text", ""))
-                source = str(payload.get("source", ""))
-                page = int(payload.get("page", 0) or 0)
-
-                if not text or not source:
-                    continue
-
-                if not _matches_subject_filter(source, subject_tokens, subject_key):
-                    continue
-
-                text_snippet = text[:200]
-                if text_snippet not in seen_texts:
-                    lexical_score = _keyword_relevance_score(text, keywords)
-                    if lexical_score <= 0:
-                        continue
-
-                    seen_texts.add(text_snippet)
-                    documents.append({
-                        "text": text,
-                        "source": source,
-                        "page": page,
-                        "score": lexical_score,
-                        "method": "keyword"
-                    })
-        except Exception:
+    for doc in candidates:
+        text = str(doc.get("text", ""))
+        source = str(doc.get("source", ""))
+        page = int(doc.get("page", 0) or 0)
+        if not text or not source:
             continue
 
-    return documents[:limit]
+        text_snippet = text[:220]
+        if text_snippet in seen_texts:
+            continue
+
+        lexical_score = _keyword_relevance_score(text, keywords)
+        if lexical_score <= 0:
+            continue
+
+        seen_texts.add(text_snippet)
+        rescored.append({
+            "text": text,
+            "source": source,
+            "page": page,
+            "score": lexical_score,
+            "method": "keyword",
+        })
+
+    rescored.sort(key=lambda d: d["score"], reverse=True)
+    return rescored[:limit]
 
 
 def hybrid_search(

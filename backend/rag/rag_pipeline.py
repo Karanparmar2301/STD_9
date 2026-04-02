@@ -120,6 +120,30 @@ _CHAPTER_TITLE_OVERRIDES: dict[str, dict[int, str]] = {
 
 _CHAPTER_FILE_PATTERN = re.compile(r"(?i)chapter\s*(\d{1,2})(?:\s*[-:_]\s*(.*))?")
 
+_FILE_QUERY_TYPO_HINTS = {"filrs", "filse", "fiels", "fils"}
+_SUBJECT_QUERY_TYPO_HINTS = {"subjecets", "subjecs", "subjets", "subjcts"}
+
+_QUESTION_STOPWORDS = {
+    "what", "which", "when", "where", "why", "how", "does", "did", "can", "could", "would", "should",
+    "explain", "describe", "tell", "about", "from", "with", "into", "their", "there", "them", "this",
+    "that", "these", "those", "your", "have", "has", "were", "was", "been", "being", "into", "over",
+    "under", "between", "after", "before", "during", "give", "name", "names", "list", "show", "find",
+    "book", "books", "chapter", "chapters", "question", "answer", "answers", "most", "likely", "moment",
+}
+
+_PROPER_NOUN_IGNORE = {
+    "What", "Which", "When", "Where", "Why", "How", "Can", "Could", "Would", "Should", "Name", "List",
+    "Give", "Explain", "Describe", "She", "He", "They", "The", "A", "An", "In", "On", "At", "Is",
+    "Are", "Do", "Does", "Did", "If", "For", "And", "Or", "But",
+}
+
+_UNRELATED_ANSWER_PATTERNS = [
+    r"substitute the underlined",
+    r"fill in the blanks",
+    r"choose the correct option",
+    r"multiple choice",
+]
+
 
 def _get_memory(student_id: str) -> list[dict]:
     return _chat_memory.get(student_id, [])
@@ -302,11 +326,86 @@ def _extract_requested_chapter(question: str) -> int | None:
 
 def _is_file_query(question: str) -> bool:
     q = (question or "").lower()
-    # Include simple typo-tolerant stems (fil*, subj*) for casual user input.
-    has_file_token = bool(re.search(r"\b(file|files|pdf|pdfs|document|documents|fil\w*)\b", q))
+    has_file_token = bool(re.search(r"\b(file|files|pdf|pdfs|document|documents)\b", q))
+    has_file_typo = any(f" {hint} " in f" {q} " for hint in _FILE_QUERY_TYPO_HINTS)
     has_list_intent = any(term in q for term in ["all", "list", "show", "give", "available", "which"])
-    has_subject_token = bool(re.search(r"\b(subject|subjects|subj\w*)\b", q))
-    return (has_file_token and has_list_intent) or (has_subject_token and has_list_intent and has_file_token)
+    has_subject_token = bool(re.search(r"\b(subject|subjects)\b", q))
+    has_subject_typo = any(f" {hint} " in f" {q} " for hint in _SUBJECT_QUERY_TYPO_HINTS)
+    has_book_token = bool(re.search(r"\b(book|books)\b", q))
+
+    explicit_file_request = (has_file_token or has_file_typo) and has_list_intent
+    book_subject_request = has_list_intent and has_book_token and (has_subject_token or has_subject_typo)
+    return explicit_file_request or book_subject_request
+
+
+def _extract_signal_terms(question: str) -> list[str]:
+    tokens = re.findall(r"\b[A-Za-z][A-Za-z'-]{2,}\b", question or "")
+    cleaned: list[str] = []
+
+    for token in tokens:
+        lower = token.lower()
+        if lower in _QUESTION_STOPWORDS:
+            continue
+        if lower not in cleaned:
+            cleaned.append(lower)
+
+    cleaned.sort(key=len, reverse=True)
+    return cleaned[:10]
+
+
+def _has_named_entity_support(question: str, context: str) -> bool:
+    names = re.findall(r"\b[A-Z][a-z]{2,}\b", question or "")
+    names = [name.lower() for name in names if name not in _PROPER_NOUN_IGNORE]
+    if not names:
+        return True
+
+    context_l = (context or "").lower()
+    return any(re.search(rf"\b{re.escape(name)}\b", context_l) for name in names)
+
+
+def _is_insufficient_grounding(question: str, context: str) -> bool:
+    context_l = (context or "").lower().strip()
+    if not context_l:
+        return True
+
+    if not _has_named_entity_support(question, context):
+        return True
+
+    terms = _extract_signal_terms(question)
+    if len(terms) < 4:
+        return False
+
+    hits = sum(1 for term in terms if re.search(rf"\b{re.escape(term)}\b", context_l))
+    required = max(2, int(len(terms) * 0.28))
+    return hits < required
+
+
+def _looks_unrelated_answer(answer: str, question: str) -> bool:
+    ans_l = (answer or "").lower()
+    if not ans_l.strip():
+        return True
+
+    if "i cannot find the answer in the provided textbooks" in ans_l:
+        return False
+
+    if any(re.search(pattern, ans_l) for pattern in _UNRELATED_ANSWER_PATTERNS):
+        q_l = (question or "").lower()
+        if not any(key in q_l for key in ["underline", "fill in", "multiple choice", "choose"]):
+            return True
+
+    return False
+
+
+def _extract_groq_content(response) -> str:
+    try:
+        choices = getattr(response, "choices", None)
+        if not choices:
+            return ""
+        message = getattr(choices[0], "message", None)
+        content = getattr(message, "content", None)
+        return (content or "").strip()
+    except Exception:
+        return ""
 
 
 def _is_count_only_chapter_query(question: str) -> bool:
@@ -648,6 +747,17 @@ def generate_answer(
                 "language": lang,
             }
 
+        # 6c. Ensure retrieved context actually overlaps the user question signal terms.
+        if _is_insufficient_grounding(search_query, context):
+            elapsed = time.time() - start
+            return {
+                "answer": "I cannot find the answer in the provided textbooks.",
+                "sources": [],
+                "chunks_found": 0,
+                "elapsed_sec": round(elapsed, 2),
+                "language": lang,
+            }
+
         # 7. Generate answer with strict anti-hallucination prompt
         prompt = f"""You are a helpful Class 8 tutor assisting {student_name}.  
 
@@ -659,12 +769,14 @@ Rules:
 - Do NOT mention document names or file names.
 - Do NOT show sources.
 - Do NOT use your own knowledge.
+- Do NOT add guesses or inferred facts that are not explicitly in context.
 - If the answer is not present in the context, say:
   "I cannot find the answer in the provided textbooks."
 - Keep answers student-friendly.
 - Use bullet points or numbered lists when explaining steps.
 - If context seems incomplete for a long list question, say what is available and state that context is partial.
 - For chapter-list questions, include every chapter name you can find in context and continue numbering correctly.
+- For multiple-choice style questions, choose only from context-supported options; if unclear, return the fallback sentence.
 {memory_ctx}
 Context:
 {context}
@@ -684,7 +796,21 @@ Answer:"""
             max_tokens=1400 if catalog_query else 1024,
         )
 
-        answer = response.choices[0].message.content
+        answer_en = _extract_groq_content(response)
+        if not answer_en:
+            elapsed = time.time() - start
+            return {
+                "answer": "I cannot find the answer in the provided textbooks.",
+                "sources": [],
+                "chunks_found": 0,
+                "elapsed_sec": round(elapsed, 2),
+                "language": lang,
+            }
+
+        if _looks_unrelated_answer(answer_en, search_query):
+            answer_en = "I cannot find the answer in the provided textbooks."
+
+        answer = answer_en
 
         # 8. Translate answer back if needed
         if lang != "english":
@@ -711,10 +837,13 @@ Answer:"""
     except Exception as e:
         elapsed = time.time() - start
         error_msg = str(e)
+        print(f"[RAG pipeline error] {repr(e)}")
         if "HF_TOKEN_REQUIRED" in error_msg:
             answer = "Sorry! I cannot process PDF textbooks correctly right now because the free web server is out of memory. To fix this, please follow the developer instructions to add a free HF_TOKEN to your hosting settings, or try running the server locally!"
+        elif isinstance(e, IndexError) or error_msg.strip() in {"0", "1"}:
+            answer = "I cannot find the answer in the provided textbooks."
         else:
-            answer = f"I'm sorry, I ran into an error while finding the answer: {error_msg}"
+            answer = "I'm sorry, I couldn't process this question right now. Please try again."
             
         return {
             "answer": answer,
