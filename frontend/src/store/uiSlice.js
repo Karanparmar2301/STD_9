@@ -46,6 +46,11 @@ const uiSlice = createSlice({
         },
         toggleTheme: (state) => {
             state.theme = state.theme === 'light' ? 'dark' : 'light';
+        },
+        resetUIState: (state) => {
+            state.activeSection = 'dashboard';
+            state.sidebarOpen = false;
+            state.loading = { ...initialState.loading };
         }
     }
 });
@@ -58,7 +63,8 @@ export const {
     setNotifications,
     incrementUnreadCount,
     clearUnreadCount,
-    toggleTheme
+    toggleTheme,
+    resetUIState
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

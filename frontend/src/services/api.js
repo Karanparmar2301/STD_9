@@ -7,12 +7,15 @@ import {
 } from '../constants/demoCatalog';
 
 const DEMO_MODE_KEY = 'demoMode';
+export const API_AUTH_EXPIRED_EVENT = 'app:auth-expired';
+const DEFAULT_PROD_BACKEND_URL = 'https://student-dashboard-backend.onrender.com';
 
 // Safely read the environment variable that Vite injects at build time
 const rawApiUrl = import.meta.env.VITE_API_URL;
 // Normalize API URL and allow either backend root URL or URL ending with /api.
 const normalizedApiUrl = rawApiUrl ? rawApiUrl.replace(/\/+$/, '') : '';
-const BACKEND_URL = normalizedApiUrl.replace(/\/api$/i, '');
+const configuredBackendUrl = normalizedApiUrl.replace(/\/api$/i, '');
+const BACKEND_URL = configuredBackendUrl || (import.meta.env.PROD ? DEFAULT_PROD_BACKEND_URL : '');
 
 // All requests go through the Vite proxy (both dev and prod) -> In prod, appending /api to BACKEND_URL
 const API_BASE_URL = BACKEND_URL ? `${BACKEND_URL}/api` : '/api';
@@ -20,8 +23,8 @@ const API_BASE_URL = BACKEND_URL ? `${BACKEND_URL}/api` : '/api';
 // Auth endpoints also go through the Vite proxy -> In prod, absolute URL to backend
 const AUTH_BASE_URL = BACKEND_URL;
 
-if (import.meta.env.PROD && !BACKEND_URL) {
-    console.error('[API] Missing VITE_API_URL in production. Set it to your backend URL.');
+if (import.meta.env.PROD && !configuredBackendUrl) {
+    console.warn(`[API] Missing VITE_API_URL in production. Falling back to ${DEFAULT_PROD_BACKEND_URL}.`);
 }
 
 // Create axios instance
@@ -35,6 +38,21 @@ const api = axios.create({
 // Track if we're currently refreshing token to avoid multiple refresh requests
 let isRefreshing = false;
 let refreshSubscribers = [];
+let authExpiredSignaled = false;
+
+function emitAuthExpired(reason = 'unauthorized') {
+    if (authExpiredSignaled || typeof window === 'undefined') {
+        return;
+    }
+    authExpiredSignaled = true;
+    window.dispatchEvent(new CustomEvent(API_AUTH_EXPIRED_EVENT, {
+        detail: { reason }
+    }));
+}
+
+function resetAuthExpiredSignal() {
+    authExpiredSignaled = false;
+}
 
 function isDemoModeEnabled() {
     try {
@@ -70,6 +88,10 @@ function extractPath(url = '') {
 function normalizeApiPath(url = '') {
     const path = extractPath(url).replace(/\/+$/, '') || '/';
     return path.replace(/^\/api(?=\/|$)/i, '') || '/';
+}
+
+function isAssistantPath(path = '') {
+    return path.startsWith('/assistant/') || path === '/chat';
 }
 
 function daysAgoIso(daysAgo) {
@@ -668,19 +690,36 @@ function getDemoFallbackResponse(error) {
 }
 
 // Subscribe failed request to retry after token refresh
-function subscribeTokenRefresh(cb) {
-    refreshSubscribers.push(cb);
+function subscribeTokenRefresh() {
+    return new Promise((resolve, reject) => {
+        refreshSubscribers.push({ resolve, reject });
+    });
 }
 
 // Notify all subscribers when token is refreshed
 function onTokenRefreshed(newToken) {
-    refreshSubscribers.forEach(cb => cb(newToken));
+    refreshSubscribers.forEach((subscriber) => subscriber.resolve(newToken));
+    refreshSubscribers = [];
+}
+
+function onTokenRefreshFailed(refreshError) {
+    refreshSubscribers.forEach((subscriber) => subscriber.reject(refreshError));
     refreshSubscribers = [];
 }
 
 // Add request interceptor to include auth token
 api.interceptors.request.use(
     (config) => {
+        const skipAuth = config?.headers?.['X-Skip-Auth'] === '1' || config?.headers?.['x-skip-auth'] === '1';
+        if (skipAuth) {
+            if (config.headers) {
+                delete config.headers['X-Skip-Auth'];
+                delete config.headers['x-skip-auth'];
+                delete config.headers.Authorization;
+            }
+            return config;
+        }
+
         const token = localStorage.getItem('authToken');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
@@ -704,75 +743,89 @@ api.interceptors.response.use(
             return Promise.resolve(demoFallback);
         }
 
-        const originalRequest = error.config;
+        const originalRequest = error.config || {};
+        const requestPath = normalizeApiPath(originalRequest?.url || '/').toLowerCase();
+        const assistantRequest = isAssistantPath(requestPath);
 
         // Check if error is 401 (Unauthorized)
-        if (error.response?.status === 401 && !originalRequest._retry) {
-
-            // Check error code - if TOKEN_EXPIRED, try to refresh
-            const errorCode = error.response?.data?.error_code;
-
-            if (errorCode === 'TOKEN_EXPIRED') {
-                // Try to refresh token
-                const refreshToken = localStorage.getItem('refreshToken');
-
-                if (refreshToken && !isRefreshing) {
-                    isRefreshing = true;
-                    originalRequest._retry = true;
-
-                    try {
-                        // Request new access token
-                        const response = await authAxios.post('/auth/refresh', { refresh_token: refreshToken });
-                        const newToken = response.data.token || response.data.access_token;
-
-                        if (!newToken) {
-                            throw new Error('Refresh response did not include an access token');
-                        }
-
-                        // Save new token
-                        localStorage.setItem('authToken', newToken);
-
-                        // Update original request with new token
-                        originalRequest.headers.Authorization = `Bearer ${newToken}`;
-
-                        // Notify all waiting requests
-                        onTokenRefreshed(newToken);
-                        isRefreshing = false;
-
-                        // Retry original request
-                        return api(originalRequest);
-
-                    } catch (refreshError) {
-                        // Refresh failed - logout user
-                        console.error('[Auth] Token refresh failed, logging out');
-                        isRefreshing = false;
-                        localStorage.removeItem('authToken');
-                        localStorage.removeItem('refreshToken');
-
-                        // Redirect to login
-                        window.location.href = '/login';
-
-                        return Promise.reject(refreshError);
-                    }
-                } else if (isRefreshing) {
-                    // Queue this request to retry after refresh completes
-                    return new Promise((resolve) => {
-                        subscribeTokenRefresh((newToken) => {
-                            originalRequest.headers.Authorization = `Bearer ${newToken}`;
-                            resolve(api(originalRequest));
-                        });
-                    });
+        if (error.response?.status === 401) {
+            // Assistant endpoint supports optional auth. Retry once without auth token
+            // so a stale JWT does not log the user out mid-chat.
+            if (assistantRequest) {
+                if (!originalRequest._retryWithoutAuth) {
+                    originalRequest._retryWithoutAuth = true;
+                    originalRequest.headers = originalRequest.headers || {};
+                    originalRequest.headers['X-Skip-Auth'] = '1';
+                    return api(originalRequest);
                 }
+                return Promise.reject(error);
             }
 
-            // Token expired and no refresh token, or other 401 error
-            console.error('[Auth] Authentication failed, redirecting to login');
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('refreshToken');
+            if (!originalRequest._retry) {
 
-            // Redirect to login (avoid infinite loop by checking current path)
-            if (window.location.pathname !== '/' && window.location.pathname !== '/login' && window.location.pathname !== '/signup') {
-                window.location.href = '/';
+                // Check error code - if TOKEN_EXPIRED, try to refresh
+                const errorCode = error.response?.data?.error_code;
+
+                if (errorCode === 'TOKEN_EXPIRED') {
+                    // Try to refresh token
+                    const refreshToken = localStorage.getItem('refreshToken');
+
+                    if (refreshToken && !isRefreshing) {
+                        isRefreshing = true;
+                        originalRequest._retry = true;
+
+                        try {
+                            // Request new access token
+                            const response = await authAxios.post('/auth/refresh', { refresh_token: refreshToken });
+                            const newToken = response.data.token || response.data.access_token;
+
+                            if (!newToken) {
+                                throw new Error('Refresh response did not include an access token');
+                            }
+
+                            // Save new token
+                            localStorage.setItem('authToken', newToken);
+                            resetAuthExpiredSignal();
+
+                            // Update original request with new token
+                            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+                            // Notify all waiting requests
+                            onTokenRefreshed(newToken);
+                            isRefreshing = false;
+
+                            // Retry original request
+                            return api(originalRequest);
+
+                        } catch (refreshError) {
+                            // Refresh failed - logout user state without hard page reload
+                            console.error('[Auth] Token refresh failed, clearing auth state');
+                            isRefreshing = false;
+                            localStorage.removeItem('authToken');
+                            localStorage.removeItem('refreshToken');
+                            onTokenRefreshFailed(refreshError);
+                            emitAuthExpired('refresh_failed');
+
+                            return Promise.reject(refreshError);
+                        }
+                    } else if (isRefreshing) {
+                        // Queue this request to retry after refresh completes
+                        try {
+                            const newToken = await subscribeTokenRefresh();
+                            originalRequest.headers = originalRequest.headers || {};
+                            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                            return api(originalRequest);
+                        } catch (refreshError) {
+                            return Promise.reject(refreshError);
+                        }
+                    }
+                }
+
+                // Token expired and no refresh token, or other 401 error
+                console.error('[Auth] Authentication failed, clearing auth state');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('refreshToken');
+                emitAuthExpired(errorCode || 'unauthorized');
             }
         }
 

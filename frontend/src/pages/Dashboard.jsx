@@ -31,6 +31,21 @@ const AIAssistant = lazy(() => import('../components/AIAssistant'));
 
 import './Dashboard.css';
 
+const DASHBOARD_SECTIONS = new Set([
+    'dashboard',
+    'attendance',
+    'timetable',
+    'homework',
+    'performance',
+    'announcements',
+    'books',
+    'ai-assistant',
+]);
+
+function getSectionStorageKey(uid) {
+    return uid ? `dashboard-active-section:${uid}` : '';
+}
+
 function Dashboard() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -40,9 +55,56 @@ function Dashboard() {
     const activeSection = useSelector((state) => state.ui.activeSection);
     const isDemoMode = !!user?.isDemoMode;
     const lastProfileCheckUid = useRef(null);
+    const sectionHydratedRef = useRef(false);
 
     const [showCompletionModal, setShowCompletionModal] = useState(false);
     const [showEditDrawer, setShowEditDrawer] = useState(false);
+
+    useEffect(() => {
+        sectionHydratedRef.current = false;
+    }, [user?.uid]);
+
+    useEffect(() => {
+        const uid = user?.uid;
+        if (!uid || sectionHydratedRef.current) {
+            return;
+        }
+
+        const key = getSectionStorageKey(uid);
+        if (!key) {
+            sectionHydratedRef.current = true;
+            return;
+        }
+
+        try {
+            const savedSection = localStorage.getItem(key);
+            if (savedSection && DASHBOARD_SECTIONS.has(savedSection) && savedSection !== activeSection) {
+                dispatch(setActiveSection(savedSection));
+            }
+        } catch {
+            // Ignore storage failures and continue with default section.
+        }
+
+        sectionHydratedRef.current = true;
+    }, [user?.uid, activeSection, dispatch]);
+
+    useEffect(() => {
+        const uid = user?.uid;
+        if (!uid || !sectionHydratedRef.current || !DASHBOARD_SECTIONS.has(activeSection)) {
+            return;
+        }
+
+        const key = getSectionStorageKey(uid);
+        if (!key) {
+            return;
+        }
+
+        try {
+            localStorage.setItem(key, activeSection);
+        } catch {
+            // Ignore storage failures.
+        }
+    }, [user?.uid, activeSection]);
 
     useEffect(() => {
         // In demo mode we skip backend profile checks to avoid noisy retries when offline.

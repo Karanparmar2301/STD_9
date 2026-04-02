@@ -124,18 +124,27 @@ const aiSlice = createSlice({
     });
     builder.addCase(sendChatMessage.fulfilled, (state, action) => {
       state.isTyping   = false;
-      state.lastIntent = action.payload?.intent || null;
-      const { reply, suggestions, timestamp, sources, chunks_found } = action.payload;
+      const payload = (action.payload && typeof action.payload === 'object') ? action.payload : {};
+      state.lastIntent = payload?.intent || null;
+      const reply = (typeof payload.reply === 'string' && payload.reply.trim())
+        ? payload.reply
+        : ((typeof payload.answer === 'string' && payload.answer.trim())
+            ? payload.answer
+            : "😕 I couldn't understand the response. Please try again.");
+      const suggestions = Array.isArray(payload.suggestions) ? payload.suggestions : [];
+      const timestamp = payload.timestamp;
+      const sources = Array.isArray(payload.sources) ? payload.sources : [];
+      const chunks_found = Number.isFinite(payload.chunks_found) ? payload.chunks_found : 0;
       state.messages.push({
         id:           makeId(),
         role:         'assistant',
         content:      reply,
         timestamp:    timestamp || new Date().toISOString(),
-        intent:       action.payload?.intent,
-        sources:      sources || [],
-        chunks_found: chunks_found || 0,
+        intent:       payload?.intent,
+        sources,
+        chunks_found,
       });
-      if (suggestions?.length) {
+      if (suggestions.length) {
         state.suggestions = suggestions;
       }
     });
@@ -159,17 +168,26 @@ const aiSlice = createSlice({
     builder.addCase(sendRagMessage.fulfilled, (state, action) => {
       state.isTyping   = false;
       state.lastIntent = 'rag';
-      const { reply, suggestions, timestamp, sources, chunks_found } = action.payload;
+      const payload = (action.payload && typeof action.payload === 'object') ? action.payload : {};
+      const reply = (typeof payload.reply === 'string' && payload.reply.trim())
+        ? payload.reply
+        : ((typeof payload.answer === 'string' && payload.answer.trim())
+            ? payload.answer
+            : "📚 I couldn't process the textbook response. Please try again.");
+      const suggestions = Array.isArray(payload.suggestions) ? payload.suggestions : [];
+      const timestamp = payload.timestamp;
+      const sources = Array.isArray(payload.sources) ? payload.sources : [];
+      const chunks_found = Number.isFinite(payload.chunks_found) ? payload.chunks_found : 0;
       state.messages.push({
         id:           makeId(),
         role:         'assistant',
         content:      reply,
         timestamp:    timestamp || new Date().toISOString(),
         intent:       'rag',
-        sources:      sources || [],
-        chunks_found: chunks_found || 0,
+        sources,
+        chunks_found,
       });
-      if (suggestions?.length) {
+      if (suggestions.length) {
         state.suggestions = suggestions;
       }
     });

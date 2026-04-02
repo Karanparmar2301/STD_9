@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkSession } from './store/authSlice';
+import { checkSession, clearAuth } from './store/authSlice';
+import { resetUIState } from './store/uiSlice';
+import { API_AUTH_EXPIRED_EVENT } from './services/api';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
@@ -30,6 +32,18 @@ function App() {
 
     useEffect(() => {
         dispatch(checkSession());
+    }, [dispatch]);
+
+    useEffect(() => {
+        const handleAuthExpired = () => {
+            dispatch(clearAuth());
+            dispatch(resetUIState());
+        };
+
+        window.addEventListener(API_AUTH_EXPIRED_EVENT, handleAuthExpired);
+        return () => {
+            window.removeEventListener(API_AUTH_EXPIRED_EVENT, handleAuthExpired);
+        };
     }, [dispatch]);
 
     return (
