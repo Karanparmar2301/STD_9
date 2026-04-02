@@ -14,6 +14,7 @@ import os
 import re
 import time
 from datetime import datetime
+from pathlib import Path
 from dotenv import load_dotenv
 from groq import Groq
 
@@ -42,6 +43,83 @@ _SUBJECT_HINTS = {
     "voced": ["vocational", "vocational education", "voc. education", "voced"],
 }
 
+_SUBJECT_SLUGS = {
+    "math": "Std_8_math",
+    "science": "Std_8_science",
+    "english": "Std_8_eng",
+    "hindi": "Std_8_hindi",
+    "social": "Std_8_social",
+    "sanskrit": "Std_8_sanskrit",
+    "arts": "Std_8_arts",
+    "physed": "Std_8_physed",
+    "voced": "Std_8_voced",
+}
+
+_SUBJECT_LABELS = {
+    "math": "Mathematics",
+    "science": "Science",
+    "english": "English",
+    "hindi": "Hindi",
+    "social": "Social Science",
+    "sanskrit": "Sanskrit",
+    "arts": "Fine Arts",
+    "physed": "Physical Education",
+    "voced": "Vocational Education",
+}
+
+_REFERENCE_STEMS = {"index", "intro", "unit", "annexure", "warm up and cool down"}
+
+# Curated chapter titles are used only when chapter PDFs are present for that number.
+_CHAPTER_TITLE_OVERRIDES: dict[str, dict[int, str]] = {
+    "science": {
+        1: "Chapter 1: Exploring the Investigative World of Science",
+        2: "Chapter 2: The Invisible Living World: Beyond Our Naked Eye",
+        3: "Chapter 3: Health: The Ultimate Treasure",
+        4: "Chapter 4: Electricity: Magnetic and Heating Effects",
+        5: "Chapter 5: Exploring Forces",
+        6: "Chapter 6: Pressure, Winds, Storms, and Cyclones",
+        7: "Chapter 7: Particulate Nature of Matter",
+        8: "Chapter 8: Nature of Matter: Elements, Compounds, and Mixtures",
+        9: "Chapter 9: The Amazing World of Solutes, Solvents, and Solutions",
+        10: "Chapter 10: Light: Mirrors and Lenses",
+        11: "Chapter 11: Keeping Time with the Skies",
+        12: "Chapter 12: How Nature Works in Harmony",
+        13: "Chapter 13: Our Home: Earth, a Unique Life Sustaining Planet",
+    },
+    "arts": {
+        1: "Chapter 1: Bringing Words Alive",
+        2: "Chapter 2: One Stage, Many Scripts",
+        3: "Chapter 3: From Page to Stage",
+        4: "Chapter 4: Applause and Advice",
+        5: "Chapter 5: Discovering the Elements of Music",
+        6: "Chapter 6: Musical Instruments",
+        7: "Chapter 7: Indian Classical Music",
+        8: "Chapter 8: Inspiration and Imagination",
+        9: "Chapter 9: My World of Music",
+        10: "Chapter 10: Inner Dynamics of Dance",
+        11: "Chapter 11: Pan Indian Dance Forms",
+        12: "Chapter 12: Dance for Well-being",
+        13: "Chapter 13: Innovation, Inclusivity and Inspiring Change",
+        14: "Chapter 14: A Presentation of Dance and Choreography",
+        15: "Chapter 15: Elements and Principles of Visual Art and Design",
+        16: "Chapter 16: Still Life in Colour",
+        17: "Chapter 17: People in Places",
+        18: "Chapter 18: Arts of the People",
+        19: "Chapter 19: Campaign for Art Awareness",
+    },
+    "social": {
+        1: "Chapter 1: Natural Resources and Their Use",
+        2: "Chapter 2: Reshaping India's Political Map",
+        3: "Chapter 3: The Rise of the Marathas",
+        4: "Chapter 4: The Colonial Era in India",
+        5: "Chapter 5: Universal Franchise and India's Electoral System",
+        6: "Chapter 6: The Parliamentary System: Legislature and Executive",
+        7: "Chapter 7: Factors of Production",
+    },
+}
+
+_CHAPTER_FILE_PATTERN = re.compile(r"(?i)chapter\s*(\d{1,2})(?:\s*[-:_]\s*(.*))?")
+
 
 def _get_memory(student_id: str) -> list[dict]:
     return _chat_memory.get(student_id, [])
@@ -62,11 +140,228 @@ def _resolve_subject_filter(question: str, subject_filter: str) -> str:
         return explicit
 
     q = (question or "").lower()
+    # Resolve social science before generic science to avoid collisions.
+    if re.search(r"\bsocial science\b|\bsst\b", q) or re.search(r"\bsocial\b", q):
+        return "social"
+
     for key, hints in _SUBJECT_HINTS.items():
         for hint in hints:
             if re.search(rf"\b{re.escape(hint)}\b", q):
                 return key
     return ""
+
+
+def _canonical_subject_key(subject_value: str) -> str:
+    raw = (subject_value or "").strip().lower()
+    if not raw:
+        return ""
+
+    normalized = raw.replace("std_8_", "").replace("_", " ").replace("-", " ")
+    normalized = re.sub(r"\s+", " ", normalized).strip()
+    if not normalized:
+        return ""
+
+    if re.search(r"\bsocial science\b|\bsst\b", normalized) or normalized == "social":
+        return "social"
+
+    for key, hints in _SUBJECT_HINTS.items():
+        if normalized == key:
+            return key
+        for hint in hints:
+            if re.search(rf"\b{re.escape(hint)}\b", normalized):
+                return key
+
+    return ""
+
+
+def _is_reference_pdf(stem: str) -> bool:
+    cleaned = re.sub(r"[_-]+", " ", stem).strip().lower()
+    return cleaned in _REFERENCE_STEMS
+
+
+def _subject_dir(subject_key: str) -> Path | None:
+    slug = _SUBJECT_SLUGS.get(subject_key, "")
+    if not slug:
+        return None
+
+    uploads_root = Path(__file__).resolve().parent.parent / "uploads"
+    subject_dir = uploads_root / slug
+    if not subject_dir.exists() or not subject_dir.is_dir():
+        return None
+
+    return subject_dir
+
+
+def _file_sort_key(path: Path) -> tuple[int, int, str]:
+    stem = re.sub(r"[_-]+", " ", path.stem).strip().lower()
+    if stem == "index":
+        return (0, 0, stem)
+    if stem == "intro":
+        return (1, 0, stem)
+
+    chapter_match = _CHAPTER_FILE_PATTERN.search(stem)
+    if chapter_match:
+        return (2, int(chapter_match.group(1)), stem)
+
+    return (3, 0, stem)
+
+
+def _format_file_title(path: Path) -> str:
+    stem = path.stem.strip()
+    chapter_match = _CHAPTER_FILE_PATTERN.search(stem)
+    if chapter_match:
+        idx = int(chapter_match.group(1))
+        suffix = (chapter_match.group(2) or "").strip(" -_:")
+        if suffix:
+            suffix = re.sub(r"\s+", " ", suffix).strip().title()
+            return f"Chapter {idx}: {suffix}"
+        return f"Chapter {idx}"
+
+    clean = re.sub(r"[_-]+", " ", stem).strip()
+    if clean.lower() == "index":
+        return "Index"
+    if clean.lower() == "intro":
+        return "Intro"
+    return clean.title()
+
+
+def _list_subject_files(subject_key: str, include_reference: bool = True) -> list[str]:
+    subject_dir = _subject_dir(subject_key)
+    if not subject_dir:
+        return []
+
+    files: list[str] = []
+    for path in sorted(subject_dir.iterdir(), key=_file_sort_key):
+        if not path.is_file() or path.suffix.lower() != ".pdf":
+            continue
+        if not include_reference and _is_reference_pdf(path.stem):
+            continue
+        files.append(_format_file_title(path))
+
+    return files
+
+
+def _list_all_subject_file_counts() -> list[tuple[str, int]]:
+    counts: list[tuple[str, int]] = []
+    for key in _SUBJECT_SLUGS:
+        files = _list_subject_files(key, include_reference=True)
+        if not files:
+            continue
+        label = _SUBJECT_LABELS.get(key, key.title())
+        counts.append((label, len(files)))
+
+    counts.sort(key=lambda item: item[0].lower())
+    return counts
+
+
+def _list_subject_chapters(subject_key: str) -> list[tuple[int, str]]:
+    subject_dir = _subject_dir(subject_key)
+    if not subject_dir:
+        return []
+
+    overrides = _CHAPTER_TITLE_OVERRIDES.get(subject_key, {})
+    chapters: dict[int, str] = {}
+
+    for path in subject_dir.iterdir():
+        if not path.is_file() or path.suffix.lower() != ".pdf":
+            continue
+
+        stem = path.stem.strip()
+        if _is_reference_pdf(stem):
+            continue
+
+        match = _CHAPTER_FILE_PATTERN.search(stem)
+        if not match:
+            continue
+
+        idx = int(match.group(1))
+        if idx <= 0 or idx > 40:
+            continue
+
+        title = overrides.get(idx)
+        if not title:
+            suffix = (match.group(2) or "").strip(" -_:")
+            if suffix:
+                suffix = re.sub(r"\s+", " ", suffix).strip().title()
+                title = f"Chapter {idx}: {suffix}"
+            else:
+                title = f"Chapter {idx}"
+
+        chapters[idx] = title
+
+    return sorted(chapters.items(), key=lambda item: item[0])
+
+
+def _extract_requested_chapter(question: str) -> int | None:
+    q = (question or "").lower()
+    match = re.search(r"\bchapter\s*(\d{1,2})\b", q)
+    if not match:
+        return None
+    return int(match.group(1))
+
+
+def _is_file_query(question: str) -> bool:
+    q = (question or "").lower()
+    # Include simple typo-tolerant stems (fil*, subj*) for casual user input.
+    has_file_token = bool(re.search(r"\b(file|files|pdf|pdfs|document|documents|fil\w*)\b", q))
+    has_list_intent = any(term in q for term in ["all", "list", "show", "give", "available", "which"])
+    has_subject_token = bool(re.search(r"\b(subject|subjects|subj\w*)\b", q))
+    return (has_file_token and has_list_intent) or (has_subject_token and has_list_intent and has_file_token)
+
+
+def _is_count_only_chapter_query(question: str) -> bool:
+    q = (question or "").lower()
+    has_count_intent = any(term in q for term in ["how many", "count", "number of", "total"])
+    has_list_intent = any(term in q for term in ["list", "name", "names", "which", "what are"])
+    return has_count_intent and not has_list_intent
+
+
+def _build_deterministic_catalog_answer(question: str, subject_filter: str) -> str:
+    q = (question or "").lower()
+    subject_key = _canonical_subject_key(subject_filter)
+    if not subject_key:
+        subject_key = _canonical_subject_key(question)
+
+    if _is_file_query(question):
+        if subject_key:
+            subject_label = _SUBJECT_LABELS.get(subject_key, subject_key.title())
+            files = _list_subject_files(subject_key, include_reference=True)
+            if not files:
+                return ""
+
+            lines = [f"{i}. {name}" for i, name in enumerate(files, start=1)]
+            return f"I found {len(files)} PDF files in {subject_label}:\n\n" + "\n".join(lines)
+
+        all_counts = _list_all_subject_file_counts()
+        if not all_counts:
+            return ""
+
+        lines = [f"{i}. {label}: {count} files" for i, (label, count) in enumerate(all_counts, start=1)]
+        return "Available subject files:\n\n" + "\n".join(lines)
+
+    if not subject_key:
+        return ""
+
+    chapters = _list_subject_chapters(subject_key)
+    if not chapters:
+        return ""
+
+    subject_label = _SUBJECT_LABELS.get(subject_key, subject_key.title())
+    total = len(chapters)
+    requested_chapter = _extract_requested_chapter(question)
+
+    if requested_chapter is not None and any(term in q for term in ["name", "title", "which", "what"]):
+        chapter_lookup = dict(chapters)
+        chapter_title = chapter_lookup.get(requested_chapter)
+        if chapter_title:
+            return f"The name of Chapter {requested_chapter} in {subject_label} is: {chapter_title}."
+        return f"I could not find Chapter {requested_chapter} in {subject_label}."
+
+    if _is_count_only_chapter_query(question):
+        return f"There are {total} chapters available in {subject_label}."
+
+    lines = [f"{num}. {title}" for num, title in chapters]
+    return f"I found {total} chapters in {subject_label}:\n\n" + "\n".join(lines)
 
 
 def _low_relevance_context(docs: list[dict]) -> bool:
@@ -101,8 +396,14 @@ def _is_catalog_query(question: str) -> bool:
     """Detect chapter-list/table-of-contents style queries that need broader recall."""
     q = (question or "").lower()
     has_chapter = "chapter" in q or "contents" in q or "table of contents" in q
-    has_list_intent = any(term in q for term in ["all", "list", "name", "names", "total"])
-    return has_chapter and has_list_intent
+    has_list_intent = any(
+        term in q
+        for term in ["all", "list", "name", "names", "total", "how many", "count", "number of"]
+    )
+    single_chapter_name_intent = bool(re.search(r"\bchapter\s*\d{1,2}\b", q)) and any(
+        term in q for term in ["name", "title", "which", "what"]
+    )
+    return (has_chapter and has_list_intent) or single_chapter_name_intent or _is_file_query(question)
 
 
 def _dedupe_docs(docs: list[dict]) -> list[dict]:
@@ -233,6 +534,34 @@ def generate_answer(
         # 2b. Resolve subject scope from explicit filter or question hints
         resolved_subject_filter = _resolve_subject_filter(search_query, subject_filter)
         catalog_query = _is_catalog_query(search_query)
+
+        # Deterministic chapter catalog path prevents OCR/noise errors for list/count queries.
+        if catalog_query:
+            deterministic_answer = _build_deterministic_catalog_answer(
+                search_query,
+                resolved_subject_filter or subject_filter,
+            )
+            if deterministic_answer:
+                answer = deterministic_answer
+
+                if lang != "english":
+                    answer = translate_from_english(answer, lang)
+
+                elapsed = time.time() - start
+
+                if student_id:
+                    _add_to_memory(student_id, "user", question)
+                    _add_to_memory(student_id, "assistant", answer)
+
+                _log_interaction(question, answer, [], elapsed, lang, student_id)
+
+                return {
+                    "answer": answer,
+                    "sources": [],
+                    "chunks_found": 0,
+                    "elapsed_sec": round(elapsed, 2),
+                    "language": lang,
+                }
 
         vector_k = 16 if catalog_query else 8
         keyword_k = 8 if catalog_query else 5
