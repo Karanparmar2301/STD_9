@@ -24,7 +24,14 @@ export const signupUser = createAsyncThunk(
             console.log('[Auth] Signup successful');
             return res.data;
         } catch (err) {
-            const errorMsg = err.response?.data?.detail || err.message || 'Signup failed';
+            const status = err.response?.status;
+            const errorMsg = err.response?.data?.detail || err.response?.data?.error || err.message || 'Signup failed';
+
+            if (status === 500) {
+                console.error('[Auth] Signup server error:', errorMsg);
+                return rejectWithValue('Signup service is temporarily unavailable. Please try again.');
+            }
+
             console.error('[Auth] Signup error:', errorMsg);
             return rejectWithValue(errorMsg);
         }

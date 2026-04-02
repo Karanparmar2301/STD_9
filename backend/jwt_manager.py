@@ -14,7 +14,7 @@ from passlib.context import CryptContext
 logger = logging.getLogger(__name__)
 
 # ── Password hashing context ─────────────────────────────────────────────────
-_pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+_pwd_context = CryptContext(schemes=["bcrypt", "pbkdf2_sha256"], deprecated="auto")
 
 
 @dataclass
@@ -39,12 +39,24 @@ class JWTManager:
     # ── Password helpers ─────────────────────────────────────────────────────
 
     def hash_password(self, plain: str) -> str:
-        return _pwd_context.hash(plain)
+        if not plain:
+            raise ValueError("Password cannot be empty")
+
+        try:
+            return _pwd_context.hash(plain, scheme="bcrypt")
+        except Exception as e:
+            # Render/runtime environments can occasionally miss bcrypt backend.
+            logger.warning("bcrypt hashing unavailable, falling back to pbkdf2_sha256: %s", e)
+            return _pwd_context.hash(plain, scheme="pbkdf2_sha256")
 
     def verify_password(self, plain: str, hashed: str) -> bool:
+        if not plain or not hashed:
+            return False
+
         try:
             return _pwd_context.verify(plain, hashed)
-        except Exception:
+        except Exception as e:
+            logger.warning("Password verification failed: %s", e)
             return False
 
     # ── Token creation ───────────────────────────────────────────────────────

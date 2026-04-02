@@ -58,8 +58,12 @@ class UsersStorage:
         with self._lock:
             try:
                 tmp = self._path.with_suffix(".tmp")
-                tmp.write_text(json.dumps(users, indent=2, ensure_ascii=False), encoding="utf-8")
+                # default=str keeps persistence robust even if legacy records contain datetime-like values.
+                tmp.write_text(json.dumps(users, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
                 tmp.replace(self._path)
+            except (TypeError, ValueError) as e:
+                logger.error("Cannot serialize users.json payload: %s", e)
+                raise StorageError(f"Failed to serialize users store: {e}") from e
             except OSError as e:
                 logger.error("Cannot write users.json: %s", e)
                 raise StorageError(f"Failed to save users store: {e}") from e

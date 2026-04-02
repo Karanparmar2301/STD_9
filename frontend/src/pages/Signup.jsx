@@ -57,7 +57,7 @@ function Signup() {
                 <form onSubmit={handleSubmit} className="auth-form">
                     {error && (
                         <div className="error-message">
-                            {error.includes('already registered')
+                            {error.toLowerCase().includes('already registered') || error.toLowerCase().includes('already exists')
                                 ? 'User already exists. Please sign in'
                                 : error}
                         </div>
