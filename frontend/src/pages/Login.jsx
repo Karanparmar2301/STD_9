@@ -28,6 +28,23 @@ function Login() {
         }
     };
 
+    const handleDemoLogin = async () => {
+        dispatch(clearError());
+        setEmail('demo@school.com');
+        setPassword('Demo@123');
+        const result = await dispatch(loginUser({ email: 'demo@school.com', password: 'Demo@123' }));
+
+        if (result.type === 'auth/login/fulfilled') {
+            const token = result.payload.token || result.payload.access_token;
+            const uid = result.payload.uid;
+            if (token) localStorage.setItem('authToken', token);
+            if (result.payload.refresh_token) {
+                localStorage.setItem('refreshToken', result.payload.refresh_token);
+            }
+            navigate(`/dashboard/${uid}`);
+        }
+    };
+
     return (
         <div className="auth-container">
             <div className="auth-card">
@@ -72,6 +89,20 @@ function Login() {
 
                     <button type="submit" className="btn-primary" disabled={loading}>
                         {loading ? 'Signing in...' : 'Sign In'}
+                    </button>
+                    
+                    <div style={{ textAlign: 'center', margin: '15px 0', color: '#666' }}>
+                        <span>— OR —</span>
+                    </div>
+
+                    <button 
+                        type="button" 
+                        className="btn-secondary" 
+                        style={{ width: '100%', padding: '12px', background: '#e1e1e1', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                        onClick={handleDemoLogin} 
+                        disabled={loading}
+                    >
+                        {loading ? 'Logging in...' : '1-Click Demo Login'}
                     </button>
                 </form>
 
