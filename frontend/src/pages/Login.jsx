@@ -1,25 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser, clearError, setUser } from '../store/authSlice';
+import { loginUser, clearError } from '../store/authSlice';
 import './Auth.css';
 
-const DEMO_USER = {
-    uid: '46a04e54-aedf-4c38-bb23-571b7e0ba0e1',
-    name: 'Demo Student',
-    student_name: 'Demo Student',
-    email: 'demo@school.com',
-    class_section: '8-A',
-    isDemoMode: true
-};
-
-function isNetworkErrorMessage(message) {
-    return typeof message === 'string' && message.toLowerCase().includes('network error');
-}
-
-function isDemoCredentials(email, password) {
-    return String(email || '').trim().toLowerCase() === 'demo@school.com' && String(password || '').trim() === 'Demo@123';
-}
+const DEMO_EMAIL = 'demo@school.com';
+const DEMO_PASSWORD = 'Demo@123';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -34,17 +20,9 @@ function Login() {
         }
     }, [user, navigate]);
 
-    const startDemoSession = () => {
-        localStorage.setItem('demoMode', 'true');
-        dispatch(setUser(DEMO_USER));
-        navigate(`/dashboard/${DEMO_USER.uid}`);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch(clearError());
-
-        const useDemoFallback = isDemoCredentials(email, password);
 
         const result = await dispatch(loginUser({ email, password }));
 
@@ -55,24 +33,17 @@ function Login() {
             if (result.payload.refresh_token) {
                 localStorage.setItem('refreshToken', result.payload.refresh_token);
             }
-            localStorage.removeItem('demoMode');
             navigate(`/dashboard/${uid}`);
-            return;
-        }
-
-        if (result.type === 'auth/login/rejected' && (isNetworkErrorMessage(result.payload) || useDemoFallback)) {
-            startDemoSession();
         }
     };
 
-    const handleDemoLogin = () => {
+    const handleUseDemoCredentials = () => {
         dispatch(clearError());
-        setEmail('demo@school.com');
-        setPassword('Demo@123');
-        startDemoSession();
+        setEmail(DEMO_EMAIL);
+        setPassword(DEMO_PASSWORD);
     };
 
-    const shouldShowError = error && !isNetworkErrorMessage(error);
+    const shouldShowError = !!error;
 
     return (
         <div className="auth-container">
@@ -128,10 +99,10 @@ function Login() {
                         type="button" 
                         className="btn-secondary" 
                         style={{ width: '100%', padding: '12px', background: '#e1e1e1', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                        onClick={handleDemoLogin} 
+                        onClick={handleUseDemoCredentials} 
                         disabled={loading}
                     >
-                        {loading ? 'Logging in...' : '1-Click Demo Login'}
+                        Use Demo Credentials
                     </button>
                 </form>
 

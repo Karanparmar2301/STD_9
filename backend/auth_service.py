@@ -3,6 +3,7 @@ auth_service.py
 High-level authentication service: signup, login, token refresh, and verify.
 """
 import logging
+import os
 import uuid
 from datetime import datetime
 from typing import Optional
@@ -15,6 +16,13 @@ logger = logging.getLogger(__name__)
 
 _auth_service_instance = None
 
+DEMO_LOGIN_ENABLED = os.getenv("ENABLE_DEMO_LOGIN", "true").strip().lower() == "true"
+DEMO_LOGIN_EMAIL = os.getenv("DEMO_LOGIN_EMAIL", "demo@school.com").strip().lower()
+DEMO_LOGIN_PASSWORD = os.getenv("DEMO_LOGIN_PASSWORD", "Demo@123")
+DEMO_LOGIN_NAME = os.getenv("DEMO_LOGIN_NAME", "Demo Student")
+DEMO_LOGIN_CLASS_SECTION = os.getenv("DEMO_LOGIN_CLASS_SECTION", "8-A")
+DEMO_LOGIN_UID = os.getenv("DEMO_LOGIN_UID", "46a04e54-aedf-4c38-bb23-571b7e0ba0e1")
+
 
 class AuthService:
     """Handles user registration, login, and JWT token lifecycle."""
@@ -22,7 +30,45 @@ class AuthService:
     def __init__(self):
         self._jwt = get_jwt_manager()
         self._storage = get_users_storage()
+        self._ensure_demo_user()
         logger.info("AuthService initialised")
+
+    def _ensure_demo_user(self) -> None:
+        """Create the demo account once so shared credentials work after fresh deploys."""
+        if not DEMO_LOGIN_ENABLED:
+            return
+
+        if not DEMO_LOGIN_EMAIL or not DEMO_LOGIN_PASSWORD:
+            logger.warning("Demo login enabled but email/password is empty. Skipping demo user seed.")
+            return
+
+        try:
+            existing = self._storage.get_user_by_email(DEMO_LOGIN_EMAIL)
+            if existing:
+                return
+
+            uid = DEMO_LOGIN_UID or str(uuid.uuid4())
+            uid_owner = self._storage.get_user(uid)
+            if uid_owner and uid_owner.get("email", "").strip().lower() != DEMO_LOGIN_EMAIL:
+                uid = str(uuid.uuid4())
+
+            user_record = {
+                "uid": uid,
+                "email": DEMO_LOGIN_EMAIL,
+                "name": DEMO_LOGIN_NAME,
+                "student_id": "DEMO_001",
+                "class_section": DEMO_LOGIN_CLASS_SECTION,
+                "password_hash": self._jwt.hash_password(DEMO_LOGIN_PASSWORD),
+                "role": "student",
+                "created_at": datetime.utcnow().isoformat(),
+            }
+
+            self._storage.upsert_user(uid, user_record)
+            logger.info("Seeded demo account: %s (%s)", DEMO_LOGIN_EMAIL, uid)
+        except StorageError:
+            raise
+        except Exception as e:
+            logger.warning("Failed to seed demo user: %s", e)
 
     # ── Signup ───────────────────────────────────────────────────────────────
 

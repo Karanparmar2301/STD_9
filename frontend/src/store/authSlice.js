@@ -2,14 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api, { authApi } from '../services/api';
 
 const DEMO_MODE_KEY = 'demoMode';
-const DEMO_USER = {
-    uid: '46a04e54-aedf-4c38-bb23-571b7e0ba0e1',
-    name: 'Demo Student',
-    student_name: 'Demo Student',
-    email: 'demo@school.com',
-    class_section: '8-A',
-    isDemoMode: true
-};
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function decodeTokenPayload(token) {
@@ -73,7 +65,14 @@ export const loginUser = createAsyncThunk(
                 return { ...res.data, token, refresh_token };
             }
         } catch (err) {
+            const status = err.response?.status;
             const errorMsg = err.response?.data?.detail || err.response?.data?.error || err.message || 'Invalid email or password';
+
+            if (status === 401) {
+                console.warn('[Auth] Invalid login credentials');
+                return rejectWithValue('Invalid email or password');
+            }
+
             console.error('[Auth] Login error:', errorMsg);
             return rejectWithValue(errorMsg);
         }
@@ -95,14 +94,9 @@ export const checkSession = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem('authToken');
-            const isDemoMode = localStorage.getItem(DEMO_MODE_KEY) === 'true';
-
-            if (!token && isDemoMode) {
-                console.log('[Auth] Demo mode session restored');
-                return { ...DEMO_USER, token: null };
-            }
 
             if (!token) {
+                localStorage.removeItem(DEMO_MODE_KEY);
                 console.log('[Auth] No token found, user not logged in');
                 return null;
             }
@@ -219,6 +213,7 @@ const authSlice = createSlice({
                 state.token = action.payload.token;
                 state.refreshToken = action.payload.refresh_token;
                 state.isAuthenticated = true;
+                localStorage.removeItem(DEMO_MODE_KEY);
                 // Store tokens in localStorage for API calls
                 localStorage.setItem('authToken', action.payload.token);
                 if (action.payload.refresh_token) {
@@ -259,6 +254,7 @@ const authSlice = createSlice({
                     state.user = action.payload;
                     state.token = action.payload.token;
                     state.isAuthenticated = true;
+                    localStorage.removeItem(DEMO_MODE_KEY);
                     if (action.payload.token) {
                         localStorage.setItem('authToken', action.payload.token);
                     } else {
