@@ -4,15 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { setActiveSection } from '../store/uiSlice';
 import { logActivity } from '../store/activitySlice';
-import { apiService } from '../services/api';
+import { apiService, buildBackendFileUrl } from '../services/api';
 import './SubjectPage.css';
-
-const BACKEND = import.meta.env.MODE === 'development' ? 'http://127.0.0.1:8000' : '';
 
 async function downloadChapter(filePath, filename) {
     try {
         const token = localStorage.getItem('authToken');
-        const url   = `${BACKEND}${filePath}`;
+        const url   = buildBackendFileUrl(filePath);
         const res   = await fetch(url, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
         });

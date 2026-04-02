@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../store/authSlice';
+import { buildBackendFileUrl } from '../services/api';
 import './ProfileMenu.css';
 
 const ProfileMenu = ({ studentName, studentClass, profilePhotoUrl, onEditProfile }) => {
@@ -80,7 +81,7 @@ const ProfileMenu = ({ studentName, studentClass, profilePhotoUrl, onEditProfile
                 <div className="profile-avatar">
                     {profilePhotoUrl ? (
                         <img 
-                            src={`http://127.0.0.1:8000${profilePhotoUrl}`}
+                            src={buildBackendFileUrl(profilePhotoUrl)}
                             alt={studentName}
                             className="profile-avatar-img"
                         />

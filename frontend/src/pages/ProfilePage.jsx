@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { updateProfile, uploadProfilePhoto } from '../store/studentSlice';
 import { setUser } from '../store/authSlice';
+import { buildBackendFileUrl } from '../services/api';
 import ImageCropModal from '../components/ImageCropModal';
 import './ProfilePage.css';
 
@@ -331,7 +332,7 @@ function ProfilePage() {
                                 <div className="avatar-compact">
                                     {user.profile_photo_url ? (
                                         <img 
-                                            src={`http://127.0.0.1:8000${user.profile_photo_url}`} 
+                                            src={buildBackendFileUrl(user.profile_photo_url)} 
                                             alt={user.student_name}
                                             className="avatar-photo"
                                         />

@@ -128,7 +128,10 @@ async def health_check():
 # Allow all localhost/127.0.0.1 ports for development
 cors_origins_str = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:5173,http://localhost:5174,http://127.0.0.1:3000,http://127.0.0.1:5173,http://127.0.0.1:5174")
 cors_origins = [origin.strip() for origin in cors_origins_str.split(",") if origin.strip()]
-cors_origin_regex = os.getenv("CORS_ORIGIN_REGEX", "").strip() or None
+cors_origin_regex = os.getenv(
+    "CORS_ORIGIN_REGEX",
+    r"^https://([a-zA-Z0-9-]+\.)*vercel\.app$|^https://([a-zA-Z0-9-]+\.)*onrender\.com$"
+).strip() or None
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,

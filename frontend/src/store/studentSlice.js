@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { apiService } from '../services/api';
 
 // Async thunks
@@ -27,12 +26,7 @@ export const fetchStudentData = createAsyncThunk(
                 return rejectWithValue('Invalid user ID');
             }
 
-            const { auth } = getState();
-            const response = await axios.get(`/api/dashboard/${uid}`, {
-                headers: {
-                    Authorization: `Bearer ${auth.token}`
-                }
-            });
+            const response = await apiService.getStudentData(uid);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data || error.message);
@@ -137,12 +131,7 @@ export const completeGame = createAsyncThunk(
     'student/completeGame',
     async (gameData, { getState, rejectWithValue }) => {
         try {
-            const { auth } = getState();
-            const response = await axios.post('/api/game/complete', gameData, {
-                headers: {
-                    Authorization: `Bearer ${auth.token}`
-                }
-            });
+            const response = await apiService.completeGame(gameData);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data || error.message);
@@ -154,12 +143,7 @@ export const completeAlphabetGame = createAsyncThunk(
     'student/completeAlphabetGame',
     async (gameData, { getState, rejectWithValue }) => {
         try {
-            const { auth } = getState();
-            const response = await axios.post('/api/game/alphabet/complete', gameData, {
-                headers: {
-                    Authorization: `Bearer ${auth.token}`
-                }
-            });
+            const response = await apiService.completeAlphabetGame(gameData);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data || error.message);
