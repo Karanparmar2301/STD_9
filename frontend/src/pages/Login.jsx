@@ -17,6 +17,10 @@ function isNetworkErrorMessage(message) {
     return typeof message === 'string' && message.toLowerCase().includes('network error');
 }
 
+function isDemoCredentials(email, password) {
+    return String(email || '').trim().toLowerCase() === 'demo@school.com' && String(password || '').trim() === 'Demo@123';
+}
+
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -40,6 +44,8 @@ function Login() {
         e.preventDefault();
         dispatch(clearError());
 
+        const useDemoFallback = isDemoCredentials(email, password);
+
         const result = await dispatch(loginUser({ email, password }));
 
         if (result.type === 'auth/login/fulfilled') {
@@ -54,7 +60,7 @@ function Login() {
             return;
         }
 
-        if (result.type === 'auth/login/rejected' && isNetworkErrorMessage(result.payload)) {
+        if (result.type === 'auth/login/rejected' && (isNetworkErrorMessage(result.payload) || useDemoFallback)) {
             startDemoSession();
         }
     };
