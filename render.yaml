@@ -15,7 +15,9 @@ services:
       - key: JWT_ALGORITHM
         value: "HS256"
       - key: CORS_ORIGINS
-        value: "https://student-dashboard-frontend.onrender.com" # We will update this later
+        value: "https://student-dashboard-frontend.onrender.com,https://std-8.vercel.app,http://localhost:3000,http://127.0.0.1:3000"
+      - key: CORS_ORIGIN_REGEX
+        value: "^https://.*\\.vercel\\.app$"
       # Add Groq API Key here later in Render Dashboard
       - key: GROQ_API_KEY
         sync: false 

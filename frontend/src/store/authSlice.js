@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { authApi } from '../services/api';
+import api, { authApi } from '../services/api';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function decodeTokenPayload(token) {
@@ -40,6 +39,11 @@ export const loginUser = createAsyncThunk(
             const token = res.data.token || res.data.access_token;
             const refresh_token = res.data.refresh_token;
             const uid = res.data.uid;
+
+            if (!token || !uid) {
+                throw new Error('Invalid auth response. Check VITE_API_URL and backend CORS settings.');
+            }
+
             console.log('[Auth] Login successful, tokens received');
 
             // Store both access and refresh tokens
@@ -50,12 +54,7 @@ export const loginUser = createAsyncThunk(
 
             // Fetch full profile data immediately after login
             try {
-                const profileRes = await axios.get(`/api/dashboard/${uid}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const profileRes = await api.get(`/dashboard/${uid}`);
                 console.log('[Auth] Profile data fetched successfully');
                 return { ...profileRes.data, token, refresh_token };
             } catch (profileErr) {
@@ -97,12 +96,7 @@ export const checkSession = createAsyncThunk(
 
                 // Fetch complete profile from dashboard endpoint
                 try {
-                    const profileRes = await axios.get(`/api/dashboard/${uid}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
+                    const profileRes = await api.get(`/dashboard/${uid}`);
                     console.log('[Auth] Session restored successfully');
                     return { ...profileRes.data, token };
                 } catch (dashErr) {
@@ -121,7 +115,11 @@ export const checkSession = createAsyncThunk(
                         try {
                             console.log('[Auth] Token expired, attempting refresh');
                             const refreshRes = await authApi.refresh(refreshToken);
-                            const newToken = refreshRes.data.token;
+                            const newToken = refreshRes.data.token || refreshRes.data.access_token;
+
+                            if (!newToken) {
+                                throw new Error('Refresh response missing access token');
+                            }
 
                             // Save new token
                             localStorage.setItem('authToken', newToken);
@@ -130,12 +128,7 @@ export const checkSession = createAsyncThunk(
                             const retryRes = await authApi.getMe(newToken);
                             const uid = retryRes.data.uid;
 
-                            const profileRes = await axios.get(`/api/dashboard/${uid}`, {
-                                headers: {
-                                    Authorization: `Bearer ${newToken}`,
-                                    'Content-Type': 'application/json'
-                                }
-                            });
+                            const profileRes = await api.get(`/dashboard/${uid}`);
 
                             console.log('[Auth] Session restored after token refresh');
                             return { ...profileRes.data, token: newToken };

@@ -2,15 +2,19 @@ import axios from 'axios';
 
 // Safely read the environment variable that Vite injects at build time
 const rawApiUrl = import.meta.env.VITE_API_URL;
-// Use the Vercel provided proxy URL if available, otherwise assume Vite proxy locally
-// Also remove any trailing slashes from the URL to prevent double slashes like "http://...//api"
-const BACKEND_URL = rawApiUrl ? rawApiUrl.replace(/\/+$/, '') : '';
+// Normalize API URL and allow either backend root URL or URL ending with /api.
+const normalizedApiUrl = rawApiUrl ? rawApiUrl.replace(/\/+$/, '') : '';
+const BACKEND_URL = normalizedApiUrl.replace(/\/api$/i, '');
 
 // All requests go through the Vite proxy (both dev and prod) -> In prod, appending /api to BACKEND_URL
 const API_BASE_URL = BACKEND_URL ? `${BACKEND_URL}/api` : '/api';
 
 // Auth endpoints also go through the Vite proxy -> In prod, absolute URL to backend
 const AUTH_BASE_URL = BACKEND_URL;
+
+if (import.meta.env.PROD && !BACKEND_URL) {
+    console.error('[API] Missing VITE_API_URL in production. Set it to your backend URL.');
+}
 
 // Create axios instance
 const api = axios.create({
@@ -75,7 +79,11 @@ api.interceptors.response.use(
                     try {
                         // Request new access token
                         const response = await authAxios.post('/auth/refresh', { refresh_token: refreshToken });
-                        const { token: newToken } = response.data;
+                        const newToken = response.data.token || response.data.access_token;
+
+                        if (!newToken) {
+                            throw new Error('Refresh response did not include an access token');
+                        }
 
                         // Save new token
                         localStorage.setItem('authToken', newToken);
@@ -248,7 +256,8 @@ export async function askAI(message, image) {
   if (image) {
     formData.append('image', image);
   }
-  const response = await fetch('/chat', {
+    const chatUrl = BACKEND_URL ? `${BACKEND_URL}/chat` : '/chat';
+    const response = await fetch(chatUrl, {
     method: 'POST',
     body: formData,
   });
