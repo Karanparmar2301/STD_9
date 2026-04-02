@@ -4,7 +4,7 @@ Combines Qdrant vector search with payload keyword filtering for better accuracy
 Also supports multi-query expansion for unclear questions.
 """
 import re
-from typing import Any
+from typing import Any, cast
 from .embeddings import embed_text, qdrant_client, COLLECTION_NAME
 
 
@@ -19,6 +19,55 @@ _SUBJECT_SOURCE_HINTS = {
     "physed": ["physical education", "pt", "physed"],
     "voced": ["vocational", "vocational education", "voc. education", "voced"],
 }
+
+_subject_filter_server_supported: bool | None = None
+
+
+def _mark_subject_filter_unsupported() -> None:
+    global _subject_filter_server_supported
+    _subject_filter_server_supported = False
+
+
+def _subject_payload_has_values(sample_size: int = 128) -> bool:
+    try:
+        points, _ = qdrant_client.scroll(
+            collection_name=COLLECTION_NAME,
+            limit=sample_size,
+            with_payload=["subject"],
+            with_vectors=False,
+        )
+    except Exception:
+        return False
+
+    for point in points:
+        raw_payload = getattr(point, "payload", None)
+        payload = cast(dict[str, Any], raw_payload) if isinstance(raw_payload, dict) else {}
+        value = payload.get("subject")
+        if isinstance(value, str) and value.strip():
+            return True
+    return False
+
+
+def _can_use_server_subject_filter() -> bool:
+    """
+    Use server-side subject filtering only when payload index exists.
+    Avoids repeated 400 errors on strict Qdrant collections.
+    """
+    global _subject_filter_server_supported
+
+    if _subject_filter_server_supported is not None:
+        return _subject_filter_server_supported
+
+    try:
+        info = qdrant_client.get_collection(COLLECTION_NAME)
+        raw_schema = getattr(info, "payload_schema", None)
+        payload_schema = cast(dict[str, Any], raw_schema) if isinstance(raw_schema, dict) else {}
+        has_subject_schema = "subject" in payload_schema
+        _subject_filter_server_supported = has_subject_schema and _subject_payload_has_values()
+    except Exception:
+        _subject_filter_server_supported = False
+
+    return _subject_filter_server_supported
 
 
 def _normalize_subject_filter(subject_filter: str) -> list[str]:
@@ -144,7 +193,7 @@ def vector_search(
     query_limit = max(limit * 4, limit) if subject_tokens else limit
 
     query_filter = None
-    if subject_key:
+    if subject_key and _can_use_server_subject_filter():
         try:
             from qdrant_client.models import Filter, FieldCondition, MatchValue
             query_filter = Filter(
@@ -158,15 +207,34 @@ def vector_search(
         except Exception:
             query_filter = None
 
-    try:
-        results = qdrant_client.query_points(
-            collection_name=COLLECTION_NAME,
-            query=query_vector,
-            query_filter=query_filter,
-            limit=query_limit
-        )
-    except Exception:
-        # Fallback query without payload filter in case of cloud/provider incompatibility.
+    if query_filter is not None:
+        try:
+            results = qdrant_client.query_points(
+                collection_name=COLLECTION_NAME,
+                query=query_vector,
+                query_filter=query_filter,
+                limit=query_limit
+            )
+
+            # Some legacy points may miss subject payload; recover with local filtering.
+            if not getattr(results, "points", None):
+                results = qdrant_client.query_points(
+                    collection_name=COLLECTION_NAME,
+                    query=query_vector,
+                    limit=query_limit
+                )
+        except Exception as exc:
+            # Strict Qdrant collections reject unindexed payload filters.
+            msg = str(exc).lower()
+            if "index required" in msg and "subject" in msg:
+                _mark_subject_filter_unsupported()
+
+            results = qdrant_client.query_points(
+                collection_name=COLLECTION_NAME,
+                query=query_vector,
+                limit=query_limit
+            )
+    else:
         results = qdrant_client.query_points(
             collection_name=COLLECTION_NAME,
             query=query_vector,

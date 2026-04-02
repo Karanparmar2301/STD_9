@@ -115,19 +115,21 @@ async def health_check():
     """System health check endpoint."""
     rag_ready = False
     rag_chunks = 0
+    rag_rebuild_running = bool(globals().get("_RAG_REBUILD_STATE", {}).get("running", False))
     if RAG_ENGINE_AVAILABLE:
         try:
-            from backend.rag_engine import _index, get_qdrant as _gq, COLLECTION_NAME as _cn
-            rag_ready = _index.ready
-            if rag_ready:
-                info = _gq().get_collection(_cn)
-                rag_chunks = info.points_count
+            from backend.rag.embeddings import qdrant_client as _gq, COLLECTION_NAME as _cn
+            info = _gq.get_collection(_cn)
+            rag_chunks = int(getattr(info, "points_count", 0) or 0)
+            rag_ready = rag_chunks > 0
         except Exception:
-            pass
+            rag_ready = False
+            rag_chunks = 0
     return JSONResponse({
         "status":     "healthy",
         "rag_ready":  rag_ready,
         "rag_chunks": rag_chunks,
+        "rag_rebuild_running": rag_rebuild_running,
     })
 
 # CORS middleware for React frontend
@@ -2546,7 +2548,9 @@ async def rebuild_rag_index(background_tasks: BackgroundTasks, authorization: st
             _RAG_REBUILD_STATE["last_finished"] = datetime.utcnow().isoformat()
 
     # Launch in a detached thread so the request returns immediately.
-    background_tasks.add_task(lambda: threading.Thread(target=_rebuild_job, daemon=True).start())
+    global _RAG_REBUILD_THREAD
+    _RAG_REBUILD_THREAD = threading.Thread(target=_rebuild_job, daemon=True)
+    _RAG_REBUILD_THREAD.start()
 
     return JSONResponse({
         "status": "started",
@@ -2558,6 +2562,11 @@ async def rebuild_rag_index(background_tasks: BackgroundTasks, authorization: st
 @app.get("/api/assistant/rebuild-index/status")
 async def rebuild_rag_index_status(authorization: str = Header(None)):
     """Check asynchronous RAG rebuild status."""
+    global _RAG_REBUILD_THREAD
+    if _RAG_REBUILD_STATE["running"] and _RAG_REBUILD_THREAD is not None and not _RAG_REBUILD_THREAD.is_alive():
+        _RAG_REBUILD_STATE["running"] = False
+        if not _RAG_REBUILD_STATE.get("last_finished"):
+            _RAG_REBUILD_STATE["last_finished"] = datetime.utcnow().isoformat()
     return JSONResponse({"status": "ok", "state": _RAG_REBUILD_STATE})
 
 
@@ -2567,6 +2576,7 @@ _RAG_REBUILD_STATE = {
     "last_finished": None,
     "last_error": None,
 }
+_RAG_REBUILD_THREAD = None
 
 
 

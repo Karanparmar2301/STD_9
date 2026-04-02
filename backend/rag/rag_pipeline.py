@@ -777,6 +777,7 @@ Rules:
 - If context seems incomplete for a long list question, say what is available and state that context is partial.
 - For chapter-list questions, include every chapter name you can find in context and continue numbering correctly.
 - For multiple-choice style questions, choose only from context-supported options; if unclear, return the fallback sentence.
+- Do not copy or list option blocks (A/B/C/D) in the final answer; provide only the selected answer in one or two sentences.
 {memory_ctx}
 Context:
 {context}

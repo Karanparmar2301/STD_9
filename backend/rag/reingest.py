@@ -102,6 +102,22 @@ def reingest():
     )
     print(f"Collection '{COLLECTION_NAME}' created.")
 
+    # Strict-mode collections require payload indexes for filtered queries.
+    try:
+        qclient.create_payload_index(
+            collection_name=COLLECTION_NAME,
+            field_name="subject",
+            field_schema="keyword",
+        )
+        qclient.create_payload_index(
+            collection_name=COLLECTION_NAME,
+            field_name="source",
+            field_schema="keyword",
+        )
+        print("Payload indexes created for fields: subject, source")
+    except Exception as e:
+        print(f"Warning: payload index creation skipped: {e}")
+
     # 4. Upload in small batches (20 per batch to avoid timeout)
     print("\n" + "=" * 60)
     print("Step 4: Uploading vectors to Qdrant")
