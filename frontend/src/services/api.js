@@ -1,8 +1,12 @@
 import axios from 'axios';
+import {
+    DEMO_UID,
+    getDemoBookStats,
+    getDemoBookChapters,
+    getDemoPerformanceSubjects,
+} from '../constants/demoCatalog';
 
 const DEMO_MODE_KEY = 'demoMode';
-const DEMO_UID = '46a04e54-aedf-4c38-bb23-571b7e0ba0e1';
-const DEMO_REMOTE_PDF = 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf';
 
 // Safely read the environment variable that Vite injects at build time
 const rawApiUrl = import.meta.env.VITE_API_URL;
@@ -169,48 +173,49 @@ const DEMO_TIMETABLE_SCHEDULE = {
     },
 };
 
-const DEMO_BOOKS = [
-    { slug: 'Std_8_math', count: 12, completedCount: 5 },
-    { slug: 'Std_8_eng', count: 10, completedCount: 4 },
-    { slug: 'Std_8_hindi', count: 9, completedCount: 3 },
-    { slug: 'Std_8_science', count: 11, completedCount: 6 },
-    { slug: 'Std_8_arts', count: 8, completedCount: 2 },
-    { slug: 'Std_8_social', count: 10, completedCount: 4 },
-    { slug: 'Std_8_sanskrit', count: 7, completedCount: 2 },
-    { slug: 'Std_8_physed', count: 6, completedCount: 1 },
-    { slug: 'Std_8_voced', count: 5, completedCount: 1 },
-].map((book) => ({
-    ...book,
-    lastOpenedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-}));
+const DEMO_BOOKS = getDemoBookStats();
 
-function getDemoBookChapters(subjectSlug) {
-    return [
-        {
-            id: 1,
-            title: 'Chapter 1: Introduction',
-            file: DEMO_REMOTE_PDF,
-            filename: `${subjectSlug}_Chapter_1.pdf`,
-            is_index: false,
-            completed: true,
-        },
-        {
-            id: 2,
-            title: 'Chapter 2: Core Concepts',
-            file: DEMO_REMOTE_PDF,
-            filename: `${subjectSlug}_Chapter_2.pdf`,
-            is_index: false,
-            completed: false,
-        },
-        {
-            id: 3,
-            title: 'Chapter 3: Practice and Revision',
-            file: DEMO_REMOTE_PDF,
-            filename: `${subjectSlug}_Chapter_3.pdf`,
-            is_index: false,
-            completed: false,
-        },
-    ];
+function getDemoBookStatsBySlug(subjectSlug) {
+    return DEMO_BOOKS.find(
+        (book) => book.slug.toLowerCase() === String(subjectSlug || '').toLowerCase()
+    );
+}
+
+function getDemoBookProgressBySlug(subjectSlug) {
+    const stats = getDemoBookStatsBySlug(subjectSlug);
+    if (!stats) {
+        return { completed: [], read: [] };
+    }
+
+    const chapterCount = Math.max(stats.count || 0, 0);
+    const completedCount = Math.min(stats.completedCount || 0, chapterCount);
+    const completed = Array.from({ length: completedCount }, (_, idx) => idx + 1);
+    const readCount = Math.min(chapterCount, Math.max(completedCount + 1, completedCount));
+    const read = Array.from({ length: readCount }, (_, idx) => idx + 1);
+
+    return { completed, read };
+}
+
+function getDemoPerformancePayload() {
+    const subjects = getDemoPerformanceSubjects();
+    const topSubject = subjects.reduce(
+        (best, current) => (current.avg > best.avg ? current : best),
+        subjects[0] || { name: 'Mathematics', avg: 0 }
+    );
+
+    return {
+        overallAverage: 83,
+        growth: 7,
+        topSubject: topSubject.name,
+        examsCompleted: 8,
+        subjects,
+        monthly: [
+            { month: 'Jan', avg: 74 },
+            { month: 'Feb', avg: 78 },
+            { month: 'Mar', avg: 81 },
+            { month: 'Apr', avg: 83 },
+        ],
+    };
 }
 
 function getDemoInsights() {
@@ -352,25 +357,7 @@ function getDemoDataForRequest(config) {
     }
 
     if (method === 'get' && /^\/performance\/[^/]+$/i.test(path)) {
-        return {
-            overallAverage: 83,
-            growth: 7,
-            topSubject: 'Mathematics',
-            examsCompleted: 8,
-            subjects: [
-                { name: 'Mathematics', avg: 90, trend: 5, grade: 'A+' },
-                { name: 'Science', avg: 86, trend: 3, grade: 'A' },
-                { name: 'English', avg: 81, trend: 2, grade: 'A' },
-                { name: 'Social Science', avg: 78, trend: 4, grade: 'B' },
-                { name: 'Hindi', avg: 75, trend: 1, grade: 'B' },
-            ],
-            monthly: [
-                { month: 'Jan', avg: 74 },
-                { month: 'Feb', avg: 78 },
-                { month: 'Mar', avg: 81 },
-                { month: 'Apr', avg: 83 },
-            ],
-        };
+        return getDemoPerformancePayload();
     }
 
     if (method === 'get' && /^\/subject-details\/[^/]+\/[^/]+$/i.test(path)) {
@@ -408,12 +395,12 @@ function getDemoDataForRequest(config) {
     }
 
     if (method === 'get' && /^\/books\/[^/]+\/progress-all$/i.test(path)) {
+        const progress = Object.fromEntries(
+            DEMO_BOOKS.map((book) => [book.slug, getDemoBookProgressBySlug(book.slug)])
+        );
+
         return {
-            progress: {
-                Std_8_math: { completed: [1], read: [1, 2] },
-                Std_8_eng: { completed: [1], read: [1] },
-                Std_8_science: { completed: [1], read: [1, 2] },
-            },
+            progress,
         };
     }
 
@@ -434,11 +421,16 @@ function getDemoDataForRequest(config) {
     }
 
     if (method === 'get' && /^\/books\/std_8_[^/]+\/zip-info$/i.test(path)) {
+        const subjectSlug = rawPath.split('/').filter(Boolean)[1] || 'Std_8_math';
+        const stats = getDemoBookStatsBySlug(subjectSlug);
+        const chapterCount = stats?.count || getDemoBookChapters(subjectSlug).filter((c) => !c.is_index).length;
+        const approxSizeMb = Math.max(1, Math.round(chapterCount * 0.35));
+
         return {
             cached: true,
-            size_bytes: 1048576,
-            size_mb: 1,
-            chapter_count: 3,
+            size_bytes: approxSizeMb * 1048576,
+            size_mb: approxSizeMb,
+            chapter_count: chapterCount,
         };
     }
 

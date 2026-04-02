@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { setActiveSection } from '../store/uiSlice';
 import { logActivity } from '../store/activitySlice';
 import { apiService, buildBackendFileUrl } from '../services/api';
+import { getDemoBookChapters } from '../constants/demoCatalog';
 import './SubjectPage.css';
 
 async function downloadChapter(filePath, filename) {
@@ -39,38 +40,6 @@ const META = {
     Std_8_physed:   { label: 'Physical Education',   icon: '🏃', color: '#4D7C0F', bg: '#F7FEE7' },
     Std_8_voced:    { label: 'Vocational Education', icon: '🛠️', color: '#3730A3', bg: '#EEF2FF' },
 };
-
-const DEMO_PDF_URL = 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf';
-
-function getDemoChapters(subjectSlug) {
-    return [
-        {
-            id: 1,
-            title: 'Chapter 1: Introduction',
-            file: DEMO_PDF_URL,
-            filename: `${subjectSlug}_Chapter_1.pdf`,
-            is_index: false,
-            completed: true,
-            isLastOpened: true,
-        },
-        {
-            id: 2,
-            title: 'Chapter 2: Core Concepts',
-            file: DEMO_PDF_URL,
-            filename: `${subjectSlug}_Chapter_2.pdf`,
-            is_index: false,
-            completed: false,
-        },
-        {
-            id: 3,
-            title: 'Chapter 3: Practice and Revision',
-            file: DEMO_PDF_URL,
-            filename: `${subjectSlug}_Chapter_3.pdf`,
-            is_index: false,
-            completed: false,
-        },
-    ];
-}
 
 /* ── Icons ── */
 const SearchIcon = () => (
@@ -270,7 +239,7 @@ export default function SubjectPage() {
             const chapterList = Array.isArray(data) ? data : [];
 
             if (chapterList.length === 0 && isDemoUser) {
-                setChapters(getDemoChapters(subject));
+                setChapters(getDemoBookChapters(subject));
             } else {
                 setChapters(chapterList);
             }
@@ -280,7 +249,7 @@ export default function SubjectPage() {
             // Treat 404 / "not found" as simply no PDFs uploaded yet
             if (status === 404 || detail.toLowerCase().includes('not found')) {
                 if (isDemoUser) {
-                    setChapters(getDemoChapters(subject));
+                    setChapters(getDemoBookChapters(subject));
                 } else {
                     setChapters([]);
                 }

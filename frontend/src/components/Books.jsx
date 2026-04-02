@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { apiService } from '../services/api';
+import { getDemoBookStatsMap } from '../constants/demoCatalog';
 import './Books.css';
 
 /* ── Subject metadata ─────────────────────────────────────── */
@@ -57,17 +58,7 @@ const BOOKS_META = [
 
 const FILTERS = ['All Books', 'Video Learning', 'Recently Opened', 'Completed', 'Favorites', 'Pending'];
 
-const DEMO_BOOK_STATS = {
-    Std_8_math: { count: 12, completedCount: 5 },
-    Std_8_eng: { count: 10, completedCount: 4 },
-    Std_8_hindi: { count: 9, completedCount: 3 },
-    Std_8_science: { count: 11, completedCount: 6 },
-    Std_8_arts: { count: 8, completedCount: 2 },
-    Std_8_social: { count: 10, completedCount: 4 },
-    Std_8_sanskrit: { count: 7, completedCount: 2 },
-    Std_8_physed: { count: 6, completedCount: 1 },
-    Std_8_voced: { count: 5, completedCount: 1 },
-};
+const DEMO_BOOK_STATS = getDemoBookStatsMap();
 
 const SUBJECT_YOUTUBE_LINKS = {
     Std_8_math: 'https://www.youtube.com/results?search_query=Class+8+Mathematics+NCERT+chapter+wise',
