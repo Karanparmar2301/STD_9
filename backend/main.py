@@ -36,3 +36,7 @@ async def chat(request: ChatRequest):
 @app.get("/")
 def home():
     return {"message": "Smart School AI Chatbot Running"}
+
+@app.get("/(.*)")
+def rewrites(path):
+    return {"message": "Smart School AI Chatbot Running"}
