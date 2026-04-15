@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { loginUser, clearError } from '../store/authSlice';
 import './Auth.css';
 
@@ -8,7 +8,11 @@ const DEMO_EMAIL = 'demo@school.com';
 const DEMO_PASSWORD = 'Demo@123';
 
 function Login() {
-    const [email, setEmail] = useState('');
+    const [searchParams] = useSearchParams();
+    const [email, setEmail] = useState(() => {
+        // Pre-fill email from URL params if redirected from signup
+        return decodeURIComponent(searchParams.get('email') || '');
+    });
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -54,6 +58,11 @@ function Login() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="auth-form">
+                    {searchParams.get('email') && (
+                        <div style={{ background: '#e8f5e9', color: '#2e7d32', padding: '12px', borderRadius: '4px', marginBottom: '15px', fontSize: '14px', textAlign: 'center' }}>
+                            ✓ Account found! Please sign in with your password
+                        </div>
+                    )}
                     {shouldShowError && (
                         <div className="error-message">
                             {error.includes('Invalid login credentials') || error.includes('Invalid email')

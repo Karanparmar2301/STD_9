@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   sendChatMessage,
-  sendRagMessage,
   addUserMessage,
   clearChat,
   selectMessages,
@@ -115,19 +114,6 @@ function AIAssistant({ data }) {
       inputRef.current?.focus();
     },
     [input, image, isTyping, uid, studentName, dispatch]
-  );
-
-  // Explicit textbook RAG search (bypasses personal-data routing)
-  const handleRagSend = useCallback(
-    (textOverride) => {
-      const text = (typeof textOverride === 'string' ? textOverride : input).trim();
-      if (!text || isTyping) return;
-      dispatch(addUserMessage(text));
-      dispatch(sendRagMessage({ message: text, studentName }));
-      setInput('');
-      inputRef.current?.focus();
-    },
-    [input, isTyping, studentName, dispatch]
   );
 
   const handleKeyDown = (e) => {

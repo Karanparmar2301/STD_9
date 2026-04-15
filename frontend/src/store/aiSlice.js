@@ -1,18 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// ─── Personal / non-academic keywords — only these SKIP RAG ──────────────────
-const PERSONAL_KEYWORDS = [
-  'progress', 'xp', 'level', 'streak', 'badge', 'reward',
-  'homework', 'assignment', 'how am i', 'how i am', 'game', 'play',
-  'hi', 'hello', 'hey', 'namaste', 'good morning', 'good afternoon', 'good evening', 'how are you',
-  'spell', 'spelling',
-];
-
-function isPersonalMessage(message) {
-  const msg = message.toLowerCase();
-  return PERSONAL_KEYWORDS.some((kw) => msg.includes(kw));
-}
-
 // ─── Thunks ───────────────────────────────────────────────────────────────────
 
 export const sendChatMessage = createAsyncThunk(
@@ -21,41 +8,14 @@ export const sendChatMessage = createAsyncThunk(
     try {
       const { apiService } = await import('../services/api');
 
-      // Route to RAG by default — only skip for personal/greeting messages (and no image)
-      if (!isPersonalMessage(message) || image) {
-        const ragRes = await apiService.sendRagMessage({
-          message,
-          student_name: studentName || 'Student',
-          image: image || undefined,
-        });
-        return ragRes.data; // { reply, suggestions, timestamp, intent: 'rag' }
-      }
-
-      const res = await apiService.sendChatMessage({ uid, message });
+      const normalizedMessage = image
+        ? `${message || ''} (image attached)`
+        : message;
+      const res = await apiService.sendChatMessage({ uid, message: normalizedMessage, studentName });
       return res.data; // { reply, suggestions, timestamp, intent }
     } catch (err) {
       return rejectWithValue(
         err?.response?.data?.detail || 'Could not reach the assistant. Please try again.'
-      );
-    }
-  }
-);
-
-export const sendRagMessage = createAsyncThunk(
-  'ai/sendRagMessage',
-  async ({ message, studentName, subjectFilter, image }, { rejectWithValue }) => {
-    try {
-      const { apiService } = await import('../services/api');
-      const res = await apiService.sendRagMessage({
-        message,
-        student_name:   studentName || 'Student',
-        subject_filter: subjectFilter || '',
-        image: image || undefined,
-      });
-      return res.data;
-    } catch (err) {
-      return rejectWithValue(
-        err?.response?.data?.detail || 'RAG assistant unavailable. Please try again.'
       );
     }
   }
@@ -94,7 +54,7 @@ const aiSlice = createSlice({
     suggestions: DEFAULT_SUGGESTIONS,
     error: null,
     historyLoaded: false,
-    lastIntent: null,      // 'rag' | 'math' | 'greeting' | etc.
+    lastIntent: null,      // 'chat' | 'math' | 'greeting' | etc.
   },
   reducers: {
     addUserMessage: (state, action) => {
@@ -155,49 +115,6 @@ const aiSlice = createSlice({
         id:        makeId(),
         role:      'assistant',
         content:   "😕 I couldn't connect right now. Check your internet and try again!",
-        timestamp: new Date().toISOString(),
-        isError:   true,
-      });
-    });
-
-    // ── sendRagMessage ───────────────────────────────────────────────
-    builder.addCase(sendRagMessage.pending, (state) => {
-      state.isTyping = true;
-      state.error    = null;
-    });
-    builder.addCase(sendRagMessage.fulfilled, (state, action) => {
-      state.isTyping   = false;
-      state.lastIntent = 'rag';
-      const payload = (action.payload && typeof action.payload === 'object') ? action.payload : {};
-      const reply = (typeof payload.reply === 'string' && payload.reply.trim())
-        ? payload.reply
-        : ((typeof payload.answer === 'string' && payload.answer.trim())
-            ? payload.answer
-            : "📚 I couldn't process the textbook response. Please try again.");
-      const suggestions = Array.isArray(payload.suggestions) ? payload.suggestions : [];
-      const timestamp = payload.timestamp;
-      const sources = Array.isArray(payload.sources) ? payload.sources : [];
-      const chunks_found = Number.isFinite(payload.chunks_found) ? payload.chunks_found : 0;
-      state.messages.push({
-        id:           makeId(),
-        role:         'assistant',
-        content:      reply,
-        timestamp:    timestamp || new Date().toISOString(),
-        intent:       'rag',
-        sources,
-        chunks_found,
-      });
-      if (suggestions.length) {
-        state.suggestions = suggestions;
-      }
-    });
-    builder.addCase(sendRagMessage.rejected, (state, action) => {
-      state.isTyping = false;
-      state.error    = action.payload;
-      state.messages.push({
-        id:        makeId(),
-        role:      'assistant',
-        content:   "📚 I couldn't search the textbooks right now. Try again in a moment!",
         timestamp: new Date().toISOString(),
         isError:   true,
       });

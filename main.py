@@ -11,7 +11,6 @@ import json
 import uuid
 import hashlib
 import shutil
-import threading
 from pathlib import Path
 from dotenv import load_dotenv
 from jose import JWTError, jwt
@@ -26,11 +25,6 @@ from backend.auth_service import get_auth_service
 from backend.exception_handlers import register_all_handlers, AuthenticationError, StorageError
 from backend.secure_storage import get_users_storage
 from backend.jwt_manager import get_jwt_manager
-
-RAG_ENGINE_AVAILABLE = False
-
-def rag_pipeline(question: str, *args, **kwargs):
-    return {'answer': 'RAG system removed for redesign.', 'sources': [], 'chunks_found': 0}
 
 # Load environment variables
 load_dotenv()
@@ -94,15 +88,8 @@ logger.info("Exception handlers registered")
 @app.get("/api/health")
 async def health_check():
     """System health check endpoint."""
-    rag_ready = False
-    rag_chunks = 0
-    rag_rebuild_running = False
-
     return JSONResponse({
-        "status":     "healthy",
-        "rag_ready":  rag_ready,
-        "rag_chunks": rag_chunks,
-        "rag_rebuild_running": rag_rebuild_running,
+        "status": "healthy",
     })
 
 # CORS middleware for React frontend
@@ -1981,47 +1968,8 @@ async def get_ai_insights(
 
 
 # ═══════════════════════════════════════════════════════════════════
-# AI LEARNING ASSISTANT  (Groq RAG-powered)
+# AI LEARNING ASSISTANT
 # ═══════════════════════════════════════════════════════════════════
-
-# Subject keywords used to route questions to Groq RAG
-_SUBJECT_KEYWORDS = [
-    # Science
-    'science', 'biology', 'chemistry', 'physics', 'photosynthesis', 'cell',
-    'atom', 'molecule', 'ecosystem', 'force', 'energy', 'matter',
-    'microorganism', 'bacteria', 'virus', 'fungi', 'algae', 'protozoa',
-    'reproduction', 'combustion', 'friction', 'pressure', 'sound', 'light',
-    'pollution', 'conservation', 'crop', 'irrigation', 'metal', 'nonmetal',
-    'acid', 'base', 'salt', 'synthetic', 'fibre', 'plastic', 'coal', 'petroleum',
-    'star', 'planet', 'earthquake', 'lightning', 'chemical', 'reaction',
-    'activity', 'experiment', 'observe', 'solution', 'mixture', 'element',
-    # Math
-    'math', 'mathematics', 'algebra', 'geometry', 'fraction', 'equation',
-    'triangle', 'quadrilateral', 'profit', 'loss', 'interest', 'percentage',
-    'ratio', 'proportion', 'exponent', 'power', 'square', 'cube', 'root',
-    'linear', 'graph', 'data', 'probability', 'factorisation', 'polygon',
-    # Languages
-    'english', 'poem', 'story', 'chapter', 'passage', 'grammar',
-    'hindi', 'sanskrit', 'social', 'comprehension', 'essay', 'letter',
-    # Social Studies
-    'history', 'geography', 'civics', 'constitution', 'parliament', 'judiciary',
-    'agriculture', 'industry', 'resource', 'climate', 'soil', 'mineral',
-    'trade', 'colonialism', 'revolt', 'independence', 'democracy',
-    # Other subjects
-    'arts', 'drawing', 'dance', 'music', 'vocational', 'physical',
-    # Question patterns
-    'explain', 'define', 'what is', 'what are', 'describe', 'write about',
-    'tell me about', 'how does', 'how do', 'why does', 'why do',
-    'difference between', 'give me', 'information', 'full info',
-    'meaning of', 'types of', 'properties of', 'uses of', 'examples of',
-    'class 8', 'textbook', 'ncert', 'lesson', 'topic', 'concept',
-    'pond water', 'stagnant', 'suspension', 'nitrogen', 'carbon',
-]
-
-def _is_subject_question(message: str) -> bool:
-    """Return True when the question is about academic content."""
-    msg = message.lower()
-    return any(kw in msg for kw in _SUBJECT_KEYWORDS)
 
 def _ai_classify(message: str) -> str:
     """Classify the intent of a student message."""
@@ -2116,7 +2064,7 @@ def _build_ai_reply(intent: str, message: str, ctx: dict):
             "Hello! Let's begin. What would you like to ask?",
         ]
         reply = random.choice(greetings)
-        suggestions = ["Help me with math", "Explain a science topic", "Help with homework", "Ask about my textbooks"]
+        suggestions = ["Help me with math", "Explain a science topic", "Help with homework", "Show my progress"]
 
     elif intent == 'math':
         result = _try_eval_math(message)
@@ -2255,13 +2203,9 @@ def _build_ai_reply(intent: str, message: str, ctx: dict):
             "Hello! What would you like to explore today?",
         ]
         reply = random.choice(greetings)
-        suggestions = ["Help me with math", "Explain a science topic", "Help with homework", "Ask about my textbooks"]
+        suggestions = ["Help me with math", "Explain a science topic", "Help with homework", "Show my progress"]
 
     return reply, suggestions
-
-
-async def _groq_rag_reply(*args, **kwargs):
-    return 'RAG system removed for redesign.', []
 
 
 @app.post("/api/assistant/chat")
@@ -2309,22 +2253,7 @@ async def assistant_chat(
                            "hw_done": 0, "hw_total": 1, "badges": []}
 
         intent = _ai_classify(message)
-
-        # Route to RAG by default — only skip for clearly non-academic intents
-        _NON_RAG_INTENTS = {'progress', 'streak', 'rewards', 'homework', 'games', 'greeting', 'math', 'spelling', 'motivation'}
-        if RAG_ENGINE_AVAILABLE and intent not in _NON_RAG_INTENTS:
-            try:
-                reply, suggestions = await _groq_rag_reply(
-                    message,
-                    student_ctx.get("name", "Student"),
-                    uid,
-                )
-                intent = "rag"
-            except Exception as _rag_exc:
-                print(f"[RAG fallback] {_rag_exc}")
-                reply, suggestions = _build_ai_reply(intent, message, student_ctx)
-        else:
-            reply, suggestions = _build_ai_reply(intent, message, student_ctx)
+        reply, suggestions = _build_ai_reply(intent, message, student_ctx)
 
         # Best-effort: persist to chat_messages table
         try:
@@ -2382,113 +2311,43 @@ async def assistant_history(uid: str, authorization: str = Header(None)):
         return JSONResponse({"messages": []})
 
 
-# ── Phase 8: Simple /chat endpoint (used by askAI helper) ────────────────────
-# Image text extraction helper
-def _extract_image_text(image_bytes: bytes, mime_type: str) -> str:
-    """Extract text from uploaded image using Groq Vision + OCR fallback."""
-    try:
-        extract_text_from_image = lambda d: ''
-        return extract_text_from_image(image_bytes, mime_type)
-    except Exception as e:
-        print(f"[image] text extraction failed: {e}")
-        return ""
+# ── Legacy /chat endpoint (compatibility) ───────────────────────────────────
 
 @app.post("/chat")
 async def simple_chat(
     message: str = Form(...),
     image: UploadFile = File(None),
 ):
-    question = message.strip()
-    if not RAG_ENGINE_AVAILABLE:
-        raise HTTPException(status_code=503, detail="RAG engine not available")
+    question = (message or "").strip()
+    if not question and not image:
+        raise HTTPException(status_code=400, detail="Message is required")
 
-    # Extract text from image if provided
-    if image:
-        contents = await image.read()
-        mime = image.content_type or "image/png"
-        import asyncio
-        extracted = await asyncio.get_event_loop().run_in_executor(
-            None, _extract_image_text, contents, mime
-        )
-        if extracted:
-            question = f"{question} {extracted}".strip() if question else extracted
+    if image and not question:
+        question = "Help me with this image question"
+    elif image:
+        question = f"{question} (image attached)"
 
-    import asyncio
-    result = await asyncio.get_event_loop().run_in_executor(
-        None, rag_pipeline, question
-    )
+    student_ctx = {
+        "name": "Student",
+        "xp": 0,
+        "level": 1,
+        "streak": 0,
+        "hw_done": 0,
+        "hw_total": 1,
+        "badges": [],
+    }
+    intent = _ai_classify(question)
+    reply, suggestions = _build_ai_reply(intent, question, student_ctx)
+
     return {
         "question": question,
-        "answer": result.get("answer", ""),
-        "sources": result.get("sources", []),
-        "chunks_found": result.get("chunks_found", 0),
-        "elapsed_sec": result.get("elapsed_sec"),
-        "language": result.get("language", "english"),
+        "answer": reply,
+        "suggestions": suggestions,
+        "intent": intent,
+        "sources": [],
+        "chunks_found": 0,
+        "language": "english",
     }
-
-
-
-
-
-@app.post("/api/assistant/rebuild-index")
-async def rebuild_rag_index(background_tasks: BackgroundTasks, authorization: str = Header(None)):
-    """Trigger full PDF re-ingestion to Qdrant using current chunking + embeddings settings."""
-    if not RAG_ENGINE_AVAILABLE:
-        raise HTTPException(status_code=503, detail="RAG engine not available")
-
-    if _RAG_REBUILD_STATE["running"]:
-        return JSONResponse({
-            "status": "running",
-            "message": "RAG rebuild is already in progress",
-            "state": _RAG_REBUILD_STATE,
-        })
-
-    _RAG_REBUILD_STATE["running"] = True
-    _RAG_REBUILD_STATE["last_started"] = datetime.utcnow().isoformat()
-    _RAG_REBUILD_STATE["last_error"] = None
-
-    def _rebuild_job():
-        try:
-            from backend.rag.reingest import reingest
-            reingest()
-            _RAG_REBUILD_STATE["last_error"] = None
-        except Exception as exc:
-            _RAG_REBUILD_STATE["last_error"] = str(exc)
-            logger.exception("RAG rebuild failed")
-        finally:
-            _RAG_REBUILD_STATE["running"] = False
-            _RAG_REBUILD_STATE["last_finished"] = datetime.utcnow().isoformat()
-
-    # Launch in a detached thread so the request returns immediately.
-    global _RAG_REBUILD_THREAD
-    _RAG_REBUILD_THREAD = threading.Thread(target=_rebuild_job, daemon=True)
-    _RAG_REBUILD_THREAD.start()
-
-    return JSONResponse({
-        "status": "started",
-        "message": "RAG rebuild started in background",
-        "state": _RAG_REBUILD_STATE,
-    })
-
-
-@app.get("/api/assistant/rebuild-index/status")
-async def rebuild_rag_index_status(authorization: str = Header(None)):
-    """Check asynchronous RAG rebuild status."""
-    global _RAG_REBUILD_THREAD
-    if _RAG_REBUILD_STATE["running"] and _RAG_REBUILD_THREAD is not None and not _RAG_REBUILD_THREAD.is_alive():
-        _RAG_REBUILD_STATE["running"] = False
-        if not _RAG_REBUILD_STATE.get("last_finished"):
-            _RAG_REBUILD_STATE["last_finished"] = datetime.utcnow().isoformat()
-    return JSONResponse({"status": "ok", "state": _RAG_REBUILD_STATE})
-
-
-_RAG_REBUILD_STATE = {
-    "running": False,
-    "last_started": None,
-    "last_finished": None,
-    "last_error": None,
-}
-_RAG_REBUILD_THREAD = None
 
 
 
@@ -3580,10 +3439,6 @@ async def generate_insights(request: dict):
         }
     except Exception as e:
         return {"success": False, "error": str(e)}
-
-
-from backend.api.routes import router as rag_router
-app.include_router(rag_router, tags=['RAG'])
 
 if __name__ == "__main__":
     import uvicorn

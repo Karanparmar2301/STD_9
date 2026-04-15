@@ -633,13 +633,13 @@ function getDemoDataForRequest(config) {
         return { messages: [] };
     }
 
-    if (method === 'post' && (path === '/assistant/chat' || path === '/assistant/rag-chat')) {
+    if (method === 'post' && path === '/assistant/chat') {
         const prompt = body.message || 'your question';
         return {
             reply: `Great question about "${prompt}". In demo mode, live AI is unavailable, but you can still explore your books, timetable, and performance sections.` ,
             suggestions: ['Show my timetable', 'Open mathematics book', 'How can I improve attendance?'],
             timestamp: new Date().toISOString(),
-            intent: path === '/assistant/rag-chat' ? 'rag' : 'chat',
+            intent: 'chat',
             sources: [],
             chunks_found: 0,
         };
@@ -887,19 +887,6 @@ export const apiService = {
     // AI Learning Assistant
     sendChatMessage: (data) => api.post('/assistant/chat', data),
     getChatHistory: (uid) => api.get(`/assistant/history/${uid}`),
-    sendRagMessage: (data) => {
-        const formData = new FormData();
-        formData.append('message', data.message || '');
-        formData.append('student_name', data.student_name || 'Student');
-        formData.append('subject_filter', data.subject_filter || '');
-        if (data.image) {
-            formData.append('image', data.image);
-        }
-        return api.post('/assistant/rag-chat', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-        });
-    },
-    rebuildRagIndex: () => api.post('/assistant/rebuild-index'),
 
     // ── Digital Book System ──
     getAllSubjects: () => api.get(`/books?t=${Date.now()}`),
@@ -946,7 +933,7 @@ export const authApi = {
     )
 };
 
-// ─── Standalone RAG helper (Phase 8) ─────────────────────────────────────────
+// ─── Standalone assistant helper (legacy) ───────────────────────────────────
 export async function askAI(message, image) {
   const formData = new FormData();
   formData.append('message', message || '');

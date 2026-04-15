@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { signupUser, clearError } from '../store/authSlice';
@@ -16,6 +16,17 @@ function Signup() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loading, error } = useSelector((state) => state.auth);
+
+    // Auto-redirect to login if account already exists
+    useEffect(() => {
+        if (error && (error.toLowerCase().includes('already exists') || error.toLowerCase().includes('already registered'))) {
+            const timer = setTimeout(() => {
+                const encodedEmail = encodeURIComponent(formData.email);
+                navigate(`/?email=${encodedEmail}`);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [error, formData.email, navigate]);
 
     const handleChange = (e) => {
         setFormData({
@@ -58,7 +69,7 @@ function Signup() {
                     {error && (
                         <div className="error-message">
                             {error.toLowerCase().includes('already registered') || error.toLowerCase().includes('already exists')
-                                ? 'User already exists. Please sign in'
+                                ? '✓ Account found! Redirecting to login...'
                                 : error}
                         </div>
                     )}
